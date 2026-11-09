@@ -2023,13 +2023,15 @@ let frontLeafColors=makeFrontLeafPalette();
 function buildReferenceBirch(x,base,top,scale){
  const h=base-top;
  const thick=rnd(35,49)*scale;
- const flare=rnd(.10,.26),taperStart=rnd(.46,.54);
+ const flare=rnd(.10,.26);
  const drift=rnd(-.085,.085)*h;
  const phase=rnd(0,6.283);
  const bend=rnd(-11,11)*scale;
- const cx=t=>x+drift*t+bend*Math.sin(t*Math.PI)+Math.sin(t*9+phase)*3.4*scale;
+ const tipBend=(Math.random()<.5?-1:1)*rnd(.065,.105)*h;
+ const cx=t=>x+drift*t+bend*Math.sin(t*Math.PI)+Math.sin(t*9+phase)*3.4*scale
+  +tipBend*Math.pow(clamp((t-.48)/.52,0,1),2.25);
  const cy=t=>base-h*t;
- const width=t=>thick*(1-.30*t)*(1+flare*Math.exp(-t*18)+.045*Math.sin(7*t+phase))*Math.pow(clamp((.91-t)/(.91-taperStart),0,1),1.55);
+ const width=t=>thick*(1+flare*Math.exp(-t*18))*Math.pow(1-t,1.34);
  // Doorlopende stam, zonder ronde stomp: doorsnede loopt in de wortelaanzet over.
  const N=190;
  for(let j=0;j<N;j++){
@@ -2453,7 +2455,7 @@ function addNaturalTrunkBrushwork(type,path,scale,target,bark=1){
  const baseWidth={oak:91,birch:64,beech:67,pine:62}[type],fade={oak:.57,birch:.30,beech:.44,pine:.34}[type];
  const tones={oak:['#342a20','#5c4631','#9a7650','#403126','#76604a'],birch:['#f7f6ed','#ebece4','#d7dcd6','#c2cbc8','#fffdf4'],beech:['#51483c','#867e6c','#b6aa91','#696254','#a39a85'],pine:['#3b3028','#98603c','#c88a53','#594638','#ad9277']}[type];
  const count=Math.round((170+baseWidth*scale*1.8)*bark);
- for(let i=0;i<count;i++){const t=rnd(.015,.985),end=Math.min(.998,t+rnd(.035,.19)),a=path(t),b=path(end),side=rnd(-.43,.43),w=type==='birch'?Math.min(a.width,b.width):baseWidth*scale*(1-fade*t),offset=side*w;
+ for(let i=0;i<count;i++){const t=rnd(.015,.985),end=Math.min(.998,t+rnd(.035,.19)*(1-.65*t)),a=path(t),b=path(end),side=rnd(-.43,.43),w=type==='birch'?Math.min(a.width,b.width):baseWidth*scale*(1-fade*t),offset=side*w;
   target.push({kind:'line',x1:a.x+offset,y1:a.y,x2:b.x+offset+rnd(-2.5,2.5)*scale,y2:b.y,w:type==='birch'?w*rnd(.045,.13):rnd(1.2,Math.max(2.2,w*.15)),color:pick(tones),alpha:rnd(.28,.78)});}
  const knives=Math.round((46+baseWidth*scale*.55)*bark);
  for(let i=0;i<knives;i++){const t=rnd(.025,.98),a=path(t),w=type==='birch'?a.width:baseWidth*scale*(1-fade*t);target.push({kind:'footKnife',x:a.x+rnd(-.43,.43)*w,y:a.y,l:type==='birch'?Math.min(rnd(10,42)*scale,w*1.4):rnd(10,42)*scale,w:type==='birch'?w*rnd(.07,.17):rnd(2,10)*scale,a:-Math.PI/2+rnd(-.62,.62),color:pick(tones),alpha:rnd(.24,.68)});}
