@@ -28,7 +28,7 @@
 
 </ul>
 <p class="stat">Per regio komen aparte instellingen voor het aantal rijen, het aantal bomen en de boomgrootte.</p>
-<section class="module background-part"><h3>2c — Middelste regio</h3><label for="mid-size">Boomgrootte · <output id="mid-size-value">0</output></label><input id="mid-size" type="range" min="-50" max="700" step="1" value="700"><label for="mid-leaves">Hoeveelheid bladeren en naalden · <output id="mid-leaves-value">0</output></label><input id="mid-leaves" type="range" min="-100" max="100" step="1" value="0"><label for="mid-depth">Plaatsingshoogte stamvoet · <output id="mid-depth-value">0</output></label><input id="mid-depth" type="range" min="-20" max="80" step="1" value="0"><label for="mid-rows">Aantal rijen · <output id="mid-rows-value">1</output></label><input id="mid-rows" type="range" min="1" max="3" step="1" value="2"><label for="mid-count">Aantal bomen in de regio · <output id="mid-count-value">6</output></label><input id="mid-count" type="range" min="3" max="40" step="1" value="12"><label for="mid-gap">Afstand tussen rijen · <output id="mid-gap-value">12</output></label><input id="mid-gap" type="range" min="0" max="20" step="1" value="20"><p class="stat">Bij ijkpunt 0 staat de achterste rij 120 px onder de oorspronkelijke luchtlijn.</p><label for="mid-haze">Atmosferische blauwe waas · <output id="mid-haze-value">0%</output></label><input id="mid-haze" type="range" min="0" max="100" value="5"><div id="midStatus" class="stat" aria-live="polite"></div></section><section class="module background-part"><h3>2d — Verre regio</h3><label for="far-size">Boomgrootte · <output id="far-size-value">0</output></label><input id="far-size" type="range" min="-50" max="100" step="1" value="59"><label for="far-leaves">Hoeveelheid bladeren en naalden · <output id="far-leaves-value">0</output></label><input id="far-leaves" type="range" min="-100" max="100" step="1" value="0"><label for="far-depth">Plaatsingshoogte stamvoet · <output id="far-depth-value">0</output></label><input id="far-depth" type="range" min="-40" max="60" step="1" value="0"><label for="far-rows">Aantal rijen · <output id="far-rows-value">1</output></label><input id="far-rows" type="range" min="1" max="4" step="1" value="3"><label for="far-count">Aantal bomen in de regio · <output id="far-count-value">6</output></label><input id="far-count" type="range" min="3" max="40" step="1" value="21"><label for="far-gap">Afstand tussen rijen · <output id="far-gap-value">12</output></label><input id="far-gap" type="range" min="0" max="20" step="1" value="20"><p class="stat">Bij ijkpunt 0 staat de achterste rij 40 px onder de oorspronkelijke luchtlijn. De volgende rijen staan telkens maximaal 20 px lager, gerekend vanaf de gekozen plaatsingslijn.</p><label for="far-haze">Atmosferische blauwe waas · <output id="far-haze-value">0%</output></label><input id="far-haze" type="range" min="0" max="100" value="10"><div id="farStatus" class="stat" aria-live="polite"></div></section><h4>Blad- en naaldkleuren per boomsoort</h4><p class="stat">Per boom krijgt de helft van het loof de donkere tint en de helft de lichte tint. De kleuren gelden voor alle boomregio’s vanaf de volgende schilderbeurt.</p><fieldset style="margin:8px 0"><legend>Eik</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-oak-dark" type="color" value="#2c5b17"></label><label style="display:inline-block;margin:0">Licht <input id="far-oak-light" type="color" value="#42932a"></label></fieldset><fieldset style="margin:8px 0"><legend>Berk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-birch-dark" type="color" value="#4e6a41"></label><label style="display:inline-block;margin:0">Licht <input id="far-birch-light" type="color" value="#5ac539"></label></fieldset><fieldset style="margin:8px 0"><legend>Beuk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-beech-dark" type="color" value="#5c671b"></label><label style="display:inline-block;margin:0">Licht <input id="far-beech-light" type="color" value="#97a533"></label></fieldset><fieldset style="margin:8px 0"><legend>Grove den</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-pine-dark" type="color" value="#2b4538"></label><label style="display:inline-block;margin:0">Licht <input id="far-pine-light" type="color" value="#387f53"></label></fieldset></section><div class="controls"><button id="start">▶ Start mieren</button><button id="pause" class="secondary">Pauze</button><button id="reset" class="secondary">Nieuw wit doek</button><button id="downloadArtwork" style="background:#31966f">⬇ Download PNG</button><span id="downloadMessage" class="stat" role="status" aria-live="polite"></span><div class="speedbox"><label for="speed">Schilderstappen per seconde: <b id="speedLabel">12000</b></label><input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></div></div><div class="statusline"><div id="status">Klaar. Het doek is volledig wit.</div><div id="heightLabel">Luchthoogte wordt bij Start willekeurig gekozen (50–70%).</div></div><div class="stage"><canvas id="painting" width="1000" height="1000"></canvas><canvas id="horizonPainting" width="1000" height="1000"></canvas><canvas id="farTrees" width="1000" height="1000"></canvas><canvas id="farRow" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div><div class="credit">By Teekay &amp; Omnia · 2026</div></main><script>
+<section class="module background-part"><h3>2c — Middelste regio</h3><label for="mid-size">Boomgrootte · <output id="mid-size-value">+100%</output></label><input id="mid-size" type="range" min="-50" max="700" step="1" value="100"><label for="mid-leaves">Hoeveelheid bladeren en naalden · <output id="mid-leaves-value">0</output></label><input id="mid-leaves" type="range" min="-100" max="100" step="1" value="0"><label for="mid-depth">Plaatsingshoogte stamvoet · <output id="mid-depth-value">0</output></label><input id="mid-depth" type="range" min="-20" max="80" step="1" value="0"><label for="mid-rows">Aantal rijen · <output id="mid-rows-value">1</output></label><input id="mid-rows" type="range" min="1" max="3" step="1" value="2"><label for="mid-count">Aantal bomen in de regio · <output id="mid-count-value">6</output></label><input id="mid-count" type="range" min="3" max="40" step="1" value="12"><label for="mid-gap">Afstand tussen rijen · <output id="mid-gap-value">12</output></label><input id="mid-gap" type="range" min="0" max="20" step="1" value="20"><p class="stat">Bij ijkpunt 0 staat de achterste rij 120 px onder de oorspronkelijke luchtlijn.</p><label for="mid-haze">Atmosferische blauwe waas · <output id="mid-haze-value">0%</output></label><input id="mid-haze" type="range" min="0" max="100" value="5"><div id="midStatus" class="stat" aria-live="polite"></div></section><section class="module background-part"><h3>2d — Verre regio</h3><label for="far-size">Boomgrootte · <output id="far-size-value">0</output></label><input id="far-size" type="range" min="-50" max="100" step="1" value="59"><label for="far-leaves">Hoeveelheid bladeren en naalden · <output id="far-leaves-value">0</output></label><input id="far-leaves" type="range" min="-100" max="100" step="1" value="0"><label for="far-depth">Plaatsingshoogte stamvoet · <output id="far-depth-value">0</output></label><input id="far-depth" type="range" min="-40" max="60" step="1" value="0"><label for="far-rows">Aantal rijen · <output id="far-rows-value">1</output></label><input id="far-rows" type="range" min="1" max="4" step="1" value="3"><label for="far-count">Aantal bomen in de regio · <output id="far-count-value">6</output></label><input id="far-count" type="range" min="3" max="40" step="1" value="21"><label for="far-gap">Afstand tussen rijen · <output id="far-gap-value">12</output></label><input id="far-gap" type="range" min="0" max="20" step="1" value="20"><p class="stat">Bij ijkpunt 0 staat de achterste rij 40 px onder de oorspronkelijke luchtlijn. De volgende rijen staan telkens maximaal 20 px lager, gerekend vanaf de gekozen plaatsingslijn.</p><label for="far-haze">Atmosferische blauwe waas · <output id="far-haze-value">0%</output></label><input id="far-haze" type="range" min="0" max="100" value="10"><div id="farStatus" class="stat" aria-live="polite"></div></section><h4>Blad- en naaldkleuren per boomsoort</h4><p class="stat">Per boom krijgt de helft van het loof de donkere tint en de helft de lichte tint. De kleuren gelden voor alle boomregio’s vanaf de volgende schilderbeurt.</p><fieldset style="margin:8px 0"><legend>Eik</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-oak-dark" type="color" value="#2c5b17"></label><label style="display:inline-block;margin:0">Licht <input id="far-oak-light" type="color" value="#42932a"></label></fieldset><fieldset style="margin:8px 0"><legend>Berk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-birch-dark" type="color" value="#4e6a41"></label><label style="display:inline-block;margin:0">Licht <input id="far-birch-light" type="color" value="#5ac539"></label></fieldset><fieldset style="margin:8px 0"><legend>Beuk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-beech-dark" type="color" value="#5c671b"></label><label style="display:inline-block;margin:0">Licht <input id="far-beech-light" type="color" value="#97a533"></label></fieldset><fieldset style="margin:8px 0"><legend>Grove den</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-pine-dark" type="color" value="#2b4538"></label><label style="display:inline-block;margin:0">Licht <input id="far-pine-light" type="color" value="#387f53"></label></fieldset><div class="controls"><button type="button" id="testModule2" class="secondary">Test enkel Module 2</button></div></section><div class="controls"><button id="start">▶ Start mieren</button><button id="pause" class="secondary">Pauze</button><button id="reset" class="secondary">Nieuw wit doek</button><button id="downloadArtwork" style="background:#31966f">⬇ Download PNG</button><span id="downloadMessage" class="stat" role="status" aria-live="polite"></span><div class="speedbox"><label for="speed">Schilderstappen per seconde: <b id="speedLabel">12000</b></label><input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></div></div><div class="statusline"><div id="status">Klaar. Het doek is volledig wit.</div><div id="heightLabel">Luchthoogte wordt bij Start willekeurig gekozen (50–70%).</div></div><div class="stage"><canvas id="painting" width="1000" height="1000"></canvas><canvas id="horizonPainting" width="1000" height="1000"></canvas><canvas id="farTrees" width="1000" height="1000"></canvas><canvas id="farRow" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div><div class="credit">By Teekay &amp; Omnia · 2026</div></main><script>
 (()=>{'use strict';
 const painting=document.getElementById('painting'),ctx=painting.getContext('2d');const overlay=document.getElementById('ants'),oc=overlay.getContext('2d');const start=document.getElementById('start'),pause=document.getElementById('pause'),reset=document.getElementById('reset'),speed=document.getElementById('speed'),speedLabel=document.getElementById('speedLabel'),status=document.getElementById('status'),heightLabel=document.getElementById('heightLabel'),colors=document.getElementById('colors'),paletteEditors=document.getElementById('paletteEditors');
 const landColorCount=document.getElementById('landColorCount');
@@ -48,6 +48,7 @@ function resetPaintPhase(){
  detailMode=false;detailMarks=0;detailZones=[];knifePlaces=[];accentZones=[];
 }
 function resetCanvas(){
+ testModule2.disabled=false;
  sunCoreLocked=false;landTop=0;colors.disabled=false;
  horizonStarted=false;horizonFinished=false;farFinished=false;
  document.dispatchEvent(new Event('bosmieren:ground-reset'));
@@ -762,8 +763,19 @@ const counter=coveragePercent+'% '+(landTop?'land':'lucht')+' gedekt · '+steps.
 status.textContent=counter+(fillMode?' · laatste open plekken':detailMode?' · details':brushMode?' · penseelaccenten':knifeMode?(landTop?' · bereidt penseelaccenten voor':' · mesaccenten'):'');
 
 raf=requestAnimationFrame(frame)}
+const testModule2=document.getElementById('testModule2');
+testModule2.onclick=()=>{
+ if(started && !horizonFinished)return;
+ horizonStarted=true;
+ horizonFinished=true;
+ farFinished=false;
+ start.textContent='▶ Bezig';
+ status.textContent=landTop?'Test Module 2 op de bestaande achtergrond.':'Test Module 2 op wit doek · luchtlijn op 600 px.';
+ document.dispatchEvent(new CustomEvent('bosmieren:far-start',{detail:landTop||600}));
+};
 document.addEventListener('bosmieren:horizon-finished',()=>{
  horizonFinished=true;
+ testModule2.disabled=false;
  document.dispatchEvent(new CustomEvent('bosmieren:far-start',{detail:landTop}));
 });
 document.addEventListener('bosmieren:far-finished',()=>{
@@ -772,6 +784,7 @@ document.addEventListener('bosmieren:far-finished',()=>{
  start.textContent='✓ Klaar';
 });
 start.onclick=()=>{
+ if(!started && farFinished)resetCanvas();
  if(horizonStarted){
   if(!farFinished){
    document.dispatchEvent(new Event(horizonFinished?'bosmieren:far-resume':'bosmieren:horizon-resume'));
@@ -779,7 +792,7 @@ start.onclick=()=>{
   }
   return;
  }
-if(!started)init();if(!running){running=true;last=performance.now();start.textContent='▶ Bezig';raf=requestAnimationFrame(frame)}};
+if(!started)init();testModule2.disabled=true;if(!running){running=true;last=performance.now();start.textContent='▶ Bezig';raf=requestAnimationFrame(frame)}};
 pause.onclick=()=>{
  if(horizonStarted){
   if(!farFinished){
@@ -789,7 +802,7 @@ pause.onclick=()=>{
   return;
  }
  running=false;cancelAnimationFrame(raf);start.textContent='▶ Verder';status.textContent='Gepauzeerd · '+steps.toLocaleString('nl-BE')+' stappen'};
-reset.onclick=resetCanvas;speed.oninput=()=>speedLabel.textContent=Number(speed.value).toLocaleString('nl-BE');resetCanvas();renderPaletteEditors();
+reset.onclick=()=>{resetCanvas();testModule2.disabled=false;};speed.oninput=()=>speedLabel.textContent=Number(speed.value).toLocaleString('nl-BE');resetCanvas();renderPaletteEditors();
 })();</script>
 <script>(()=>{const btn=document.getElementById('downloadArtwork'),message=document.getElementById('downloadMessage');btn.addEventListener('click',()=>{try{const out=document.createElement('canvas');out.width=out.height=1000;const outCtx=out.getContext('2d');outCtx.fillStyle='#fff';outCtx.fillRect(0,0,1000,1000);outCtx.drawImage(document.getElementById('painting'),0,0);outCtx.drawImage(document.getElementById('horizonPainting'),0,0);outCtx.drawImage(document.getElementById('farTrees'),0,0);outCtx.drawImage(document.getElementById('farRow'),0,0);const save=url=>{const a=document.createElement('a');a.href=url;a.download='Bosmieren_Lucht_en_Land.png';a.click();message.textContent='PNG-download gestart (1000 × 1000).'};if(out.toBlob)out.toBlob(blob=>{if(!blob){message.textContent='PNG kon niet worden aangemaakt.';return}const url=URL.createObjectURL(blob);save(url);setTimeout(()=>URL.revokeObjectURL(url),60000)},'image/png');else save(out.toDataURL('image/png'))}catch(e){message.textContent='Download mislukt: '+e.message}})})();</script><script>document.getElementById('skyStyleMix').addEventListener('input',e=>document.getElementById('skyStyleMixLabel').textContent=e.target.value);document.getElementById('skyBlend').addEventListener('input',e=>document.getElementById('skyBlendLabel').textContent=e.target.value+(+e.target.value===0?' · duidelijke vlakken':+e.target.value===10?' · volledig gemengd':' · tussenvorm'));document.getElementById('sunSize').addEventListener('input',e=>document.getElementById('sunSizeLabel').textContent=e.target.value);</script><script>
 document.getElementById('landStyleMix').addEventListener('input',e=>document.getElementById('landStyleMixLabel').textContent=e.target.value);
@@ -1800,9 +1813,9 @@ window.bosmierenTreeStrokePoint=o=>{
 };
 // De mieren wisselen kriskras van boom. Verf wordt op diepte samengevoegd.
 const treeJobs=new WeakMap();
-window.bosmierenQueueTree=(queue,strokes,x=0,widthScale=1)=>{
+window.bosmierenQueueTree=(queue,strokes,x=0,base=0,scale=1)=>{
  if(!treeJobs.has(queue))treeJobs.set(queue,{trees:[]});
- treeJobs.get(queue).trees.push({strokes,index:0,x,widthScale});
+ treeJobs.get(queue).trees.push({strokes,index:0,x,base,scale});
  queue.push(...strokes);
 };
 function treePaintBuffer(){
@@ -1822,7 +1835,7 @@ window.bosmierenPaintWithAnts=(target,overlay,queue,start,budget)=>{
   job.workers=job.trees;
   for(const tree of job.workers){
    tree.buffer=treePaintBuffer();
-   tree.buffer.setTransform(tree.widthScale,0,0,1,tree.x*(1-tree.widthScale),0);
+   tree.buffer.setTransform(tree.scale,0,0,tree.scale,tree.x*(1-tree.scale),tree.base*(1-tree.scale));
   }
  }
  const inks=['#00bfd8','#e50091','#ffdf00','#15192a'];
@@ -1840,7 +1853,8 @@ window.bosmierenPaintWithAnts=(target,overlay,queue,start,budget)=>{
   for(let n=0;n<allowance&&tree.index<tree.strokes.length;n++){
    const stroke=tree.strokes[tree.index];
    const p=window.bosmierenTreeStrokePoint(stroke);
-   p.x=tree.x+(p.x-tree.x)*tree.widthScale;
+   p.x=tree.x+(p.x-tree.x)*tree.scale;
+   p.y=tree.base+(p.y-tree.base)*tree.scale;
    const visible=p.x>=-7&&p.x<=1007&&p.y>=-7&&p.y<=1007;
    if(n>=burst&&visible&&site&&Math.hypot(site.x-p.x,site.y-p.y)>24)break;
    if(visible)site=p;
@@ -2574,7 +2588,8 @@ function nextRow(){
  rowCanvas.clearRect(0,0,1000,1000);queue=[];index=0;
  const plan=plans.shift();
  currentRegion=plan.region;
- for(const {type,x,base,h,foliage,haze} of plan.trees){
+ for(const {type,x,base,h:plannedHeight,foliage,haze} of plan.trees){
+  const h=currentRegion.id==='mid'?currentRegion.height:plannedHeight;
   let strokes;
   if(type==='birch')strokes=paintOriginalBirch(h,1.5,foliage/6,x,base);
   else{
@@ -2595,8 +2610,7 @@ function nextRow(){
     }).join('');
    }
   }
-  const widthScale=currentRegion.id==='mid'?Math.min(1,220/h):1;
-  window.bosmierenQueueTree(queue,strokes,x,widthScale);
+  window.bosmierenQueueTree(queue,strokes,x,base,plannedHeight/h);
  }
 }
 function tick(now){
