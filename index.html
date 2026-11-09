@@ -1916,7 +1916,7 @@ window.bosmierenDrawTreeStroke=(target,o)=>{
 };
 
 // De zomereik wordt opgebouwd vanuit één doorlopend stelsel van hout.
-function buildDeciduousTree(type,h,crownScale,leafDensity,x,foot,foregroundTwig=null){
+function buildDeciduousTree(type,h,crownScale,leafDensity,x,foot){
  const beech=type==='beech';
  const coverage=[],details=[];
  const base={x,y:foot};
@@ -1983,15 +1983,7 @@ function buildDeciduousTree(type,h,crownScale,leafDensity,x,foot,foregroundTwig=
   return point;
  }
  const fork={x:base.x+rnd(-.055,.055)*h,y:base.y-h*(beech?.97:.44)};
- const trunk=branch(base,fork,h*(foregroundTwig!==null?.037:beech?.076:.112),0,h*rnd(-.045,.045));
- if(foregroundTwig!==null){
-  if(foregroundTwig){
-   const start=trunk((foot-rnd(15,65))/(h*.97));
-   const side=Math.random()<.5?-1:1;
-   branch(start,{x:start.x+side*rnd(65,115),y:start.y-rnd(85,135)},rnd(8,13),4,rnd(-8,8));
-  }
-  return {coverage,details};
- }
+ const trunk=branch(base,fork,h*(beech?.076:.112),0,h*rnd(-.045,.045));
  // De hoofdtakken vertrekken op verschillende hoogtes en dragen samen de top.
  const limbs=beech
   ? [[-.28,.51,.32],[.31,.55,.38],[-.39,.64,.45],[.37,.69,.51],
@@ -2598,25 +2590,26 @@ function nextRow(){
  const plan=plans.shift();
  currentRegion=plan.region;
  for(const {type,x,base,h:plannedHeight,foliage,haze} of plan.trees){
-  if(currentRegion===front){
-   const tree=buildDeciduousTree(type,plannedHeight,1,0,x,base,Math.random()<.30);
-   const visible=stroke=>{
-    const y=window.bosmierenTreeStrokePoint(stroke).y;
-    const reach=stroke.kind==='line'?Math.abs(stroke.y2-stroke.y1)/2+stroke.w:stroke.l/2+stroke.w;
-    return y+reach>=0&&y-reach<=1000;
-   };
-   window.bosmierenQueueTree(queue,window.bosmierenOrderTreePasses(
-    tree.coverage.filter(visible),tree.details.filter(visible)));
-   continue;
-  }
-  const h=(type==='birch'||type==='beech')?560:currentRegion.id==='far'?plannedHeight:175;
+  const foreground=currentRegion===front;
+  const h=(foreground||type==='birch'||type==='beech')?560:currentRegion.id==='far'?plannedHeight:175;
   let strokes;
   if(type==='birch')strokes=paintOriginalBirch(h,1.5,foliage/6,x,base,currentRegion.id==='near');
   else{
    const tree=type==='pine'?window.bosmierenBuildNearTreeStrokes(type,x,base,base-h,h/720,{
     crownScale:1.5,leafDensity:foliage/6,bark:1,stageCrown:true,curvedBranches:true
    }):buildDeciduousTree(type,h,1,foliage/8,x,base);
-   strokes=window.bosmierenOrderTreePasses(tree.coverage,tree.details,true);
+   strokes=window.bosmierenOrderTreePasses(tree.coverage,tree.details,!foreground);
+  }
+  if(foreground){
+   const scale=plannedHeight/h;
+   const visible=stroke=>{
+    if(stroke.foliage||stroke.kind==='mark'&&(type==='oak'||type==='beech'))return false;
+    const y=base+(window.bosmierenTreeStrokePoint(stroke).y-base)*scale;
+    const reach=(stroke.kind==='line'?Math.abs(stroke.y2-stroke.y1)/2+stroke.w:stroke.l/2+stroke.w)*scale;
+    return y+reach>=0&&y-reach<=1000;
+   };
+   window.bosmierenQueueTree(queue,strokes.filter(visible),x,base,scale);
+   continue;
   }
   const colors=palettes[type];
   let shade=0;
@@ -2695,8 +2688,10 @@ document.addEventListener('bosmieren:far-start',event=>{
  }
  const frontCount=Number(el('front-count').value);
  if(frontCount){
+  const types=[...species];
   plans.push({region:front,trees:Array.from({length:frontCount},(_,i)=>({
-   type:'beech',x:(i+rnd(.23,.77))*1000/frontCount,base:rnd(1280,1420),h:rnd(3650,4150)
+   type:types.splice(Math.floor(rnd(0,types.length)),1)[0],
+   x:(i+rnd(.23,.77))*1000/frontCount,base:rnd(1190,1240),h:rnd(4450,5100),foliage:0
   }))});
  }
  nextRow();resume();
