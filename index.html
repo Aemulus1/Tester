@@ -2788,7 +2788,8 @@ document.addEventListener('bosmieren:far-start',event=>{
    offset=Math.min(offset,1000-event.detail-(rows-1)*gap);
   }
   const height=region.height*(1+value('size')/100),foliage=8*(1+value('leaves')/100);
-  const shift=Math.floor(rnd(0,species.length));
+  const regionSpecies=region.id==='near'?species.filter(type=>type!=='oak'):species;
+  const shift=Math.floor(rnd(0,regionSpecies.length));
   const shrubs=el(region.id+'-shrubs')?.checked;
   const hedges=Number(el(region.id+'-hedges')?.value??0);
   const bushes=region.id==='mid'?3:2;
@@ -2805,7 +2806,7 @@ document.addEventListener('bosmieren:far-start',event=>{
     const x=choices[Math.floor(rnd(0,choices.length))];
     if(occupied.has(x))overlapBudget--;
     rowPositions.add(x);
-    const tree={type:species[(i+row+shift)%species.length],base,foliage,haze:value('haze')/200,
+    const tree={type:regionSpecies[(i+row+shift)%regionSpecies.length],base,foliage,haze:value('haze')/200,
      h:height+2*row*gap,x};
     feet.push(tree);
     return tree;
