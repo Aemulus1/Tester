@@ -1,0 +1,1565 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bosmieren · Bomenatelier</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#151b26;color:#f3f5fa;font:15px system-ui,sans-serif}
+main{max-width:1020px;margin:auto;padding:16px}.panel{background:#222c3c;border-radius:12px;padding:16px}
+h1{font-size:23px;margin:0 0 8px}p{margin:0 0 14px;color:#c4d4e8}.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+label{display:block}select,input[type=range]{display:block;width:100%;margin-top:5px}select,button{font:inherit;color:inherit;background:#405570;border:0;border-radius:6px;padding:8px}
+button{cursor:pointer}.buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}#stage{position:relative;background:white;aspect-ratio:1;max-width:680px;margin:auto}
+canvas{position:absolute;width:100%;height:100%;inset:0}#status{margin:12px 0;min-height:1.4em}
+#oakInfo a{color:#a9d6ff}#oakInfo li{margin:5px 0}#oakInfo summary{cursor:pointer;font-weight:700}#oakInfo p{margin-top:10px}
+</style></head><body><main><section class="panel">
+<h1>🐜 Bosmieren · Bomenatelier</h1>
+<p>Proefdoek voor de berk. Zet Bladstreken op 0 om de stam en vertakkingen te bekijken.</p>
+<div class="settings">
+<label>Boomsoort<select id="species"><option value="oak">Eik</option><option value="birch" selected>Berk</option><option value="beech">Beuk</option><option value="pine">Grove den</option></select></label>
+<label>Boomhoogte <output id="heightValue">560 px</output><input id="height" type="range" min="270" max="720" step="10" value="560"></label>
+<label>Kruinbreedte <output id="crownValue">105%</output><input id="crown" type="range" min="20" max="140" step="5" value="105"></label>
+<label>Bladstreken <output id="foliageValue">8</output><input id="foliage" type="range" min="0" max="10" value="8"></label>
+<label>Groen <input id="leafA" type="color" value="#456b3b"></label>
+<label>Blauwgroen <input id="leafB" type="color" value="#648e83"></label>
+<label>Snelheid <input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></label>
+</div><div class="buttons"><button id="start">Schilder boom</button><button id="pause" disabled>Pauze</button></div>
+<details id="oakInfo" style="margin-top:14px">
+<summary>Info bij de eik · 10 winterfoto’s</summary>
+<p>Let op hoe de stam zich verdeelt in zware, gebogen gesteltakken. Die splitsen zich opnieuw in dunnere takken en twijgen. Samen vormen ze een brede, onregelmatige kruin die ook zonder loof herkenbaar is. Kijk vooral naar foto’s 1, 3 en 6.</p>
+<ol>
+<li><a href="https://www.habitataid.co.uk/cdn/shop/products/EnglishoakQuercusrobur.jpg" target="_blank" rel="noopener">Solitaire eik in de mist</a> · zware gesteltakken</li>
+<li><a href="https://www.geograph.org.uk/photo/7453138" target="_blank" rel="noopener">Oude eik in Coombe Abbey</a> · overgang van stam naar takken</li>
+<li><a href="https://www.nationwidetrees.com.au/static/uploads/images/quercus-robur-wfvvzmotwrry.jpg" target="_blank" rel="noopener">Zomereik in open veld</a> · silhouet van stamvoet tot twijgtop</li>
+<li><a href="https://www.wunderbare-erde.de/data/o/4/22731/image.jpg" target="_blank" rel="noopener">Eik aan de Nederrijn</a> · brede winterkruin</li>
+<li><a href="https://baum-des-tages.blogspot.com/2021/01/quercus-robur-grandiose-krone.html" target="_blank" rel="noopener">Dubbelstammige eik</a> · twee stammen in één kruin</li>
+<li><a href="https://baumfreunde.org/FinBa/quercus-robur" target="_blank" rel="noopener">Zomereik tegen blauwe lucht</a> · knikken en vertakkingen</li>
+<li><a href="https://www.rspb-images.com/ftpuploadforclient/RotatingImages/2026-02-24/5.jpg" target="_blank" rel="noopener">Eik bij zonsondergang</a> · omtrek van de kruin</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Quercus_robur_in_winter.JPG" target="_blank" rel="noopener">Wintereik langs de weg</a> · richtingswissels van de takken</li>
+<li><a href="https://webshop.newgarden.hu/kepek/nagy/quercus-robur-teli-sziluett.jpg?vsil=4" target="_blank" rel="noopener">Wintersilhouet</a> · fijne twijgen aan de buitenrand</li>
+<li><a href="https://www.ostdeutsches-baumarchiv.de/photo/eiche-1-uckro" target="_blank" rel="noopener">Oude eik bij Uckro</a> · asymmetrische kruin</li>
+</ol>
+<p>Zet <strong>Bladstreken</strong> op 0 en klik op <strong>Schilder boom</strong> om de vertakkingen op het proefdoek te vergelijken.</p>
+</details>
+<details style="margin-top:14px"><summary>Info bij de grove den · 10 fotoreferenties</summary><p>Een volwassen grove den heeft een brede, open kruin met ongelijke toppen. Dragende takken vertrekken op verschillende hoogtes. Naaldparen zitten in groepen op korte twijgen, met kale stukken hout ertussen. De schors is onderaan donkerder en hogerop warmer oranje.</p><ol><li><a style="color:#a9d6ff" href="https://www.gartentechnik.de/fotos/2015/11/waldkiefer-pinus-sylvestris-ccbysa-jim-champion.jpg" target="_blank" rel="noopener">Solitaire den op de heide</a></li><li><a style="color:#a9d6ff" href="https://jardin-secrets.com/img/jardin-secrets.com/articles/519/photo-pin-sylvestre_dominicus-johannes-bergsma.jpg" target="_blank" rel="noopener">Open kruin tussen de heide</a></li><li><a style="color:#a9d6ff" href="https://ancienttrees.woodlandtrust.org.uk/how-to-record/species-guides/scots-pine/" target="_blank" rel="noopener">Oude den met ongelijke toppen</a></li><li><a style="color:#a9d6ff" href="https://regionalpark-wedeler-au.de/files/rwa-filepool/projekte/baumpark-pinneberg/images/pinus-sylvestris-freistehend.jpg" target="_blank" rel="noopener">Vrijstaande den in Wedeler Au</a></li><li><a style="color:#a9d6ff" href="https://www.herbarium.be/cnt/pic/wiki739pinus-sylvestris-glenmuick.jpg" target="_blank" rel="noopener">Silhouet bij Glen Muick</a></li><li><a style="color:#a9d6ff" href="https://commons.wikimedia.org/wiki/File:Lone_Scots_Pine_(Pinus_sylvestris)_-_geograph.org.uk_-_204608.jpg" target="_blank" rel="noopener">Asymmetrische solitaire den</a></li><li><a style="color:#a9d6ff" href="https://forest.jrc.ec.europa.eu/media/atlas/Pinus_sylvestris.pdf" target="_blank" rel="noopener">Landschapsfoto Glen Affric</a></li><li><a style="color:#a9d6ff" href="https://forest.jrc.ec.europa.eu/media/atlas/Pinus_sylvestris.pdf" target="_blank" rel="noopener">Oranje bovenstammen in het bos, tweede foto in de atlas</a></li><li><a style="color:#a9d6ff" href="https://www.baumwelten.net/baeume/kiefer.wald/waldkiefer.borken.1200px.jpg" target="_blank" rel="noopener">Schors in verschillende tinten</a></li><li><a style="color:#a9d6ff" href="https://www.woodlandtrust.org.uk/trees-woods-and-wildlife/british-trees/a-z-of-british-trees/scots-pine/" target="_blank" rel="noopener">Detailfoto van de naaldparen</a></li></ol></details><details><summary>Info bij de berk · 10 winterfoto’s</summary><p>De hoofdtakken waaieren omhoog en opzij. De fijne twijgen buigen daarna omlaag. Op Bladstreken 0 kun je die vorm vergelijken met de foto’s.</p><ol><li><a style="color:#a9d6ff" href="https://commons.wikimedia.org/wiki/File:Betula_pendula_winter.jpg" target="_blank" rel="noopener">Winterberk in Zwitserland</a></li><li><a style="color:#a9d6ff" href="https://www.irishnews.com/lifestyle/2017/11/18/news/take-on-nature-silver-birch-deserves-coleridge-s-description-lady-of-the-woods-1186703/" target="_blank" rel="noopener">Kale berk op de heide</a></li><li><a style="color:#a9d6ff" href="https://tenhoven-production.s3.eu-central-1.amazonaws.com/media/minimized/6ea8bb671a-EPpu0Xbf7IOz.jpg" target="_blank" rel="noopener">Ruwe berk in winterlandschap</a></li><li><a style="color:#a9d6ff" href="https://images.ablebump.com/2025/10/Betula-pendula.webp" target="_blank" rel="noopener">Berken in open terrein</a></li><li><a style="color:#a9d6ff" href="https://drzewa.nk4.netmark.pl/zasoby/atlas/brzoza/brzoza_brodawkowata/brzoza_brodawkowata_012.jpg" target="_blank" rel="noopener">Berkenkruin met rijp</a></li><li><a style="color:#a9d6ff" href="https://blog.gardenbuildingsdirect.co.uk/wp-content/uploads/2022/01/uk-fastest-growing-trees-5-silver-birch-1024x768.jpg" target="_blank" rel="noopener">Winterberk met uitgespreide kruin</a></li><li><a style="color:#a9d6ff" href="https://i.pinimg.com/736x/cb/36/63/cb3663061a7546d39047cdc3949b5e3f.jpg" target="_blank" rel="noopener">Oude berk in de sneeuw</a></li><li><a style="color:#a9d6ff" href="https://gardencentrum.net/betula-pendula-c75-mesteacan" target="_blank" rel="noopener">Kale berk in parklandschap</a></li><li><a style="color:#a9d6ff" href="https://zooclub.ru/attach/63000/63559.jpg" target="_blank" rel="noopener">Berk in de schemering</a></li><li><a style="color:#a9d6ff" href="https://www.bowhayestrees.co.uk/product-page/betula-pendula-trists-weeping-silver-birch" target="_blank" rel="noopener">Hangende twijgen bij cultivar Tristis</a></li></ol></details><details><summary>Groeiregels van de berk</summary><ul>
+<li>Een slanke, licht gebogen stam met een iets bredere voet. De bovenstam versmalt tussen enkele opgaande takken.</li>
+<li>De voet krijgt donkere, overlappende schorsstreken. Daarboven komen onregelmatige scheuren tussen het zilverwit. Naar boven worden de donkere tekens kleiner en fijner.</li>
+<li>Gebogen zijtakken vertrekken op ongelijke hoogtes. De fijnste twijgen hangen af en dragen het loof.</li>
+<li>Bij elke schilderbeurt variëren stambocht, schorsplekken, taklengtes en bladgroepen binnen die regels.</li>
+</ul></details></section><p id="status" aria-live="polite">Kies een boom en druk op Schilder boom.</p>
+<div id="stage"><canvas id="tree" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div>
+</main><script>
+(()=>{'use strict';
+const rnd=(a,b)=>a+Math.random()*(b-a),pick=a=>a[Math.floor(Math.random()*a.length)],clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+let ops=[];
+function stroke(x1,y1,x2,y2,w,color,alpha=1){ops.push({kind:'line',x1,y1,x2,y2,w,color,alpha});}
+function mark(x,y,l,w,a,color,alpha=1){ops.push({kind:'mark',x,y,l,w,a,color,alpha});}
+function makeFrontLeafPalette(){
+ const parse=hex=>[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
+ const toHex=rgb=>'#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+ const a=parse(document.getElementById('leafA').value),b=parse(document.getElementById('leafB').value);
+ return [0,.33,.67,1].map(t=>toHex(a.map((v,i)=>v*(1-t)+b[i]*t)));
+}
+let frontLeafColors=makeFrontLeafPalette();
+// Berk naar het aangeleverde schilderij: brede, gebroken witte schors,
+// grillige zwarte bastvlekken, zachte grijsblauwe lengtestrepen.
+// Alleen voor type birch; alle andere soorten behouden hun oorspronkelijke motor.
+function buildReferenceBirch(x,base,top,scale){
+ const h=base-top;
+ const thick=rnd(53,76)*scale;
+ const drift=rnd(-.085,.085)*h;
+ const phase=rnd(0,6.283);
+ const bend=rnd(-11,11)*scale;
+ const cx=t=>x+drift*t+bend*Math.sin(t*Math.PI)+Math.sin(t*9+phase)*3.4*scale;
+ const cy=t=>base-h*t;
+ const width=t=>thick*(1-.30*t)*(1+.045*Math.sin(7*t+phase))*Math.pow(Math.max(.004,(1-t)/.30),t>.70?1.65:0);
+ // Doorlopende stam, zonder ronde stomp: doorsnede loopt in de wortelaanzet over.
+ const N=190;
+ for(let j=0;j<N;j++){
+  const t=j/N,u=(j+1)/N,w=width(t),wu=width(u);
+  stroke(cx(t),cy(t),cx(u),cy(u),w,'#b9bcb9',1);
+  stroke(cx(t)-w*.12,cy(t),cx(u)-wu*.12,cy(u),w*.72,'#d5d5d0',.94);
+  stroke(cx(t)+w*.34,cy(t),cx(u)+wu*.34,cy(u),w*.14,'#7f898b',.58);
+ }
+ // Grijze, onregelmatige schorspartijen: niet één effen witte cilinder.
+ for(let i=0;i<175;i++){
+  const t=rnd(.025,.97),w=width(t),side=rnd(-.39,.39);
+  const len=rnd(9,70)*scale,du=Math.min(.985,t+len/h);
+  const grey=pick(['#858f90','#9ba4a2','#aeb4b1','#777f7e','#c0c3bd']);
+  stroke(cx(t)+side*w,cy(t),cx(du)+side*width(du)+rnd(-3,3)*scale,cy(du),
+   rnd(2.5,Math.max(3,w*.24)),grey,rnd(.18,.53));
+ }
+ // Geen gelijkmatige horizontale streepjes: grillige schorsvelden van wisselende grootte.
+ // Zwart ontstaat in onderbroken, soms verticaal uitlopende rafelvlekken.
+ const patches=Math.round(34*h/750);
+ for(let i=0;i<patches;i++){
+  const t=rnd(.016,.97),w=width(t),side=rnd(-.36,.36);
+  const x0=cx(t)+side*w,y0=cy(t);
+  const broad=Math.random()<.44;
+  const length=Math.min(w*.80,rnd(broad?24:6,broad?64:22)*scale);
+  const depth=rnd(broad?22:4,broad?64:15)*scale;
+  const dark=pick(['#171a19','#262a29','#343936','#4a504c']);
+  // Korte dwarslittekens naast grotere grillige zwarte vlakken.
+  const seg=3+Math.floor(rnd(0,5));
+  let lastX=x0-length*.5,lastY=y0;
+  for(let k=1;k<=seg;k++){
+   const u=k/seg,xx=x0-length*.5+length*u+rnd(-2,2)*scale;
+   const yy=y0+Math.sin(u*Math.PI)*rnd(-depth,depth)*.42+rnd(-2.5,2.5)*scale;
+   stroke(lastX,lastY,xx,yy,rnd(broad?5:1.4,broad?14:4.3)*scale,dark,rnd(.72,1));
+   lastX=xx;lastY=yy;
+  }
+  if(broad){
+   for(let k=0;k<Math.floor(rnd(10,22));k++){
+    const xx=x0+rnd(-length*.42,length*.42),yy=y0+rnd(-depth*.48,depth*.48);
+    mark(xx,yy,rnd(5,16)*scale,rnd(1.5,5)*scale,rnd(-1.1,1.1),dark,rnd(.48,.91));
+   }
+  }
+ }
+ // Lange, smalle schaduwen en zachte droge messtreken volgen de lengte van de schors.
+ for(let i=0;i<115;i++){
+  const t=rnd(.02,.96),len=rnd(7,95)/h*scale;
+  const u=Math.min(.995,t+len),side=rnd(-.43,.43);
+  const shade=pick(['#d4d5d0','#a8b0af','#899696','#c3c7c2','#737e7c']);
+  stroke(cx(t)+side*width(t),cy(t),cx(u)+side*width(u)+rnd(-3,3)*scale,cy(u),rnd(.6,3.5)*scale,shade,rnd(.18,.7));
+ }
+ // Stamvoet en gedeeltelijk door bladstrooisel bedekte wortels.
+ // De wortels zijn onderbroken; de reeds geschilderde bodem blijft zichtbaar.
+ for(let j=0;j<7;j++){
+  const side=j%2?1:-1,origin=cx(0)+side*thick*rnd(.19,.32);
+  const reach=rnd(30,91)*scale,drop=rnd(8,23)*scale;
+  const x0=origin,y0=base-rnd(9,21)*scale;
+  const x1=origin+side*reach,y1=base+drop;
+  const w0=rnd(5,11)*scale;
+  // Breed begin loopt vloeiend uit de stamvoet.
+  stroke(x0,y0,x0+side*reach*.20,base+drop*.08,w0,'#b6b9b2',.94);
+  // Afwisselend zichtbare fragmenten: geen nieuwe grondverf of bladeren.
+  for(let k=1;k<6;k++){
+   if(k===2||k===4||(k===3&&j%3===0))continue;
+   const t0=k/6,t1=Math.min(.98,(k+.72)/6);
+   const xa=x0+(x1-x0)*t0,xb=x0+(x1-x0)*t1;
+   const ya=y0+(y1-y0)*t0,yb=y0+(y1-y0)*t1;
+   stroke(xa,ya,xb,yb,Math.max(.8,w0*(1-t0)*.68),'#8d9790',.79);
+  }
+ }
+ return t=>({x:cx(t),y:cy(t),width:width(t)});
+}
+function buildTree(type,x,base,top,scale){
+ if(type==='birch'){return buildReferenceBirch(x,base,top,scale);}
+ const h=base-top,thick=(type==='oak'?91:type==='beech'?67:type==='pine'?62:42)*scale;
+ const colors={oak:['#342a20','#5c4631','#9a7650'],birch:['#e0ddd1','#f0ede3','#faf7ec'],beech:['#51483c','#867e6c','#b6aa91'],pine:['#3b3028','#98603c','#c88a53']}[type];
+ // Grove den: exact de bestaande stamvorm en schors behouden.
+ const drift=rnd(-.12,.12)*h, bend=rnd(-.09,.09)*h, wave=rnd(0,Math.PI*2);
+ const knots=Array.from({length:7},()=>rnd(-1,1));
+ function organic(t){
+  const z=t*6,i=Math.min(5,Math.floor(z)),u=z-i,e=u*u*(3-2*u);
+  return knots[i]*(1-e)+knots[i+1]*e;
+ }
+ // Loofbomen: brede, samenhangende stam met zachte, lokale groeibochten.
+ // Grove den: ongewijzigde berekening uit v10.3.
+ const center=type==='pine'
+  ? t=>x+drift*t+bend*Math.sin(Math.PI*t)+Math.sin(t*7+wave)*thick*.11*t
+  : t=>x+drift*t*.30+bend*Math.sin(Math.PI*t)*.35
+       +organic(t)*thick*.12+Math.sin(t*9+wave)*thick*.025;
+ const width=type==='pine'
+  ? t=>thick*(1-.34*t)*(1+.025*Math.sin(t*13+wave))*(t>.78?Math.pow(Math.max(.004,(1-t)/.22),1.55):1)
+  : t=>thick*(1-(type==='oak'?.57:type==='beech'?.44:.40)*t)
+       *(1+.035*organic(t)+.34*Math.exp(-t*16))
+       *(t>.70?Math.pow(Math.max(.004,(1-t)/.30),1.65):1);
+ const path=t=>({x:center(t),y:base-h*t,width:width(t)});
+ // Soortspecifieke stamvoet, zonder losse stokjes over de bodem.
+ // Alleen wortelstreken worden veranderd; stam, schors en kruin blijven intact.
+ const rootOps=[];
+ const rootStroke=(x1,y1,x2,y2,w,color,alpha=1)=>rootOps.push({kind:'line',x1,y1,x2,y2,w,color,alpha});
+ const rootN=type==='oak'?7:type==='beech'?6:4;
+ const flare=type==='oak'?.32:type==='beech'?.23:.14;
+ // Korte, brede wortelaanzetten lopen rechtstreeks vanuit de stam naar buiten.
+ for(let j=0;j<rootN;j++){
+  const side=j%2?-1:1;
+  const reach=rnd(type==='oak'?62:38,type==='oak'?132:type==='beech'?103:76)*scale;
+  const drop=rnd(8,24)*scale;
+  const originX=center(0)+side*thick*rnd(.20,.32);
+  const originY=base-rnd(9,22)*scale;
+  const endX=originX+side*reach,endY=base+drop;
+  const w0=thick*(type==='oak'?rnd(.18,.27):type==='beech'?rnd(.13,.20):rnd(.10,.16));
+  const curve=t=>({x:originX+(endX-originX)*t,y:originY+(endY-originY)*t+Math.sin(Math.PI*t)*(-3*scale)});
+  // De wortelaanzet blijft breed en ononderbroken waar hij de stam raakt.
+  for(let k=0;k<3;k++){
+   const a=curve(k*.10),b=curve((k+1)*.10);
+   rootStroke(a.x,a.y,b.x,b.y,w0*(1-k*.21)+thick*flare*.11,colors[0],.98);
+   rootStroke(a.x-side*w0*.15,a.y-1,b.x-side*w0*.12,b.y-1,Math.max(.8,w0*.16),colors[2],.34);
+  }
+  // Verderop vallen stukken weg: daar blijft de bestaande bladergrond zichtbaar.
+  for(let k=3;k<10;k++){
+   if(k===4||k===7||(k===6&&j%2===0)||(k===8&&j%3===0))continue;
+   const a=curve(k/10),b=curve(Math.min(1,(k+.70)/10));
+   rootStroke(a.x,a.y,b.x,b.y,Math.max(.8,w0*Math.pow(1-k/10,1.25)*.64),colors[0],.82);
+  }
+ }
+ // Grove den blijft letterlijk op de oude tekenroutine.
+ // Andere bomen: volle, in elkaar vloeiende stam zonder stapeling van tandenstokers.
+ const N=180;
+ if(type==='pine'){
+  // Eén doorlopende basiskleur. Geen lange parallelle lichte strepen.
+  for(let i=0;i<N;i++){
+   const t=i/N,t2=Math.min(1,(i+1.45)/N),p=path(t),q=path(t2);
+   stroke(p.x,p.y,q.x,q.y,width(t),colors[0],1);
+  }
+  // Echte fijnkorrelige schors: organische spleten en verweerde vlakken,
+  // geen losse, getekende schilden of herhaald tegelpatroon.
+  const profile=[];
+  for(let j=0;j<=100;j++){
+   const t=j/100;profile.push({x:center(t),y:base-h*t,w:width(t)});
+  }
+  ops.push({kind:'pineTexture',profile,seed:Math.floor(rnd(1,1000000)),alpha:1});
+ }else{
+  // Lange doorlopende verfbanen: variabele breedte, onregelmatige ligging.
+  for(let i=0;i<N;i++){
+   const t=i/N,t2=Math.min(1,(i+1.45)/N),p=path(t),q=path(t2),w=width(t);
+   stroke(p.x,p.y,q.x,q.y,w,colors[0],1);
+  }
+  for(let band=0;band<(type==='oak'||type==='beech'?0:26);band++){
+   const t0=rnd(0,.92),t1=Math.min(1,t0+rnd(.045,.33)),side=rnd(-.39,.39);
+   const tone=type==='birch'?pick(['#e8e4d8','#f3eee1','#b6b8aa']):type==='beech'?pick(['#968d7b','#aca18e','#665f53']):pick(['#765b3e','#987550','#42372b']);
+   const segments=6;
+   for(let j=0;j<segments;j++){
+    const t=t0+(t1-t0)*j/segments,u=t0+(t1-t0)*(j+1)/segments,p=path(t),q=path(u);
+    stroke(p.x+side*width(t),p.y,q.x+side*width(u),q.y,rnd(.035,.09)*thick,tone,rnd(.2,.6));
+   }
+  }
+ }
+ // Eik: schors als fijn, onregelmatig reliëf binnen exact de bestaande stamcontour.
+ // Geen geometrische schildjes, dwarsrasters of lange evenwijdige lijnen.
+ if(type==='oak'){
+  const profile=[];
+  for(let j=0;j<=100;j++){
+   const t=j/100;profile.push({x:center(t),y:base-h*t,w:width(t)});
+  }
+  ops.push({kind:'oakTexture',profile,seed:Math.floor(rnd(1,1000000)),alpha:1});
+ }
+ // Schorsstreken volgen de kromming, met variabele lengtes en onregelmatige stiltes.
+ // Bij de berk dwarsstreepjes; bij beuk weinig reliëf; eik diepe verticale kloven;
+ // grove den losse, ongelijke schorsplaten zonder tegelraster.
+ const barkCount={oak:0,birch:115,beech:0,pine:0}[type];
+ for(let i=0;i<barkCount;i++){
+  const t=rnd(.018,.98),w=width(t),side=rnd(-.41,.41),p=path(t),xx=p.x+side*w;
+  if(type==='birch'){
+   if(Math.random()<.47){
+    const len=rnd(3,13)*scale;
+    stroke(xx-len*.5,p.y+rnd(-1,1),xx+len*.5,p.y+rnd(-1,1),rnd(.6,1.8)*scale,'#353b37',rnd(.35,.83));
+   }else{
+    const dt=rnd(.006,.03),q=path(Math.min(.99,t+dt));
+    stroke(xx,p.y,q.x+side*width(Math.min(.99,t+dt)),q.y,rnd(.5,1.5)*scale,pick(['#f2eddf','#b6b9ac','#d8d8cb']),rnd(.28,.7));
+   }
+  }else if(type==='beech'){
+   const dt=rnd(.009,.04),q=path(Math.min(.99,t+dt));
+   stroke(xx,p.y,q.x+side*width(Math.min(.99,t+dt)),q.y,rnd(.4,1.2)*scale,pick(['#c6b9a0','#605e53','#a69c87']),rnd(.15,.39));
+  }else if(type==='oak'){
+   // Eik: smalle, onregelmatig onderbroken bastkloven, geen rechte latten.
+   // Alleen deze schorsafdrukken veranderen; stamcontour en wortels niet.
+   const dt=rnd(.009,.042),end=Math.min(.99,t+dt),q=path(end);
+   const sideEnd=side+rnd(-.035,.035);
+   const dark=pick(['#292923','#35332c','#454038','#514a3f']);
+   const kink=rnd(-2.2,2.2)*scale;
+   stroke(xx,p.y,xx+kink*.55,p.y+(q.y-p.y)*.48,rnd(.55,1.65)*scale,dark,rnd(.26,.60));
+   stroke(xx+kink*.55,p.y+(q.y-p.y)*.48,q.x+sideEnd*width(end),q.y,rnd(.45,1.4)*scale,dark,rnd(.24,.58));
+   if(Math.random()<.18){
+    const rim=pick(['#827967','#928671','#675f51']);
+    stroke(xx+(Math.random()<.5?-1:1)*rnd(1.5,3.5)*scale,p.y+rnd(-2,2)*scale,
+     xx+kink*.55+(Math.random()<.5?-1:1)*rnd(1,3)*scale,p.y+(q.y-p.y)*.45,
+     rnd(.45,1.1)*scale,rim,rnd(.16,.38));
+   }
+  }else{
+   // De schorsschilden van de grove den zijn hierboven al geschilderd.
+  }
+ }
+ // Beuk: gladde grijsgroene schors met zachte, lokale kleurvlekken,
+ // enkele knoestlittekens en zonder illustratieve parallelle lijnen.
+ if(type==='beech'){
+  for(let i=0;i<Math.round(thick*.8);i++){
+   const t=rnd(.04,.95),p=path(t),side=rnd(-.34,.34),w=width(t);
+   const tone=pick(['#9a9f91','#aab0a1','#858d80','#727e70','#b5b6a6']);
+   const span=rnd(3,17)*scale;
+   stroke(p.x+side*w,p.y-span*.5,p.x+side*w+rnd(-2,2)*scale,p.y+span*.5,
+    rnd(2,Math.max(3,thick*.16)),tone,rnd(.08,.22));
+  }
+  for(let i=0;i<Math.max(2,Math.round(thick*.025));i++){
+   const t=rnd(.15,.91),p=path(t),w=width(t),xx=p.x+rnd(-.28,.28)*w;
+   stroke(xx-rnd(1,3)*scale,p.y,xx+rnd(1,4)*scale,p.y+rnd(-1.5,1.5)*scale,
+    rnd(.7,1.6)*scale,pick(['#555e52','#6c7065']),rnd(.22,.40));
+  }
+ }
+ // Stamvoet en zichtbare wortels worden over de onderste stamstreken gelegd.
+ ops.push(...rootOps);
+ // Takken ontstaan vanuit de gebogen stam en hebben zelf knikken en vertakkingen.
+ if(type==='pine'){
+ const branchCount=type==='oak'?15:type==='beech'?19:type==='pine'?15:24;
+ const crownR=(type==='oak'?180:type==='beech'?148:type==='pine'?128:98)*scale;
+ for(let i=0;i<branchCount;i++){
+  const t=rnd(type==='pine'?.10:.07,type==='oak'?.65:.53),p=path(1-t);
+  const side=i%2?1:-1,len=crownR*rnd(.48,1.12)*(type==='birch'?.73:1);
+  const rise=rnd(12,65)*scale-(type==='birch'?rnd(10,40):0);
+  let last=p;
+  for(let k=1;k<=6;k++){
+   const u=k/6,next={x:p.x+side*len*u,y:p.y-rise*u+Math.sin(u*Math.PI)*rnd(-8,8)*scale};
+   stroke(last.x,last.y,next.x,next.y,Math.max(.8,thick*(1-t)*.15*(1-u)**1.2),colors[0],.94);
+   last=next;
+  }
+  stroke(p.x+side*len*.58,p.y-rise*.58,last.x+side*len*.15,last.y-rnd(8,37)*scale,rnd(1.2,3.2)*scale,colors[1],.85);
+  const groups=type==='pine'?Math.floor(rnd(3,7)):Math.floor(rnd(8,16));
+  for(let j=0;j<groups;j++){
+   const q=rnd(.48,1.17),px=p.x+side*len*q+rnd(-23,23)*scale,py=p.y-rise*q+rnd(-28,28)*scale;
+   for(let k=0;k<(type==='pine'?25:19);k++){
+    const ox=rnd(-27,27)*scale,oy=rnd(-22,22)*scale;
+    if(type==='pine')mark(px+ox,py+oy,rnd(8,20)*scale,rnd(.6,1.5)*scale,rnd(-Math.PI,Math.PI),pick(frontLeafColors),rnd(.58,.95));
+    else{
+     const pal=frontLeafColors;
+     mark(px+ox,py+oy,rnd(5,16)*scale,rnd(2,7)*scale,rnd(-Math.PI,Math.PI),pick(pal),rnd(.58,.94));
+    }
+   }
+  }
+ }
+ }else{
+  // Takken alleen in het bovenste derde van de boom, nooit vanaf de stamvoet.
+  // Onregelmatige aanhechting, verschillende richtingen, geen lange rechte V's.
+  const crownR=(type==='oak'?180:type==='beech'?148:98)*scale;
+  const branchCount=type==='oak'?12:type==='beech'?15:17;
+  if(type==='oak'){
+   // EIK: organische vertakking. Iedere zijtak heeft een doorgaande taps toelopende
+   // houtas, met echte secundaire en tertiaire takken. Bladeren uitsluitend op twijgen.
+   const barkLine=(a,b,w,alpha=.96)=>{
+    stroke(a.x,a.y,b.x,b.y,w,colors[0],alpha);
+    if(w>3.2*scale)ops.push({kind:'oakBranchBark',x1:a.x,y1:a.y,x2:b.x,y2:b.y,
+      w,seed:Math.floor(rnd(1,1000000)),alpha:1});
+   };
+   const leafColors=frontLeafColors;
+   function twig(from,angle,len,w,depth){
+    const mid={x:from.x+Math.cos(angle)*len*.52+rnd(-3,3)*scale,
+               y:from.y+Math.sin(angle)*len*.52+rnd(-3,3)*scale};
+    const tip={x:from.x+Math.cos(angle)*len+rnd(-5,5)*scale,
+               y:from.y+Math.sin(angle)*len+rnd(-5,5)*scale};
+    barkLine(from,mid,w);barkLine(mid,tip,Math.max(.55*scale,w*.50));
+    if(depth>0){
+     twig(mid,angle+rnd(-.90,-.36),len*rnd(.48,.69),w*.49,depth-1);
+     twig(tip,angle+rnd(.28,.80),len*rnd(.39,.63),w*.42,depth-1);
+    }else{
+     for(let k=0;k<17;k++)mark(tip.x+rnd(-17,17)*scale,tip.y+rnd(-15,15)*scale,
+       rnd(5,13)*scale,rnd(2,6)*scale,rnd(-3,3),pick(leafColors),rnd(.5,.88));
+    }
+   }
+   for(let i=0;i<branchCount;i++){
+    const t=rnd(.32,.84),p=path(t),side=Math.random()<.5?-1:1;
+    const len=crownR*rnd(.38,.88),rise=rnd(12,87)*scale;
+    const pts=[p],kink=rnd(-.11,.11)*len;
+    for(let k=1;k<=10;k++){
+     const u=k/10;
+     pts.push({x:p.x+side*len*u+kink*Math.sin(u*Math.PI),
+       y:p.y-rise*u-rnd(-2,2)*scale*Math.sin(u*Math.PI)});
+    }
+    const w0=width(t)*rnd(.20,.35);
+    for(let k=1;k<pts.length;k++){
+     const u=k/10;
+     barkLine(pts[k-1],pts[k],Math.max(.8*scale,w0*Math.pow(1-u,1.25)));
+    }
+    // Niet alleen blaadjes aan de hoofdarm: echte vertakkingen op meerdere hoogtes.
+    for(let j=0;j<5;j++){
+     const idx=Math.floor(rnd(3,10)),at=pts[idx];
+     const direction=Math.atan2(pts[10].y-p.y,pts[10].x-p.x);
+     twig(at,direction+rnd(-1.1,1.0),rnd(27,65)*scale,
+       Math.max(1.5*scale,w0*(1-idx/11)*rnd(.28,.48)),2);
+    }
+    twig(pts[10],Math.atan2(pts[10].y-pts[8].y,pts[10].x-pts[8].x),
+      rnd(28,57)*scale,Math.max(1.1*scale,w0*.14),2);
+   }
+  }else{
+  for(let i=0;i<branchCount;i++){
+   const t=type==='oak'?rnd(.34,.86):type==='beech'?rnd(.54,.96):rnd(.61,.98),p=path(t),side=Math.random()<.5?-1:1;
+   const len=crownR*rnd(.25,.86),rise=rnd(-12,75)*scale;
+   const bendA=rnd(-.26,.26)*len,bendB=rnd(-.22,.22)*len;
+   const pts=[p];
+   for(let k=1;k<=9;k++){
+    const u=k/9;
+    pts.push({x:p.x+side*len*u+bendA*Math.sin(Math.PI*u)+bendB*Math.sin(2*Math.PI*u)*.3,
+              y:p.y-rise*u+Math.sin(Math.PI*u)*rnd(-2,2)*scale});
+   }
+   const w0=width(t)*(type==='oak'?rnd(.24,.40):rnd(.13,.28));
+   for(let k=1;k<pts.length;k++){
+    const u=k/9;
+    const branchWidth=Math.max(.65,w0*Math.pow(1-u,.95));
+    stroke(pts[k-1].x,pts[k-1].y,pts[k].x,pts[k].y,
+      branchWidth,colors[0],.96);
+    // Alleen eik: dezelfde fijne, grillige baststructuur op de dikke zijtakken.
+    // De takgeometrie en de schildervolgorde blijven volledig behouden.
+    if(type==='oak' && branchWidth>3.2*scale){
+      ops.push({kind:'oakBranchBark',x1:pts[k-1].x,y1:pts[k-1].y,
+        x2:pts[k].x,y2:pts[k].y,w:branchWidth,seed:Math.floor(rnd(1,1000000)),alpha:1});
+    }
+   }
+   // Kleinere zijtakken komen pas uit de grote tak, niet uit de wortel.
+   for(let j=0;j<3;j++){
+    const u=rnd(.48,.87),at=pts[Math.round(u*9)];
+    const tip={x:at.x+side*rnd(9,33)*scale,y:at.y-rnd(13,42)*scale};
+    stroke(at.x,at.y,tip.x,tip.y,rnd(.8,2.6)*scale,colors[0],.8);
+   }
+   const pal=frontLeafColors;
+   for(let j=0;j<180;j++){
+    const u=rnd(.57,1),at=pts[Math.round(u*9)];
+    mark(at.x+rnd(-27,27)*scale,at.y+rnd(-25,25)*scale,
+      rnd(5,16)*scale,rnd(2,7)*scale,rnd(-Math.PI,Math.PI),
+      type==='birch' && Math.random()<.30 ? pick(frontLeafColors.slice(2)) : pick(pal),rnd(.5,.92));
+   }
+  }
+  }
+ }
+ if(type!=='pine')for(let j=0;j<290;j++){
+  const crownR=(type==='oak'?180:type==='beech'?148:98)*scale;
+  const a=rnd(0,Math.PI*2),r=Math.sqrt(Math.random()),tip=path(1),px=tip.x+Math.cos(a)*crownR*r,py=top+h*.11+Math.sin(a)*crownR*.69*r;
+  const pal=frontLeafColors;
+  mark(px,py,rnd(6,15)*scale,rnd(2,7)*scale,rnd(-3,3),
+   type==='birch' && Math.random()<.30 ? pick(frontLeafColors.slice(2)) : pick(pal),rnd(.5,.9));
+ }
+ return path;
+}
+// Module 5: afzonderlijke, onregelmatige kruinen, opgebouwd uit vertakkingen en
+// clusters van messtreken. De bestaande stammen, wortels en berkenschors blijven intact.
+function buildCrown(type,x,base,top,scale,trunkPath,{crownScale=1,leafDensity=1,middleBirch=false,curvedBranches=false}={}){
+ const h=base-top;
+ const R=(type==='oak'?190:type==='beech'?151:type==='pine'?139:110)*scale*crownScale*(middleBirch?1.6:1);
+ const pal=frontLeafColors,wood=type==='birch'?'#75766d':type==='pine'?'#705037':type==='oak'?'#403126':'#615849';
+ const centerX=trunkPath(.90).x;
+ const cy=top+R*(type==='pine'?.57:.76);
+ // Elk exemplaar heeft een andere asymmetrische buitenlijn, geen uniforme bol.
+ const clusters=[];
+ const n=type==='pine'?9:type==='oak'?12:type==='beech'?13:11;
+ for(let i=0;i<n;i++){
+  const a=i/n*Math.PI*2+rnd(-.22,.22);
+  const radial=rnd(.40,1.04);
+  const dx=Math.cos(a)*R*radial*(type==='oak'?1.32:type==='pine'?1.12:type==='birch'?.89:1.04);
+  const dy=Math.sin(a)*R*radial*(type==='birch'?.98:.76);
+  clusters.push({x:centerX+dx,y:cy+dy,rx:R*rnd(.24,.43),ry:R*rnd(.22,.40)});
+ }
+ // Een onregelmatige pluk bovenaan sluit de kruin rond de laatste vertakkingen.
+ clusters.push({x:centerX+rnd(-.18,.18)*R,y:top+R*.08,rx:R*.36,ry:R*.30});
+ if(type==='pine'){
+  // Gesteltakken op ongelijke hoogtes met open ruimte tussen hun takgroepen.
+  const flip=Math.random()<.5?-1:1;
+  const limbs=[[-.91,.67,.54],[.80,.72,.61],[-1.15,.78,.68],
+   [.48,.85,.73],[.99,.89,.77],[-.60,.94,.83],[.18,.99,.88]];
+  clusters.splice(0,clusters.length,...limbs.map(([side,rise,attach])=>({
+   x:trunkPath(attach).x+flip*side*R*rnd(1.15,1.48),
+   y:base-h*rise+R*rnd(-.12,.12),attach,
+   rx:R*rnd(.27,.46),ry:R*rnd(.14,.26)
+  })));
+ }
+ // De stam is geen paal met een vlak eind: twee doorlopende leiders groeien
+ // uit de bovenste stam en worden steeds dunner tot twijgen in de kruin.
+ // Schors van de hoofdstam blijft ongewijzigd; deze takken zijn nieuw.
+ // De den gebruikt overlappende, taps uitlopende penseelstreken langs de tak.
+ function paintPineBranch(point,width,color,alpha){
+  const start=point(0),end=point(1);
+  const distance=Math.hypot(end.x-start.x,end.y-start.y);
+  const steps=Math.max(2,Math.ceil(distance/Math.max(3,width*1.2)));
+  for(let i=0;i<steps;i++){
+   const t=Math.max(0,(i-.45)/steps),u=Math.min(1,(i+1.8)/steps);
+   const a=point(t),b=point(u);
+   const length=Math.hypot(b.x-a.x,b.y-a.y);
+   if(length<.1)continue;
+   const w=Math.min(length*.44,width*Math.pow(1-(t+u)/2,1.18));
+   stroke(a.x,a.y,b.x,b.y,w,color,alpha);
+   ops[ops.length-1].crownReach=[t,u];
+  }
+ }
+ const leaders=type==='pine'?0:type==='oak'||type==='beech'?3:2;
+ const trunkTopY=top;
+ const leaderStartY=base-h*(type==='oak'?.66:.76);
+ for(let j=0;j<leaders;j++){
+  const side=j%2===0?-1:1;
+  const startX=trunkPath(type==='oak'?.66:.76).x;
+  const tipX=centerX+side*R*rnd(.26,.68);
+  const tipY=cy-R*rnd(.30,.72);
+  const startW=(type==='oak'?23:type==='beech'?15:type==='birch'?12:10)*scale;
+  if(type==='pine'){
+   paintPineBranch(t=>({
+    x:startX+(tipX-startX)*(t*t*(3-2*t))+Math.sin(t*Math.PI)*side*R*.09,
+    y:leaderStartY+(tipY-leaderStartY)*t
+   }),startW,wood,.96);
+   continue;
+  }
+  let px=startX,py=leaderStartY;
+  for(let k=1;k<=16;k++){
+   const u=k/16;
+   const nx=startX+(tipX-startX)*(u*u*(3-2*u))+Math.sin(u*Math.PI)*side*R*.09;
+   const ny=leaderStartY+(tipY-leaderStartY)*u;
+   const bw=Math.max(.5,startW*Math.pow(1-u,1.45));
+   stroke(px,py,nx,ny,bw,wood,.96);
+   ops[ops.length-1].crownReach=[(k-1)/16,u];
+   if(type==='oak'&&bw>3.2*scale)ops.push({kind:'oakBranchBark',x1:px,y1:py,x2:nx,y2:ny,w:bw,seed:Math.floor(rnd(1,1000000)),alpha:1});
+   px=nx;py=ny;
+  }
+ }
+ // Korte verfstreken volgen de kromming van de tak en worden naar de top dunner.
+ function curvedBranch(sx,sy,mx,my,ex,ey,width,color,alpha){
+  const point=t=>{
+   const u=1-t;
+   return {x:u*u*sx+2*u*t*mx+t*t*ex,y:u*u*sy+2*u*t*my+t*t*ey};
+  };
+  if(type==='pine'){
+   paintPineBranch(point,width,color,alpha);
+   return point;
+  }
+  for(let k=0;k<12;k++){
+   const t=k/12,u=(k+1)/12;
+   const a=point(t),b=point(Math.min(1,u+.025));
+   stroke(a.x,a.y,b.x,b.y,width*Math.pow(1-t,1.22),color,alpha);
+   ops[ops.length-1].crownReach=[t,u];
+  }
+  return point;
+ }
+ // Vertakkingen lopen vanaf de echte stam omhoog en zijwaarts tot in de kroon.
+ // De dikte neemt langs elke tak geleidelijk af.
+ const needlePaths=[];
+ for(const c of clusters){
+  const attach=c.attach??rnd(.68,.95),origin=trunkPath(attach),sx=origin.x,sy=origin.y;
+  const side=c.x<sx?-1:1;
+  const midx=sx+(c.x-sx)*.30-side*R*.18;
+  const midy=type==='pine'?sy+(c.y-sy)*.18+R*rnd(.14,.34):sy+(c.y-sy)*.64-R*rnd(.18,.34);
+  const w=type==='oak'?rnd(9,17)*scale:type==='pine'?rnd(15,25)*scale:rnd(4,9)*scale;
+  const limb=curvedBranch(sx,sy,midx,midy,c.x,c.y,w,wood,.94);
+  if(type==='pine'){
+   // Een gesteltak draagt meerdere korte zijtakken op verschillende hoogtes.
+   for(let j=0;j<6;j++){
+    const fork=limb(.28+j*.13);
+    const side=j%2===0?-1:1;
+    const ex=fork.x+side*c.rx*rnd(.38,1.04);
+    const ey=fork.y-c.ry*rnd(.45,1.75);
+    const branch=curvedBranch(fork.x,fork.y,
+     fork.x+(ex-fork.x)*.72,fork.y-c.ry*.24,
+     ex,ey,w*rnd(.23,.42),wood,.90);
+    needlePaths.push({path:branch,from:.50});
+    // De zijtak zelf vertakt. De naaldgroepen staan op die korte twijgen.
+    for(let k=0;k<4;k++){
+     const root=branch(.31+k*.19);
+     const turn=k%2===0?-1:1;
+     const tx=root.x+turn*c.rx*rnd(.23,.55);
+     const ty=root.y-c.ry*rnd(.26,.84);
+     const path=curvedBranch(root.x,root.y,root.x+(tx-root.x)*.68,
+      root.y-c.ry*.1,tx,ty,w*rnd(.08,.16),wood,.82);
+     needlePaths.push({path,from:.12});
+    }
+   }
+   continue;
+  }
+  // Zijtakken vertrekken op verschillende punten van de echte hoofdtak.
+  for(let j=0;j<4;j++){
+   const fork=limb(.35+j*.14);
+   const turn=j%2===0?-1:1;
+   const ex=c.x+turn*rnd(.35,.95)*c.rx;
+   const ey=c.y+rnd(-.9,.55)*c.ry;
+   const branch=curvedBranch(fork.x,fork.y,(fork.x+ex)/2-turn*c.rx*.24,
+    (fork.y+ey)/2-c.ry*.35,ex,ey,w*(.46-j*.055),wood,.85);
+   const twig=branch(.62);
+   const tx=ex+turn*c.rx*.38,ty=ey-c.ry*.42;
+   const tipPath=curvedBranch(twig.x,twig.y,(twig.x+tx)/2,(twig.y+ty)/2-c.ry*.16,
+    tx,ty,w*.14,wood,.73);
+   if(type==='pine')needlePaths.push({path:branch,center:rnd(.72,.90)},{path:tipPath,center:rnd(.67,.89)});
+  }
+ }
+ if(type==='pine'){
+  const count=clusters.length*Math.round(760*leafDensity);
+  for(let i=0;i<count;i++){
+   const {path,from}=needlePaths[i%needlePaths.length];
+   const t=rnd(from,.99),p=path(t),q=path(t+.01);
+   const direction=Math.atan2(q.y-p.y,q.x-p.x);
+   const angle=direction+(Math.random()<.5?-1:1)*rnd(.25,1.85);
+   const length=rnd(8,18)*scale;
+   // Twee naalden delen een vertrekpunt op dezelfde geschilderde twijg.
+   const color=pick(pal);
+   for(const offset of [-.22,.22]){
+    const a=angle+offset;
+    stroke(p.x,p.y,p.x+Math.cos(a)*length,p.y+Math.sin(a)*length,
+     Math.max(.85,rnd(1.05,1.60)*scale),color,rnd(.76,.98));
+    ops[ops.length-1].foliage=true;
+   }
+  }
+  return;
+ }
+ // Alleen berk: extra fijn, frisgroen loof langs zichtbare, licht hangende
+ // zijtwijgen. De bestaande kruin, stam, schors en andere soorten blijven intact.
+ const twigLeaves=middleBirch?2*Math.round(20*leafDensity):110;
+ if(type==='birch'&&leafDensity>0){
+  const birchLeafColors=frontLeafColors;
+  for(let b=0;b<17;b++){
+   const t=rnd(.54,.91),anchor=trunkPath(t);
+   const side=b%2===0?-1:1;
+   const reach=rnd(39,91)*scale*(middleBirch?1.65:1);
+   const rise=rnd(6,26)*scale;
+   const endX=anchor.x+side*reach,endY=anchor.y-rise+rnd(8,24)*scale;
+   // Fijne twijg buigt naar buiten en aan het uiteinde iets naar beneden.
+   const midX=anchor.x+side*reach*.62,midY=anchor.y-rise-rnd(4,12)*scale;
+   const twigWidth=rnd(.65,1.35)*scale,tipWidth=rnd(.4,.85)*scale;
+   if(curvedBranches)curvedBranch(anchor.x,anchor.y,midX,midY,endX,endY,twigWidth,'#85887b',.66);
+   else{
+    stroke(anchor.x,anchor.y,midX,midY,twigWidth,'#85887b',.66);
+    ops[ops.length-1].crownReach=[0,1];
+    stroke(midX,midY,endX,endY,tipWidth,'#777e70',.60);
+   }
+   for(let k=0;k<twigLeaves;k++){
+    const u=rnd(.48,1.12);
+    const lx=anchor.x+side*reach*u+rnd(-17,17)*scale;
+    const ly=anchor.y-rise*u+Math.max(0,u-.55)*rnd(8,31)*scale+rnd(-17,17)*scale;
+    mark(lx,ly,rnd(4.5,10)*scale,rnd(1.6,3.8)*scale,rnd(-2.7,2.7),
+      pick(birchLeafColors),rnd(.62,.94));
+   }
+  }
+ }
+ // De boomtop blijft een organische verzameling van overlappende blad- of naaldpartijen.
+ // De bovengrens bij stand 0 raakt het doek; bij stand 5 ligt ze erbuiten.
+ let remainingBirchLeaves=2*Math.round(12*145*leafDensity)-17*twigLeaves;
+ for(const [index,c] of clusters.entries()){
+  const density=middleBirch?Math.round(remainingBirchLeaves/(clusters.length-index)):2*Math.round((type==='pine'?158:type==='birch'?100:145)*leafDensity);
+  if(middleBirch)remainingBirchLeaves-=density;
+  for(let j=0;j<density;j++){
+   const theta=rnd(0,Math.PI*2),r=Math.sqrt(Math.random());
+   const xx=c.x+Math.cos(theta)*c.rx*r,yy=c.y+Math.sin(theta)*c.ry*r;
+   const a=type==='pine'?rnd(-1.4,1.4):rnd(-3.14,3.14);
+   const len=type==='pine'?rnd(7,18)*scale:type==='birch'?rnd(5,12)*scale:rnd(7,18)*scale;
+   const wid=type==='pine'?rnd(.8,2)*scale:type==='birch'?rnd(1.7,4)*scale:rnd(2.5,6.5)*scale;
+   mark(xx,yy,len*(middleBirch?1.45:1),wid*(middleBirch?2:1),a,
+    type==='birch' && Math.random()<.30 ? pick(frontLeafColors.slice(2)) : pick(pal),rnd(.53,.93));
+  }
+ }
+}
+function addNaturalTrunkBrushwork(type,path,scale,target,bark=1){
+ const baseWidth=path(0).width/scale;
+ const tones={oak:['#342a20','#5c4631','#9a7650','#403126','#76604a'],birch:['#f7f6ed','#ebece4','#d7dcd6','#c2cbc8','#fffdf4'],beech:['#51483c','#867e6c','#b6aa91','#696254','#a39a85'],pine:['#3b3028','#98603c','#c88a53','#594638','#ad9277']}[type];
+ const count=Math.round((170+baseWidth*scale*1.8)*bark);
+ for(let i=0;i<count;i++){
+  const t=rnd(.015,.96),end=Math.min(.99,t+rnd(.035,.19));
+  const a=path(t),b=path(end),side=rnd(-.39,.39);
+  const w=Math.min(a.width,b.width)*rnd(.05,.15);
+  target.push({kind:'line',x1:a.x+side*a.width,y1:a.y,x2:b.x+side*b.width,y2:b.y,
+   w,color:pick(tones),alpha:rnd(.28,.78)});
+ }
+ const knives=Math.round((46+baseWidth*scale*.55)*bark);
+ for(let i=0;i<knives;i++){
+  const t=rnd(.025,.94),a=path(t);
+  target.push({kind:'footKnife',x:a.x+rnd(-.36,.36)*a.width,y:a.y,
+   l:Math.min(rnd(10,42)*scale,a.width*1.6),w:a.width*rnd(.05,.17),
+   a:-Math.PI/2+rnd(-.42,.42),color:pick(tones),alpha:rnd(.24,.68)});
+ }
+}
+function prepareNaturalTreeOps(type,raw,path,scale,bark){
+ const clean=[];let baseSegments=0;
+ for(const o of raw){if(o.kind==='line'&&!o.crown&&baseSegments<(type==='birch'?570:180)){baseSegments++;continue;}if(o.kind==='oakTexture'||o.kind==='pineTexture'||o.kind==='oakBranchBark')continue;clean.push(o);}
+ addNaturalTrunkBrushwork(type,path,scale,clean,bark);return clean;
+}
+function buildNearTrunkCoverage(type,path){
+ const colors={
+  oak:['#493727','#604932','#73583d'],
+  birch:['#cbd2cc','#ebece4','#f7f6ed'],
+  beech:['#736b5b','#8d8472','#a29a86'],
+  pine:['#6c4a34','#935f3e','#aa7851']
+ }[type];
+ const coverage=[];
+ for(let lane=-2;lane<=2;lane++){
+  const offset=lane*.17;
+  for(let i=-1;i<36;i++){
+   const t=(i+rnd(-.24,.24))/36;
+   const a=path(clamp(t-.026,0,1)),b=path(clamp(t+.054,0,1));
+   const width=path(clamp(t+.014,0,1)).width;
+   coverage.push({kind:'line',x1:a.x+offset*a.width,y1:a.y,
+    x2:b.x+offset*b.width,y2:b.y,w:width*.47,
+    color:colors[lane===-2?0:lane>=1?2:1],alpha:1,buildingTrunk:true});
+  }
+ }
+ return coverage;
+}
+window.bosmierenOrderTreePasses=(coverage,details,stageCrown=false)=>{
+ const passes=stageCrown
+  ? [coverage,details.filter(o=>!o.crown),details.filter(o=>o.crown&&!o.foliage),details.filter(o=>o.crown&&o.foliage)]
+  : [coverage,details];
+ for(const pass of passes){
+  for(let i=pass.length-1;i>0;i--){
+   const j=Math.floor(rnd(0,i+1));
+   [pass[i],pass[j]]=[pass[j],pass[i]];
+  }
+ }
+ return passes.flat();
+};
+window.bosmierenBuildNearTreeStrokes=(type,x,base,top,scale,options)=>{
+ const savedOps=ops;
+ ops=[];
+ try{
+  const originalPath=buildTree(type,x,base,top,scale);
+  const path=t=>{
+   const p=originalPath(t);
+   const taper=clamp((1-t)/.43,0,1);
+   return {...p,width:p.width*Math.pow(taper,.85)};
+  };
+  // De oude lange schorsstrepen bovenaan zouden buiten de verjongde stam vallen.
+  const upperTrunk=path(.57).y;
+  ops=ops.filter(o=>o.kind==='line' ? Math.min(o.y1,o.y2)>=upperTrunk
+   : !Number.isFinite(o.y)||o.y>=upperTrunk);
+  if(type==='pine')ops=ops.filter(o=>o.kind!=='mark');
+  const crownStart=ops.length;
+  buildCrown(type,x,base,top,scale,path,options);
+  for(let i=crownStart;i<ops.length;i++){
+   ops[i].outsideTrunk=true;
+   if(options?.stageCrown)ops[i].crown=true;
+   if(type!=='pine'&&type!=='birch'&&options?.curvedBranches&&ops[i].kind==='line'){
+    ops[i].w*=ops[i].crownReach?1.85:1.3;
+   }
+   if(options&&ops[i].kind==='mark')ops[i].foliage=true;
+  }
+  if(options?.foot)ops.push(...options.foot);
+  const details=prepareNaturalTreeOps(type,ops,path,scale,options?.bark);
+  // Laat takken en bladeren alleen buiten de kern van hun eigen stam zien.
+  const outside=new Path2D();
+  outside.rect(-2048,-2048,5096,5096);
+  for(const side of [-1,1]){
+   for(let i=0;i<=72;i++){
+    const p=path((side<0?i:72-i)/72);
+    const edge=p.x+side*p.width*.36;
+    if(side<0&&i===0)outside.moveTo(edge,p.y);
+    else outside.lineTo(edge,p.y);
+   }
+  }
+  outside.closePath();
+  for(const stroke of details){
+  if(stroke.outsideTrunk){
+   if(options?.middleBirch)stroke.alpha=1;
+   if(options?.liftBranchOrigins)delete stroke.crownReach;
+   if(!stroke.crownReach&&!options?.liftBranchOrigins&&!(options?.middleBirch&&stroke.foliage))stroke.clip=outside;
+   if(options?.crown)stroke.crownTransform={settings:options.crown,x:path(.85).x,heightLift:options.heightLift??0};
+  }
+ }
+  const coverage=buildNearTrunkCoverage(type,path);
+  if(type==='pine'){
+   // Kleine gebroken schorsstreken volgen de stam, met donkere naden en lichtere schilfers.
+   for(let i=0;i<Math.round((base-top)*.48);i++){
+    const t=rnd(.015,.84),p=path(t);
+    const side=rnd(-.42,.42);
+    const x=p.x+side*p.width;
+    const length=Math.min(rnd(6,24)*scale,p.width*.85);
+    const width=p.width*rnd(.055,.16);
+    const angle=-Math.PI/2+rnd(-.42,.42);
+    details.push({kind:'footKnife',x,y:p.y,l:length,w:width,a:angle,
+     color:pick(['#382c26','#493529','#6d4730','#c19164']),alpha:rnd(.35,.72)});
+   }
+   for(const stroke of [...coverage,...details]){
+    if(stroke.foliage || !/^#[0-9a-f]{6}$/i.test(stroke.color))continue;
+    const y=stroke.y??(stroke.y1+stroke.y2)/2;
+    if(!Number.isFinite(y))continue;
+    const rise=clamp((base-y)/(base-top),0,1);
+    const wood=rise<.5?[65,49,40]:[188,108,57];
+    const strength=rise<.5?.42*(1-rise*2):.48*(rise*2-1);
+    stroke.color='#'+[1,3,5].map((i,k)=>{
+     const v=parseInt(stroke.color.slice(i,i+2),16);
+     return Math.round(v+(wood[k]-v)*strength).toString(16).padStart(2,'0');
+    }).join('');
+   }
+  }
+  return {coverage,details};
+ }finally{ops=savedOps;}
+};
+// De dichtste rij gebruikt taps uitlopende penseel- en messtreken.
+window.bosmierenTreeStrokePoint=o=>{
+ const first=(o.kind==='line')?{x:o.x1,y:o.y1}:o.points?.[0]??o;
+ const last=o.kind==='line'?{x:o.x2,y:o.y2}:o.points?.at(-1)??first;
+ const point=(p,reach)=>{
+  if(!o.crownTransform)return p;
+  const {x,heightLift,settings:{rise:offset,stretch}}=o.crownTransform;
+  const rise=offset+heightLift;
+  return {x:p.x+(p.x-x)*(stretch-1)*reach,y:p.y-rise*reach};
+ };
+ const a=point(first,o.crownReach?.[0]??1),b=point(last,o.crownReach?.[1]??1);
+ return {x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+};
+// De mieren wisselen kriskras van boom. Verf wordt op diepte samengevoegd.
+const treeJobs=new WeakMap();
+window.bosmierenQueueTree=(queue,strokes)=>{
+ if(!treeJobs.has(queue))treeJobs.set(queue,{trees:[]});
+ treeJobs.get(queue).trees.push({strokes,index:0});
+ queue.push(...strokes);
+};
+function treePaintBuffer(){
+ const canvas=document.createElement('canvas');
+ canvas.width=canvas.height=1000;
+ return canvas.getContext('2d');
+}
+function compositeTreeGroup(target,job){
+ target.clearRect(0,0,1000,1000);
+
+ for(const worker of job.workers)target.drawImage(worker.buffer.canvas,0,0);
+}
+window.bosmierenPaintWithAnts=(target,overlay,queue,start,budget)=>{
+ const job=treeJobs.get(queue);
+ if(!job||budget<1)return 0;
+ if(!job.workers){
+  job.workers=job.trees;
+  for(const tree of job.workers)tree.buffer=treePaintBuffer();
+ }
+ const inks=['#00bfd8','#e50091','#ffdf00','#15192a'];
+ const sites=[];
+ const available=job.workers.filter(tree=>tree.index<tree.strokes.length);
+ let painted=0;
+ const visits=Math.min(4,budget,available.length);
+ const allowance=Math.max(1,Math.floor(budget/visits));
+ const speed=Number(document.getElementById('speed').value);
+ const burst=4*Math.max(1,Math.round(speed/3500));
+ for(let i=0;i<visits;i++){
+  const slot=Math.floor(Math.random()*available.length);
+  const [tree]=available.splice(slot,1);
+  let site;
+  for(let n=0;n<allowance&&tree.index<tree.strokes.length;n++){
+   const stroke=tree.strokes[tree.index];
+   const p=window.bosmierenTreeStrokePoint(stroke);
+   const visible=p.x>=-7&&p.x<=1007&&p.y>=-7&&p.y<=1007;
+   if(n>=burst&&visible&&site&&Math.hypot(site.x-p.x,site.y-p.y)>24)break;
+   if(visible)site=p;
+   window.bosmierenDrawTreeStroke(tree.buffer,stroke);
+   tree.index++;painted++;
+  }
+  if(site)sites.push({site,color:inks[i]});
+ }
+ if(painted){
+  compositeTreeGroup(target,job);
+  overlay.clearRect(0,0,1000,1000);
+  for(const {site,color} of sites){
+   overlay.beginPath();overlay.arc(site.x,site.y,7,0,Math.PI*2);
+   overlay.fillStyle=color;overlay.fill();
+   overlay.lineWidth=2;overlay.strokeStyle='#17202e';overlay.stroke();
+  }
+ }
+ if(start+painted===queue.length){
+  for(const tree of job.workers)delete tree.buffer;
+  job.workers=null;
+ }
+ return painted;
+};
+window.bosmierenDrawTreeStroke=(target,o)=>{
+ target.save();
+ if(o.clip)target.clip(o.clip,'evenodd');
+ let {x1,y1,x2,y2}=o;
+ if(o.crownTransform){
+  const {x,heightLift,settings:{rise:offset,stretch}}=o.crownTransform;
+  const rise=offset+heightLift;
+  if(o.crownReach){
+   const [start,end]=o.crownReach;
+   x1+=(x1-x)*(stretch-1)*start;
+   x2+=(x2-x)*(stretch-1)*end;
+   y1-=rise*start;
+   y2-=rise*end;
+  }else{
+   target.translate(x,-rise);target.scale(stretch,1);target.translate(-x,0);
+  }
+ }
+ target.globalAlpha=o.alpha??1;
+ if(o.kind==='line'||o.kind==='mark'||o.kind==='footKnife'){
+  const isLine=o.kind==='line';
+  const dx=isLine?x2-x1:0,dy=isLine?y2-y1:0;
+  const halfLength=(isLine?Math.hypot(dx,dy):o.l)/2;
+  const halfWidth=o.w/2;
+  target.translate(isLine?(x1+x2)/2:o.x,isLine?(y1+y2)/2:o.y);
+  target.rotate(isLine?Math.atan2(dy,dx):o.a);
+  target.fillStyle=o.color;
+  target.beginPath();
+  target.moveTo(-halfLength,-halfWidth*.14);
+  target.bezierCurveTo(-halfLength*.72,-halfWidth,halfLength*.32,-halfWidth*1.05,halfLength,-halfWidth*.12);
+  target.bezierCurveTo(halfLength*.42,halfWidth*.36,-halfLength*.48,halfWidth*1.22,-halfLength,-halfWidth*.14);
+  target.fill();
+ }else{
+  target.translate(o.x,o.y);
+  target.rotate(o.a);
+  target.fillStyle=o.color;
+  target.beginPath();
+  target.ellipse(0,0,o.l*.5,o.w*.5,0,0,Math.PI*2);
+  target.fill();
+ }
+ target.restore();
+};
+
+// De zomereik wordt opgebouwd vanuit één doorlopend stelsel van hout.
+function buildDeciduousTree(type,h,crownScale,leafDensity){
+ const beech=type==='beech';
+ const coverage=[],details=[];
+ const base={x:500,y:850};
+ const wood=beech?['#60645e','#777b74','#92958b','#acada2']:['#493727','#604932','#73583d','#8b7051'];
+ function branch(start,end,width,depth,bend,parentPath){
+  const dx=end.x-start.x,dy=end.y-start.y;
+  const length=Math.hypot(dx,dy);
+  const nx=-dy/length,ny=dx/length;
+  const point=t=>{
+   const curve=Math.sin(Math.PI*t)*bend+Math.sin(2*Math.PI*t)*bend*.22;
+   return {x:start.x+dx*t+nx*curve,y:start.y+dy*t+ny*curve};
+  };
+  const widthAt=t=>width*(depth===0
+   ? (beech?Math.pow(1-t,.78)*(.83+.17*Math.exp(-t*12)):(.28+.72*Math.pow(1-t,1.15))*(1+.30*Math.exp(-t*15)))
+   : Math.pow(1-t,1.15));
+  const lanes=width>12?9:width>4?5:2;
+  for(let lane=0;lane<lanes;lane++){
+   const side=(lane+.5)/lanes-.5;
+   const count=Math.max(3,Math.ceil(length/rnd(12,19)));
+   for(let i=0;i<count;i++){
+    const t=Math.max(0,(i+rnd(-.48,.42))/count);
+    const u=Math.min(1,t+rnd(1.9,3.7)/count);
+    const a=point(t),b=point(u),wa=widthAt(t),wb=widthAt(u);
+    const offset=side+rnd(-.032,.032);
+    coverage.push({kind:'line',x1:a.x+nx*wa*offset,y1:a.y+ny*wa*offset,
+     x2:b.x+nx*wb*offset,y2:b.y+ny*wb*offset,
+     w:Math.max(.25,wa/lanes*rnd(1.7,2.5)),color:pick(wood),alpha:rnd(.76,.99)});
+   }
+  }
+  if(width>5){
+   for(let i=0;i<Math.ceil(length/(beech?12:5));i++){
+    const t=rnd(0,.94),p=point(t),q=point(Math.min(1,t+.035));
+    const w=widthAt(t),offset=w*rnd(-.37,.37);
+    details.push({kind:'footKnife',x:p.x+nx*offset,y:p.y+ny*offset,
+     l:rnd(9,28)*h/560,w:w*rnd(.035,.115),
+     a:Math.atan2(q.y-p.y,q.x-p.x)+rnd(-.10,.10),color:pick(wood),alpha:beech?rnd(.12,.28):rnd(.25,.63)});
+   }
+  }
+  if(depth>=4){
+   const baseLeaves=4*Math.round(leafDensity*7);
+   const extraLeaves=Math.round(baseLeaves*.65*Math.min(1,Math.max(0,(leafDensity-.5)*2)));
+   for(let i=0;i<baseLeaves+extraLeaves;i++){
+    const along=rnd(.05,1);
+    const p=parentPath && i>=baseLeaves
+     ? parentPath(.26+along*.68)
+     : Math.random()<.36 && parentPath?parentPath(.40+along*.60):point(along);
+    details.push({kind:'mark',x:p.x+rnd(-23,23)*h/560,y:p.y+rnd(-17,17)*h/560,
+     l:rnd(3,9)*h/560*1.6,w:rnd(1.2,3.4)*h/560*1.6,a:rnd(-2,2),color:pick(frontLeafColors),alpha:rnd(.55,.9)});
+   }
+   return point;
+  }
+  if(depth>0){
+   const angle=Math.atan2(dy,dx);
+   const forks=beech?(depth===1?6:3):(depth===1?5:3);
+   for(let i=0;i<forks;i++){
+    const t=.28+i*.66/(forks-1),p=point(t);
+    const side=i%2===0?-1:1;
+    const turn=angle+side*(beech?rnd(.27,.68):rnd(.35,.88))-.12;
+    const reach=length*rnd(.27,.51)*(1-t*.36);
+    branch(p,{x:p.x+Math.cos(turn)*reach,y:p.y+Math.sin(turn)*reach},
+     width*(1-t*.65)*rnd(.36,.52),depth+1,reach*rnd(-.23,.23),point);
+   }
+  }
+  return point;
+ }
+ const fork={x:base.x+rnd(-.055,.055)*h,y:base.y-h*(beech?.97:.44)};
+ const trunk=branch(base,fork,h*(beech?.076:.112),0,h*rnd(-.045,.045));
+ // De hoofdtakken vertrekken op verschillende hoogtes en dragen samen de top.
+ const limbs=beech
+  ? [[-.28,.51,.32],[.31,.55,.38],[-.39,.64,.45],[.37,.69,.51],
+     [-.33,.77,.59],[.30,.81,.65],[-.23,.88,.71],[.22,.92,.77],
+     [-.13,.96,.83],[.11,.99,.88]]
+  : [[-.40,.69,.60], [.39,.75,.73], [-.25,.89,.82], [.22,.94,.92], [-.045,.98,.99]];
+ for(const [spread,rise,attach] of limbs){
+  const start=trunk(attach);
+  const end={x:500+spread*h*crownScale*rnd(.78,1.04),y:850-rise*h*rnd(.94,1.02)};
+  const width=beech?h*(.044-attach*.030):h*(attach>.9?.039:.050);
+  branch(start,end,width,1,h*rnd(-.071,.071));
+ }
+ return {coverage,details};
+}
+const paintOriginalBirch=(()=>{
+ let ops=[];
+function stroke(x1,y1,x2,y2,w,color,alpha=1){ops.push({kind:'line',x1,y1,x2,y2,w,color,alpha});}
+function mark(x,y,l,w,a,color,alpha=1){ops.push({kind:'mark',x,y,l,w,a,color,alpha});}
+function makeFrontLeafPalette(){
+ const parse=hex=>[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
+ const toHex=rgb=>'#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+ const a=parse(document.getElementById('leafA').value),b=parse(document.getElementById('leafB').value);
+ return [0,.33,.67,1].map(t=>toHex(a.map((v,i)=>v*(1-t)+b[i]*t)));
+}
+let frontLeafColors=makeFrontLeafPalette();
+// Berk naar het aangeleverde schilderij: brede, gebroken witte schors,
+// grillige zwarte bastvlekken, zachte grijsblauwe lengtestrepen.
+// Alleen voor type birch; alle andere soorten behouden hun oorspronkelijke motor.
+function buildReferenceBirch(x,base,top,scale){
+ const h=base-top;
+ const thick=rnd(48,70)*scale;
+ const flare=rnd(.10,.26),taperStart=rnd(.57,.68);
+ const drift=rnd(-.085,.085)*h;
+ const phase=rnd(0,6.283);
+ const bend=rnd(-11,11)*scale;
+ const cx=t=>x+drift*t+bend*Math.sin(t*Math.PI)+Math.sin(t*9+phase)*3.4*scale;
+ const cy=t=>base-h*t;
+ const width=t=>thick*(1-.30*t)*(1+flare*Math.exp(-t*18)+.045*Math.sin(7*t+phase))*Math.pow(Math.max(.001,Math.min(1,(1-t)/(1-taperStart))),1.85);
+ // Doorlopende stam, zonder ronde stomp: doorsnede loopt in de wortelaanzet over.
+ const N=190;
+ for(let j=0;j<N;j++){
+  const t=j/N,u=(j+1)/N,w=width(t),wu=width(u);
+  stroke(cx(t),cy(t),cx(u),cy(u),w,'#b9bcb9',1);
+  stroke(cx(t)-w*.12,cy(t),cx(u)-wu*.12,cy(u),w*.72,'#d5d5d0',.94);
+  stroke(cx(t)+w*.34,cy(t),cx(u)+wu*.34,cy(u),w*.14,'#7f898b',.58);
+ }
+ // Grijze, onregelmatige schorspartijen: niet één effen witte cilinder.
+ for(let i=0;i<175;i++){
+  const t=rnd(.025,.97),w=width(t),side=rnd(-.39,.39);
+  const len=rnd(9,70)*scale,du=Math.min(.985,t+len/h);
+  const grey=pick(['#858f90','#9ba4a2','#aeb4b1','#777f7e','#c0c3bd']);
+  stroke(cx(t)+side*w,cy(t),cx(du)+side*width(du)+rnd(-3,3)*scale,cy(du),
+   rnd(2.5,Math.max(3,w*.24)),grey,rnd(.18,.53));
+ }
+ // Geen gelijkmatige horizontale streepjes: grillige schorsvelden van wisselende grootte.
+ // Zwart ontstaat in onderbroken, soms verticaal uitlopende rafelvlekken.
+ const darkFoot=rnd(.065,.16);
+ // Overlappende messtreken maken de voet donker, met een gebroken bovenrand.
+ for(let i=0;i<85;i++){
+  const side=rnd(-.43,.43);
+  const t=rnd(.004,darkFoot*(.62+.38*Math.cos(side*7)**2));
+  const w=width(t);
+  mark(cx(t)+side*w,cy(t),rnd(.12,.39)*w,rnd(.07,.16)*w,
+   -Math.PI/2+rnd(-.45,.45),pick(['#222421','#30332e','#454640','#57584f']),rnd(.66,.97));
+  ops.at(-1).blackBark=true;
+ }
+ const patches=Math.round(rnd(36,49)*h/750);
+ for(let i=0;i<patches;i++){
+  const t=darkFoot+(1-darkFoot)*Math.pow(Math.random(),1.65);
+  const w=width(t),side=rnd(-.31,.31);
+  const x0=cx(t)+side*w,y0=cy(t);
+  const broad=Math.random()<.70*(1-t)**1.5;
+  const length=Math.min(w*.80,rnd(broad?24:6,broad?64:22)*scale);
+  const depth=Math.min(w*(broad?.62:.11),rnd(broad?22:4,broad?64:15)*scale);
+  const dark=pick(['#111211','#1c1e1b','#262822','#30332c']);
+  // Korte dwarslittekens naast grotere grillige zwarte vlakken.
+  const seg=3+Math.floor(rnd(0,5));
+  let lastX=x0-length*.5,lastY=y0;
+  for(let k=1;k<=seg;k++){
+   const u=k/seg,xx=x0-length*.5+length*u+rnd(-2,2)*scale;
+   const yy=y0+(1-Math.abs(2*u-1))*depth*(k%2===0?.42:-.25)+rnd(-2.5,2.5)*scale;
+   stroke(lastX,lastY,xx,yy,rnd(broad?5:1.4,broad?14:4.3)*scale,dark,rnd(.85,1));
+   ops.at(-1).blackBark=true;
+   lastX=xx;lastY=yy;
+  }
+  if(broad){
+   for(let k=0;k<Math.floor(rnd(10,22));k++){
+    const xx=x0+rnd(-length*.42,length*.42),yy=y0+rnd(-depth*.48,depth*.48);
+    mark(xx,yy,rnd(5,16)*scale,rnd(1.5,5)*scale,rnd(-1.1,1.1),dark,rnd(.72,.98));
+    ops.at(-1).blackBark=true;
+   }
+  }
+ }
+ // Lange, smalle schaduwen en zachte droge messtreken volgen de lengte van de schors.
+ for(let i=0;i<115;i++){
+  const t=rnd(.02,.96),len=rnd(7,95)/h*scale;
+  const u=Math.min(.995,t+len),side=rnd(-.43,.43);
+  const shade=pick(['#d4d5d0','#a8b0af','#899696','#c3c7c2','#737e7c']);
+  stroke(cx(t)+side*width(t),cy(t),cx(u)+side*width(u)+rnd(-3,3)*scale,cy(u),rnd(.6,3.5)*scale,shade,rnd(.18,.7));
+ }
+ // Stamvoet en gedeeltelijk door bladstrooisel bedekte wortels.
+ // De wortels zijn onderbroken; de reeds geschilderde bodem blijft zichtbaar.
+ for(let j=0;j<7;j++){
+  const side=j%2?1:-1,origin=cx(0)+side*thick*rnd(.19,.32);
+  const reach=rnd(30,91)*scale,drop=rnd(8,23)*scale;
+  const x0=origin,y0=base-rnd(9,21)*scale;
+  const x1=origin+side*reach,y1=base+drop;
+  const w0=rnd(5,11)*scale;
+  // Breed begin loopt vloeiend uit de stamvoet.
+  stroke(x0,y0,x0+side*reach*.20,base+drop*.08,w0,'#b6b9b2',.94);
+  // Afwisselend zichtbare fragmenten: geen nieuwe grondverf of bladeren.
+  for(let k=1;k<6;k++){
+   if(k===2||k===4||(k===3&&j%3===0))continue;
+   const t0=k/6,t1=Math.min(.98,(k+.72)/6);
+   const xa=x0+(x1-x0)*t0,xb=x0+(x1-x0)*t1;
+   const ya=y0+(y1-y0)*t0,yb=y0+(y1-y0)*t1;
+   stroke(xa,ya,xb,yb,Math.max(.8,w0*(1-t0)*.68),'#8d9790',.79);
+  }
+ }
+ const branchStart=ops.length;
+ // Schaarse dunne zijtakken, geen volle ronde illustratieve kruin.
+ for(let i=0;i<17;i++){
+  const t=rnd(.43,.98),side=Math.random()<.5?-1:1;
+  const px=cx(t),py=cy(t),reach=rnd(26,112)*scale;
+  const rise=rnd(-13,48)*scale;
+  const tipX=px+side*reach,tipY=py-rise;
+  stroke(px,py,px+side*reach*.46,py-rise*.32,rnd(1.8,4.5)*scale,'#6f7168',.86);
+  stroke(px+side*reach*.46,py-rise*.32,tipX,tipY,rnd(.5,1.7)*scale,'#6f7168',.8);
+  for(let k=0;k<24;k++){
+   const a=rnd(.45,1.05);
+   mark(px+side*reach*a+rnd(-16,16)*scale,py-rise*a+rnd(-17,17)*scale,
+    rnd(4,12)*scale,rnd(1.5,4)*scale,rnd(-3,3),
+    pick(frontLeafColors),rnd(.36,.72));
+  }
+ }
+ for(let i=branchStart;i<ops.length;i++)ops[i].outsideTrunk=true;
+ return t=>({x:cx(t),y:cy(t),width:width(t)});
+}
+function buildTree(type,x,base,top,scale){
+ if(type==='birch'){return buildReferenceBirch(x,base,top,scale);}
+ const h=base-top,thick=(type==='oak'?91:type==='beech'?67:type==='pine'?62:42)*scale;
+ const colors={oak:['#342a20','#5c4631','#9a7650'],birch:['#e0ddd1','#f0ede3','#faf7ec'],beech:['#51483c','#867e6c','#b6aa91'],pine:['#3b3028','#98603c','#c88a53']}[type];
+ // Grove den: exact de bestaande stamvorm en schors behouden.
+ const drift=rnd(-.12,.12)*h, bend=rnd(-.09,.09)*h, wave=rnd(0,Math.PI*2);
+ const knots=Array.from({length:7},()=>rnd(-1,1));
+ function organic(t){
+  const z=t*6,i=Math.min(5,Math.floor(z)),u=z-i,e=u*u*(3-2*u);
+  return knots[i]*(1-e)+knots[i+1]*e;
+ }
+ // Loofbomen: brede, samenhangende stam met zachte, lokale groeibochten.
+ // Grove den: ongewijzigde berekening uit v10.3.
+ const center=type==='pine'
+  ? t=>x+drift*t+bend*Math.sin(Math.PI*t)+Math.sin(t*7+wave)*thick*.11*t
+  : t=>x+drift*t*.30+bend*Math.sin(Math.PI*t)*.35
+       +organic(t)*thick*.12+Math.sin(t*9+wave)*thick*.025;
+ const width=type==='pine'
+  ? t=>thick*(1-.34*t)*(1+.025*Math.sin(t*13+wave))*(t>.78?Math.pow(Math.max(.004,(1-t)/.22),1.55):1)
+  : t=>thick*(1-(type==='oak'?.57:type==='beech'?.44:.40)*t)
+       *(1+.035*organic(t)+.34*Math.exp(-t*16))
+       *(t>.70?Math.pow(Math.max(.004,(1-t)/.30),1.65):1);
+ const path=t=>({x:center(t),y:base-h*t,width:width(t)});
+ // Soortspecifieke stamvoet, zonder losse stokjes over de bodem.
+ // Alleen wortelstreken worden veranderd; stam, schors en kruin blijven intact.
+ const rootOps=[];
+ const rootStroke=(x1,y1,x2,y2,w,color,alpha=1)=>rootOps.push({kind:'line',x1,y1,x2,y2,w,color,alpha});
+ const rootN=type==='oak'?7:type==='beech'?6:4;
+ const flare=type==='oak'?.32:type==='beech'?.23:.14;
+ // Korte, brede wortelaanzetten lopen rechtstreeks vanuit de stam naar buiten.
+ for(let j=0;j<rootN;j++){
+  const side=j%2?-1:1;
+  const reach=rnd(type==='oak'?62:38,type==='oak'?132:type==='beech'?103:76)*scale;
+  const drop=rnd(8,24)*scale;
+  const originX=center(0)+side*thick*rnd(.20,.32);
+  const originY=base-rnd(9,22)*scale;
+  const endX=originX+side*reach,endY=base+drop;
+  const w0=thick*(type==='oak'?rnd(.18,.27):type==='beech'?rnd(.13,.20):rnd(.10,.16));
+  const curve=t=>({x:originX+(endX-originX)*t,y:originY+(endY-originY)*t+Math.sin(Math.PI*t)*(-3*scale)});
+  // De wortelaanzet blijft breed en ononderbroken waar hij de stam raakt.
+  for(let k=0;k<3;k++){
+   const a=curve(k*.10),b=curve((k+1)*.10);
+   rootStroke(a.x,a.y,b.x,b.y,w0*(1-k*.21)+thick*flare*.11,colors[0],.98);
+   rootStroke(a.x-side*w0*.15,a.y-1,b.x-side*w0*.12,b.y-1,Math.max(.8,w0*.16),colors[2],.34);
+  }
+  // Verderop vallen stukken weg: daar blijft de bestaande bladergrond zichtbaar.
+  for(let k=3;k<10;k++){
+   if(k===4||k===7||(k===6&&j%2===0)||(k===8&&j%3===0))continue;
+   const a=curve(k/10),b=curve(Math.min(1,(k+.70)/10));
+   rootStroke(a.x,a.y,b.x,b.y,Math.max(.8,w0*Math.pow(1-k/10,1.25)*.64),colors[0],.82);
+  }
+ }
+ // Grove den blijft letterlijk op de oude tekenroutine.
+ // Andere bomen: volle, in elkaar vloeiende stam zonder stapeling van tandenstokers.
+ const N=180;
+ if(type==='pine'){
+  // Eén doorlopende basiskleur. Geen lange parallelle lichte strepen.
+  for(let i=0;i<N;i++){
+   const t=i/N,t2=Math.min(1,(i+1.45)/N),p=path(t),q=path(t2);
+   stroke(p.x,p.y,q.x,q.y,width(t),colors[0],1);
+  }
+  // Echte fijnkorrelige schors: organische spleten en verweerde vlakken,
+  // geen losse, getekende schilden of herhaald tegelpatroon.
+  const profile=[];
+  for(let j=0;j<=100;j++){
+   const t=j/100;profile.push({x:center(t),y:base-h*t,w:width(t)});
+  }
+  ops.push({kind:'pineTexture',profile,seed:Math.floor(rnd(1,1000000)),alpha:1});
+ }else{
+  // Lange doorlopende verfbanen: variabele breedte, onregelmatige ligging.
+  for(let i=0;i<N;i++){
+   const t=i/N,t2=Math.min(1,(i+1.45)/N),p=path(t),q=path(t2),w=width(t);
+   stroke(p.x,p.y,q.x,q.y,w,colors[0],1);
+  }
+  for(let band=0;band<(type==='oak'||type==='beech'?0:26);band++){
+   const t0=rnd(0,.92),t1=Math.min(1,t0+rnd(.045,.33)),side=rnd(-.39,.39);
+   const tone=type==='birch'?pick(['#e8e4d8','#f3eee1','#b6b8aa']):type==='beech'?pick(['#968d7b','#aca18e','#665f53']):pick(['#765b3e','#987550','#42372b']);
+   const segments=6;
+   for(let j=0;j<segments;j++){
+    const t=t0+(t1-t0)*j/segments,u=t0+(t1-t0)*(j+1)/segments,p=path(t),q=path(u);
+    stroke(p.x+side*width(t),p.y,q.x+side*width(u),q.y,rnd(.035,.09)*thick,tone,rnd(.2,.6));
+   }
+  }
+ }
+ // Eik: schors als fijn, onregelmatig reliëf binnen exact de bestaande stamcontour.
+ // Geen geometrische schildjes, dwarsrasters of lange evenwijdige lijnen.
+ if(type==='oak'){
+  const profile=[];
+  for(let j=0;j<=100;j++){
+   const t=j/100;profile.push({x:center(t),y:base-h*t,w:width(t)});
+  }
+  ops.push({kind:'oakTexture',profile,seed:Math.floor(rnd(1,1000000)),alpha:1});
+ }
+ // Schorsstreken volgen de kromming, met variabele lengtes en onregelmatige stiltes.
+ // Bij de berk dwarsstreepjes; bij beuk weinig reliëf; eik diepe verticale kloven;
+ // grove den losse, ongelijke schorsplaten zonder tegelraster.
+ const barkCount={oak:0,birch:115,beech:0,pine:0}[type];
+ for(let i=0;i<barkCount;i++){
+  const t=rnd(.018,.98),w=width(t),side=rnd(-.41,.41),p=path(t),xx=p.x+side*w;
+  if(type==='birch'){
+   if(Math.random()<.47){
+    const len=rnd(3,13)*scale;
+    stroke(xx-len*.5,p.y+rnd(-1,1),xx+len*.5,p.y+rnd(-1,1),rnd(.6,1.8)*scale,'#353b37',rnd(.35,.83));
+   }else{
+    const dt=rnd(.006,.03),q=path(Math.min(.99,t+dt));
+    stroke(xx,p.y,q.x+side*width(Math.min(.99,t+dt)),q.y,rnd(.5,1.5)*scale,pick(['#f2eddf','#b6b9ac','#d8d8cb']),rnd(.28,.7));
+   }
+  }else if(type==='beech'){
+   const dt=rnd(.009,.04),q=path(Math.min(.99,t+dt));
+   stroke(xx,p.y,q.x+side*width(Math.min(.99,t+dt)),q.y,rnd(.4,1.2)*scale,pick(['#c6b9a0','#605e53','#a69c87']),rnd(.15,.39));
+  }else if(type==='oak'){
+   // Eik: smalle, onregelmatig onderbroken bastkloven, geen rechte latten.
+   // Alleen deze schorsafdrukken veranderen; stamcontour en wortels niet.
+   const dt=rnd(.009,.042),end=Math.min(.99,t+dt),q=path(end);
+   const sideEnd=side+rnd(-.035,.035);
+   const dark=pick(['#292923','#35332c','#454038','#514a3f']);
+   const kink=rnd(-2.2,2.2)*scale;
+   stroke(xx,p.y,xx+kink*.55,p.y+(q.y-p.y)*.48,rnd(.55,1.65)*scale,dark,rnd(.26,.60));
+   stroke(xx+kink*.55,p.y+(q.y-p.y)*.48,q.x+sideEnd*width(end),q.y,rnd(.45,1.4)*scale,dark,rnd(.24,.58));
+   if(Math.random()<.18){
+    const rim=pick(['#827967','#928671','#675f51']);
+    stroke(xx+(Math.random()<.5?-1:1)*rnd(1.5,3.5)*scale,p.y+rnd(-2,2)*scale,
+     xx+kink*.55+(Math.random()<.5?-1:1)*rnd(1,3)*scale,p.y+(q.y-p.y)*.45,
+     rnd(.45,1.1)*scale,rim,rnd(.16,.38));
+   }
+  }else{
+   // De schorsschilden van de grove den zijn hierboven al geschilderd.
+  }
+ }
+ // Beuk: gladde grijsgroene schors met zachte, lokale kleurvlekken,
+ // enkele knoestlittekens en zonder illustratieve parallelle lijnen.
+ if(type==='beech'){
+  for(let i=0;i<Math.round(thick*.8);i++){
+   const t=rnd(.04,.95),p=path(t),side=rnd(-.34,.34),w=width(t);
+   const tone=pick(['#9a9f91','#aab0a1','#858d80','#727e70','#b5b6a6']);
+   const span=rnd(3,17)*scale;
+   stroke(p.x+side*w,p.y-span*.5,p.x+side*w+rnd(-2,2)*scale,p.y+span*.5,
+    rnd(2,Math.max(3,thick*.16)),tone,rnd(.08,.22));
+  }
+  for(let i=0;i<Math.max(2,Math.round(thick*.025));i++){
+   const t=rnd(.15,.91),p=path(t),w=width(t),xx=p.x+rnd(-.28,.28)*w;
+   stroke(xx-rnd(1,3)*scale,p.y,xx+rnd(1,4)*scale,p.y+rnd(-1.5,1.5)*scale,
+    rnd(.7,1.6)*scale,pick(['#555e52','#6c7065']),rnd(.22,.40));
+  }
+ }
+ // Stamvoet en zichtbare wortels worden over de onderste stamstreken gelegd.
+ ops.push(...rootOps);
+ // Takken ontstaan vanuit de gebogen stam en hebben zelf knikken en vertakkingen.
+ if(type==='pine'){
+ const branchCount=type==='oak'?15:type==='beech'?19:type==='pine'?15:24;
+ const crownR=(type==='oak'?180:type==='beech'?148:type==='pine'?128:98)*scale;
+ for(let i=0;i<branchCount;i++){
+  const t=rnd(type==='pine'?.10:.07,type==='oak'?.65:.53),p=path(1-t);
+  const side=i%2?1:-1,len=crownR*rnd(.48,1.12)*(type==='birch'?.73:1);
+  const rise=rnd(12,65)*scale-(type==='birch'?rnd(10,40):0);
+  let last=p;
+  for(let k=1;k<=6;k++){
+   const u=k/6,next={x:p.x+side*len*u,y:p.y-rise*u+Math.sin(u*Math.PI)*rnd(-8,8)*scale};
+   stroke(last.x,last.y,next.x,next.y,Math.max(.8,thick*(1-t)*.15*(1-u)**1.2),colors[0],.94);
+   last=next;
+  }
+  stroke(p.x+side*len*.58,p.y-rise*.58,last.x+side*len*.15,last.y-rnd(8,37)*scale,rnd(1.2,3.2)*scale,colors[1],.85);
+  const groups=type==='pine'?Math.floor(rnd(3,7)):Math.floor(rnd(8,16));
+  for(let j=0;j<groups;j++){
+   const q=rnd(.48,1.17),px=p.x+side*len*q+rnd(-23,23)*scale,py=p.y-rise*q+rnd(-28,28)*scale;
+   for(let k=0;k<(type==='pine'?25:19);k++){
+    const ox=rnd(-27,27)*scale,oy=rnd(-22,22)*scale;
+    if(type==='pine')mark(px+ox,py+oy,rnd(8,20)*scale,rnd(.6,1.5)*scale,rnd(-Math.PI,Math.PI),pick(frontLeafColors),rnd(.58,.95));
+    else{
+     const pal=frontLeafColors;
+     mark(px+ox,py+oy,rnd(5,16)*scale,rnd(2,7)*scale,rnd(-Math.PI,Math.PI),pick(pal),rnd(.58,.94));
+    }
+   }
+  }
+ }
+ }else{
+  // Takken alleen in het bovenste derde van de boom, nooit vanaf de stamvoet.
+  // Onregelmatige aanhechting, verschillende richtingen, geen lange rechte V's.
+  const crownR=(type==='oak'?180:type==='beech'?148:98)*scale;
+  const branchCount=type==='oak'?12:type==='beech'?15:17;
+  if(type==='oak'){
+   // EIK: organische vertakking. Iedere zijtak heeft een doorgaande taps toelopende
+   // houtas, met echte secundaire en tertiaire takken. Bladeren uitsluitend op twijgen.
+   const barkLine=(a,b,w,alpha=.96)=>{
+    stroke(a.x,a.y,b.x,b.y,w,colors[0],alpha);
+    if(w>3.2*scale)ops.push({kind:'oakBranchBark',x1:a.x,y1:a.y,x2:b.x,y2:b.y,
+      w,seed:Math.floor(rnd(1,1000000)),alpha:1});
+   };
+   const leafColors=frontLeafColors;
+   function twig(from,angle,len,w,depth){
+    const mid={x:from.x+Math.cos(angle)*len*.52+rnd(-3,3)*scale,
+               y:from.y+Math.sin(angle)*len*.52+rnd(-3,3)*scale};
+    const tip={x:from.x+Math.cos(angle)*len+rnd(-5,5)*scale,
+               y:from.y+Math.sin(angle)*len+rnd(-5,5)*scale};
+    barkLine(from,mid,w);barkLine(mid,tip,Math.max(.55*scale,w*.50));
+    if(depth>0){
+     twig(mid,angle+rnd(-.90,-.36),len*rnd(.48,.69),w*.49,depth-1);
+     twig(tip,angle+rnd(.28,.80),len*rnd(.39,.63),w*.42,depth-1);
+    }else{
+     for(let k=0;k<17;k++)mark(tip.x+rnd(-17,17)*scale,tip.y+rnd(-15,15)*scale,
+       rnd(5,13)*scale,rnd(2,6)*scale,rnd(-3,3),pick(leafColors),rnd(.5,.88));
+    }
+   }
+   for(let i=0;i<branchCount;i++){
+    const t=rnd(.32,.84),p=path(t),side=Math.random()<.5?-1:1;
+    const len=crownR*rnd(.38,.88),rise=rnd(12,87)*scale;
+    const pts=[p],kink=rnd(-.11,.11)*len;
+    for(let k=1;k<=10;k++){
+     const u=k/10;
+     pts.push({x:p.x+side*len*u+kink*Math.sin(u*Math.PI),
+       y:p.y-rise*u-rnd(-2,2)*scale*Math.sin(u*Math.PI)});
+    }
+    const w0=width(t)*rnd(.20,.35);
+    for(let k=1;k<pts.length;k++){
+     const u=k/10;
+     barkLine(pts[k-1],pts[k],Math.max(.8*scale,w0*Math.pow(1-u,1.25)));
+    }
+    // Niet alleen blaadjes aan de hoofdarm: echte vertakkingen op meerdere hoogtes.
+    for(let j=0;j<5;j++){
+     const idx=Math.floor(rnd(3,10)),at=pts[idx];
+     const direction=Math.atan2(pts[10].y-p.y,pts[10].x-p.x);
+     twig(at,direction+rnd(-1.1,1.0),rnd(27,65)*scale,
+       Math.max(1.5*scale,w0*(1-idx/11)*rnd(.28,.48)),2);
+    }
+    twig(pts[10],Math.atan2(pts[10].y-pts[8].y,pts[10].x-pts[8].x),
+      rnd(28,57)*scale,Math.max(1.1*scale,w0*.14),2);
+   }
+  }else{
+  for(let i=0;i<branchCount;i++){
+   const t=type==='oak'?rnd(.34,.86):type==='beech'?rnd(.54,.96):rnd(.61,.98),p=path(t),side=Math.random()<.5?-1:1;
+   const len=crownR*rnd(.25,.86),rise=rnd(-12,75)*scale;
+   const bendA=rnd(-.26,.26)*len,bendB=rnd(-.22,.22)*len;
+   const pts=[p];
+   for(let k=1;k<=9;k++){
+    const u=k/9;
+    pts.push({x:p.x+side*len*u+bendA*Math.sin(Math.PI*u)+bendB*Math.sin(2*Math.PI*u)*.3,
+              y:p.y-rise*u+Math.sin(Math.PI*u)*rnd(-2,2)*scale});
+   }
+   const w0=width(t)*(type==='oak'?rnd(.24,.40):rnd(.13,.28));
+   for(let k=1;k<pts.length;k++){
+    const u=k/9;
+    const branchWidth=Math.max(.65,w0*Math.pow(1-u,.95));
+    stroke(pts[k-1].x,pts[k-1].y,pts[k].x,pts[k].y,
+      branchWidth,colors[0],.96);
+    // Alleen eik: dezelfde fijne, grillige baststructuur op de dikke zijtakken.
+    // De takgeometrie en de schildervolgorde blijven volledig behouden.
+    if(type==='oak' && branchWidth>3.2*scale){
+      ops.push({kind:'oakBranchBark',x1:pts[k-1].x,y1:pts[k-1].y,
+        x2:pts[k].x,y2:pts[k].y,w:branchWidth,seed:Math.floor(rnd(1,1000000)),alpha:1});
+    }
+   }
+   // Kleinere zijtakken komen pas uit de grote tak, niet uit de wortel.
+   for(let j=0;j<3;j++){
+    const u=rnd(.48,.87),at=pts[Math.round(u*9)];
+    const tip={x:at.x+side*rnd(9,33)*scale,y:at.y-rnd(13,42)*scale};
+    stroke(at.x,at.y,tip.x,tip.y,rnd(.8,2.6)*scale,colors[0],.8);
+   }
+   const pal=frontLeafColors;
+   for(let j=0;j<180;j++){
+    const u=rnd(.57,1),at=pts[Math.round(u*9)];
+    mark(at.x+rnd(-27,27)*scale,at.y+rnd(-25,25)*scale,
+      rnd(5,16)*scale,rnd(2,7)*scale,rnd(-Math.PI,Math.PI),
+      type==='birch' && Math.random()<.30 ? pick(frontLeafColors.slice(2)) : pick(pal),rnd(.5,.92));
+   }
+  }
+  }
+ }
+ if(type!=='pine')for(let j=0;j<290;j++){
+  const crownR=(type==='oak'?180:type==='beech'?148:98)*scale;
+  const a=rnd(0,Math.PI*2),r=Math.sqrt(Math.random()),tip=path(1),px=tip.x+Math.cos(a)*crownR*r,py=top+h*.11+Math.sin(a)*crownR*.69*r;
+  const pal=frontLeafColors;
+  mark(px,py,rnd(6,15)*scale,rnd(2,7)*scale,rnd(-3,3),
+   type==='birch' && Math.random()<.30 ? pick(frontLeafColors.slice(2)) : pick(pal),rnd(.5,.9));
+ }
+ return path;
+}
+// Module 5: afzonderlijke, onregelmatige kruinen, opgebouwd uit vertakkingen en
+// clusters van messtreken. De bestaande stammen, wortels en berkenschors blijven intact.
+function buildCrown(type,x,base,top,scale,trunkPath,{crownScale=1,leafDensity=1}={}){
+ const height=base-top;
+ const span=height*.24*crownScale/1.5;
+ const wood=['#777064','#8b8272','#a0998a'];
+ const leafSites=[];
+ function curved(start,control,end,width,color){
+  const point=t=>{
+   const u=1-t;
+   return {x:u*u*start.x+2*u*t*control.x+t*t*end.x,
+    y:u*u*start.y+2*u*t*control.y+t*t*end.y};
+  };
+  for(let i=0;i<9;i++){
+   const t=i/9,u=Math.min(1,(i+1.7)/9),a=point(t),b=point(u);
+   const length=Math.hypot(b.x-a.x,b.y-a.y);
+   if(length<.15)continue;
+   stroke(a.x,a.y,b.x,b.y,Math.min(length*.38,width*Math.pow(1-t,.85)),color,.94);
+   ops.at(-1).crownReach=[t,u];
+  }
+  return point;
+ }
+ // De kruin groeit vanuit de stam: breed in het midden, smal aan de top.
+ const lean=Math.random()<.5?-1:1;
+ for(let i=0;i<19;i++){
+  const leader=i>=16;
+  const t=leader?[.71,.79,.87][i-16]:rnd(.43+i*.029,.46+i*.031);
+  const start=trunkPath(t),side=leader?[lean,-lean,lean][i-16]:Math.random()<.5?-1:1;
+  const envelope=Math.sin(Math.PI*clamp((t-.34)/.70,0,1));
+  const reach=span*(leader?rnd(.19,.42):envelope*rnd(.62,1.09))*(side===lean?1.09:.88);
+  const rise=leader?start.y-top+height*[.025,-.055,-.012][i-16]:height*rnd(.075,.173)*(1.15-t*.32);
+  const tip={x:start.x+side*reach,y:Math.max(top-height*rnd(.02,.065),start.y-rise)};
+  const limb=curved(start,{x:start.x+side*reach*(leader?.15:.32),y:start.y-rise*(leader?.55:1.28)},tip,
+   height*(leader?rnd(.008,.011):rnd(.009,.016))*(1.18-t*.5),pick(wood));
+  for(let j=0;j<5;j++){
+   const fork=limb(.24+j*.164+rnd(-.025,.025));
+   const direction=j%2===0?side:-side;
+   const dx=direction*span*rnd(.09,.25)*(.50+envelope*.5);
+   const dy=height*rnd(.017,.048);
+   const end={x:fork.x+dx,y:Math.max(top-height*rnd(.028,.085),fork.y-dy)};
+   const sideBranch=curved(fork,{x:fork.x+dx*.46,y:fork.y-dy*.93},end,height*rnd(.0034,.0052),pick(wood));
+   for(let k=0;k<3;k++){
+    const root=sideBranch(.36+k*.29);
+    const drift=(k-1)*span*.08+direction*span*rnd(.025,.12);
+    const fall=height*rnd(.022,.063);
+    const twig=curved(root,{x:root.x+drift*.86,y:root.y-fall*.18},
+     {x:root.x+drift,y:root.y+fall},height*rnd(.0014,.0024),wood[0]);
+    leafSites.push({twig,fullness:rnd(.65,1.32)});
+   }
+  }
+ }
+ // Het loof volgt de fijne afhangende twijgen.
+ for(const {twig,fullness} of leafSites){
+  for(let i=0;i<Math.round(15*leafDensity*fullness);i++){
+   const p=twig(rnd(.12,1));
+   mark(p.x+rnd(-13,13)*scale,p.y+rnd(-10,10)*scale,
+    rnd(5,11)*scale,rnd(2,4)*scale,rnd(-2.8,2.8),pick(frontLeafColors),rnd(.60,.91));
+  }
+ }
+}
+function addNaturalTrunkBrushwork(type,path,scale,target,bark=1){
+ const baseWidth={oak:91,birch:64,beech:67,pine:62}[type],fade={oak:.57,birch:.30,beech:.44,pine:.34}[type];
+ const tones={oak:['#342a20','#5c4631','#9a7650','#403126','#76604a'],birch:['#f7f6ed','#ebece4','#d7dcd6','#c2cbc8','#fffdf4'],beech:['#51483c','#867e6c','#b6aa91','#696254','#a39a85'],pine:['#3b3028','#98603c','#c88a53','#594638','#ad9277']}[type];
+ const count=Math.round((170+baseWidth*scale*1.8)*bark);
+ for(let i=0;i<count;i++){const t=rnd(.015,.985),end=Math.min(.998,t+rnd(.035,.19)),a=path(t),b=path(end),side=rnd(-.43,.43),w=type==='birch'?Math.min(a.width,b.width):baseWidth*scale*(1-fade*t),offset=side*w;
+  target.push({kind:'line',x1:a.x+offset,y1:a.y,x2:b.x+offset+rnd(-2.5,2.5)*scale,y2:b.y,w:type==='birch'?w*rnd(.045,.13):rnd(1.2,Math.max(2.2,w*.15)),color:pick(tones),alpha:rnd(.28,.78)});}
+ const knives=Math.round((46+baseWidth*scale*.55)*bark);
+ for(let i=0;i<knives;i++){const t=rnd(.025,.98),a=path(t),w=type==='birch'?a.width:baseWidth*scale*(1-fade*t);target.push({kind:'footKnife',x:a.x+rnd(-.43,.43)*w,y:a.y,l:type==='birch'?Math.min(rnd(10,42)*scale,w*1.4):rnd(10,42)*scale,w:type==='birch'?w*rnd(.07,.17):rnd(2,10)*scale,a:-Math.PI/2+rnd(-.62,.62),color:pick(tones),alpha:rnd(.24,.68)});}
+}
+function prepareNaturalTreeOps(type,raw,path,scale,bark){
+ const clean=[];let baseSegments=0;
+ for(const o of raw){if(o.kind==='line'&&!o.crown&&baseSegments<(type==='birch'?570:180)){baseSegments++;continue;}if(o.kind==='oakTexture'||o.kind==='pineTexture'||o.kind==='oakBranchBark')continue;clean.push(o);}
+ addNaturalTrunkBrushwork(type,path,scale,clean,bark);return clean;
+}
+function buildNearTrunkCoverage(type,path){
+ const colors={
+  oak:['#493727','#604932','#73583d'],
+  birch:['#cbd2cc','#ebece4','#f7f6ed'],
+  beech:['#736b5b','#8d8472','#a29a86'],
+  pine:['#6c4a34','#935f3e','#aa7851']
+ }[type];
+ const coverage=[];
+ for(let lane=-2;lane<=2;lane++){
+  const offset=lane*.17;
+  for(let i=-1;i<36;i++){
+   const t=(i+rnd(-.24,.24))/36;
+   const a=path(clamp(t-.026,0,1)),b=path(clamp(t+.054,0,1));
+   const width=path(clamp(t+.014,0,1)).width;
+   coverage.push({kind:'line',x1:a.x+offset*a.width,y1:a.y,
+    x2:b.x+offset*b.width,y2:b.y,w:width*.47,
+    color:colors[lane===-2?0:lane>=1?2:1],alpha:1,buildingTrunk:true});
+  }
+ }
+ return coverage;
+}
+const orderTreePasses=(coverage,details,stageCrown=false)=>{
+ const passes=stageCrown
+  ? [coverage,details.filter(o=>!o.crown),details.filter(o=>o.crown&&!o.foliage),details.filter(o=>o.crown&&o.foliage)]
+  : [coverage,details];
+ for(const pass of passes){
+  for(let i=pass.length-1;i>0;i--){
+   const j=Math.floor(rnd(0,i+1));
+   [pass[i],pass[j]]=[pass[j],pass[i]];
+  }
+ }
+ return passes.flat();
+};
+const buildTreeStrokes=(type,x,base,top,scale,options)=>{
+ const savedOps=ops;
+ ops=[];
+ try{
+  const path=buildTree(type,x,base,top,scale);
+  const crownStart=ops.length;
+  buildCrown(type,x,base,top,scale,path,options);
+  for(let i=crownStart;i<ops.length;i++){
+   ops[i].outsideTrunk=true;
+   if(options?.stageCrown)ops[i].crown=true;
+   
+   if(options&&ops[i].kind==='mark')ops[i].foliage=true;
+  }
+  if(options?.foot)ops.push(...options.foot);
+  const details=prepareNaturalTreeOps(type,ops,path,scale,options?.bark);
+  // Laat takken en bladeren alleen buiten de kern van hun eigen stam zien.
+  const outside=new Path2D();
+  outside.rect(-2048,-2048,5096,5096);
+  for(const side of [-1,1]){
+   for(let i=0;i<=72;i++){
+    const p=path((side<0?i:72-i)/72);
+    const edge=p.x+side*p.width*.36;
+    if(side<0&&i===0)outside.moveTo(edge,p.y);
+    else outside.lineTo(edge,p.y);
+   }
+  }
+  outside.closePath();
+  for(const stroke of details){
+  if(stroke.outsideTrunk){
+   if(options?.middleBirch)stroke.alpha=1;
+   if(options?.liftBranchOrigins)delete stroke.crownReach;
+   if(!stroke.crownReach&&!options?.liftBranchOrigins&&!(options?.middleBirch&&stroke.foliage))stroke.clip=outside;
+   if(options?.crown)stroke.crownTransform={settings:options.crown,x:path(.85).x,heightLift:options.heightLift??0};
+  }
+ }
+  return {coverage:buildNearTrunkCoverage(type,path),details};
+ }finally{ops=savedOps;}
+};
+
+ return (height,crownScale,leafDensity)=>{
+  frontLeafColors=makeFrontLeafPalette();
+  const base=850;
+  const tree=buildTreeStrokes('birch',500,base,base-height,height/720,{
+   crownScale,leafDensity,bark:1,
+   stageCrown:true,middleBirch:true,curvedBranches:true,heightLift:0
+  });
+  // Schors en takken eerst, daarna de oorspronkelijke losse bladstreken.
+  const bark=tree.details.filter(o=>o.blackBark);
+  const rest=tree.details.filter(o=>!o.blackBark);
+  return [...orderTreePasses(tree.coverage,rest,true),...bark];
+ };
+})();
+const el=id=>document.getElementById(id);
+const target=el('tree').getContext('2d'),ants=el('ants').getContext('2d');
+const status=el('status'),pause=el('pause');
+let queue=[],index=0,raf=0,running=false,last=0,carry=0;
+for(const [id,unit] of [['height',' px'],['crown','%'],['foliage','']]){
+ el(id).addEventListener('input',()=>el(id+'Value').textContent=el(id).value+unit);
+}
+function tick(now){
+ if(!running)return;
+ carry+=Math.min(.05,(now-last)/1000)*Number(el('speed').value)/7;
+ last=now;
+ const budget=Math.min(280,Math.floor(carry));
+ carry-=budget;
+ index+=window.bosmierenPaintWithAnts(target,ants,queue,index,budget);
+ if(index>=queue.length){
+  running=false;pause.disabled=true;ants.clearRect(0,0,1000,1000);
+  status.textContent='Boom voltooid · '+index+' verfstreken';
+  return;
+ }
+ status.textContent='Boom schilderen · '+index+' / '+queue.length+' verfstreken';
+ raf=requestAnimationFrame(tick);
+}
+function resume(){
+ running=true;last=performance.now();pause.textContent='Pauze';raf=requestAnimationFrame(tick);
+}
+el('start').onclick=()=>{
+ cancelAnimationFrame(raf);
+ target.clearRect(0,0,1000,1000);ants.clearRect(0,0,1000,1000);
+ frontLeafColors=makeFrontLeafPalette();
+ const type=el('species').value,h=Number(el('height').value);
+ // De takken, stam en loof krijgen dezelfde coördinaten en schaal.
+ const tree=type==='birch'?null:(type==='oak'||type==='beech')?buildDeciduousTree(type,h,Number(el('crown').value)/105,Number(el('foliage').value)/8):window.bosmierenBuildNearTreeStrokes(type,500,850,850-h,h/720,{
+  crownScale:Number(el('crown').value)/70,
+  leafDensity:Number(el('foliage').value)/6,
+  bark:1,stageCrown:true,middleBirch:type==='birch',curvedBranches:true
+ });
+ queue=[];
+ window.bosmierenQueueTree(queue,type==='birch'?paintOriginalBirch(h,Number(el('crown').value)/70,Number(el('foliage').value)/6):window.bosmierenOrderTreePasses(tree.coverage,tree.details));
+ index=0;carry=0;pause.disabled=false;resume();
+};
+pause.onclick=()=>{
+ if(running){running=false;cancelAnimationFrame(raf);pause.textContent='Verder';}
+ else resume();
+};
+})();
+</script></body></html>
