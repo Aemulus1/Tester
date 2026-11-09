@@ -2481,18 +2481,6 @@ function buildNearTrunkCoverage(type,path){
  }
  return coverage;
 }
-const orderTreePasses=(coverage,details,stageCrown=false)=>{
- const passes=stageCrown
-  ? [coverage,details.filter(o=>!o.crown),details.filter(o=>o.crown&&!o.foliage),details.filter(o=>o.crown&&o.foliage)]
-  : [coverage,details];
- for(const pass of passes){
-  for(let i=pass.length-1;i>0;i--){
-   const j=Math.floor(rnd(0,i+1));
-   [pass[i],pass[j]]=[pass[j],pass[i]];
-  }
- }
- return passes.flat();
-};
 const buildTreeStrokes=(type,x,base,top,scale,options)=>{
  const savedOps=ops;
  ops=[];
@@ -2550,11 +2538,12 @@ const buildTreeStrokes=(type,x,base,top,scale,options)=>{
    crownScale,leafDensity,bark:1,
    stageCrown:true,middleBirch:true,curvedBranches:true,heightLift:0
   });
-  // Schors en takken eerst, daarna de oorspronkelijke losse bladstreken.
-  const bark=tree.details.filter(o=>o.blackBark);
-  const rest=tree.details.filter(o=>!o.blackBark);
-  return [...orderTreePasses(tree.coverage,rest.filter(o=>!o.crown)),...bark,
-   ...orderTreePasses([],rest.filter(o=>o.crown),true)];
+  // Schilder één boom van onder naar boven. Schors, takken en loof
+  // volgen lokaal op de houtstreken, terwijl de verfstreken blijven overlappen.
+  const strokes=[...tree.coverage,...tree.details];
+  const band=stroke=>Math.floor((base-window.bosmierenTreeStrokePoint(stroke).y)/(height*.13));
+  const layer=stroke=>stroke.buildingTrunk?0:stroke.blackBark?2:stroke.foliage?4:stroke.crown?3:1;
+  return strokes.sort((a,b)=>band(a)-band(b)||layer(a)-layer(b));
  };
 })();
 
@@ -2589,7 +2578,8 @@ function nextRow(){
  const plan=plans.shift();
  currentRegion=plan.region;
  for(const {type,x,base,h:plannedHeight,foliage,haze} of plan.trees){
-  const h=currentRegion.id==='mid'?currentRegion.height:plannedHeight;
+  // Bouw de berk op dezelfde modelhoogte als in het goedgekeurde atelier.
+  const h=type==='birch'?560:currentRegion.id==='mid'?currentRegion.height:plannedHeight;
   let strokes;
   if(type==='birch')strokes=paintOriginalBirch(h,1.5,foliage/6,x,base);
   else{
