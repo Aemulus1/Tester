@@ -19,7 +19,7 @@
 <label for="horizonThickBrush">Dik penseel: <b id="horizonThickBrushLabel">5</b></label><input id="horizonThickBrush" type="range" min="0" max="10" value="5">
 <label for="horizonThinKnife">Dun mes: <b id="horizonThinKnifeLabel">5</b></label><input id="horizonThinKnife" type="range" min="0" max="10" value="5">
 <label for="horizonWideKnife">Breed mes: <b id="horizonWideKnifeLabel">3</b></label><input id="horizonWideKnife" type="range" min="0" max="10" value="3">
-<div class="stat" id="horizonStatus">Na de grondlagen mengen de mieren uitsluitend bestaande kleuren langs de horizon.</div></section></section><div class="controls"><button id="start">▶ Start mieren</button><button id="pause" class="secondary">Pauze</button><button id="reset" class="secondary">Nieuw wit doek</button><button id="downloadArtwork" style="background:#31966f">⬇ Download PNG</button><span id="downloadMessage" class="stat" role="status" aria-live="polite"></span><div class="speedbox"><label for="speed">Schilderstappen per seconde: <b id="speedLabel">12000</b></label><input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></div></div><div class="statusline"><div id="status">Klaar. Het doek is volledig wit.</div><div id="heightLabel">Luchthoogte wordt bij Start willekeurig gekozen (50–70%).</div></div><div class="stage"><canvas id="painting" width="1000" height="1000"></canvas><canvas id="horizonPainting" width="1000" height="1000"></canvas><canvas id="farTrees" width="1000" height="1000"></canvas><canvas id="farRow" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div><div class="credit">By Teekay &amp; Omnia · 2026</div><section class="panel" aria-labelledby="module2-title">
+<div class="stat" id="horizonStatus">Na de grondlagen mengen de mieren uitsluitend bestaande kleuren langs de horizon.</div></section></section><section class="panel" aria-labelledby="module2-title">
 <h2 id="module2-title">Module 2 — Bomen</h2>
 <ul>
 <li>2a — Voorste regio</li>
@@ -28,7 +28,7 @@
 
 </ul>
 <p class="stat">Per regio komen aparte instellingen voor het aantal rijen, het aantal bomen en de boomgrootte.</p>
-<section class="module background-part"><h3>2d — Verre regio</h3><label for="far-size">Boomgrootte · <output id="far-size-value">0</output></label><input id="far-size" type="range" min="-50" max="100" step="1" value="0"><label for="far-leaves">Hoeveelheid bladeren en naalden · <output id="far-leaves-value">0</output></label><input id="far-leaves" type="range" min="-100" max="100" step="1" value="0"><label for="far-depth">Plaatsingshoogte stamvoet · <output id="far-depth-value">0</output></label><input id="far-depth" type="range" min="-40" max="60" step="1" value="0"><label for="far-rows">Aantal rijen · <output id="far-rows-value">1</output></label><input id="far-rows" type="range" min="1" max="3" step="1" value="1"><label for="far-count">Aantal bomen in de regio · <output id="far-count-value">6</output></label><input id="far-count" type="range" min="3" max="40" step="1" value="6"><label for="far-gap">Afstand tussen rijen · <output id="far-gap-value">12</output></label><input id="far-gap" type="range" min="0" max="60" step="1" value="12"><p class="stat">Bij ijkpunt 0 staat de achterste rij 40 px onder de oorspronkelijke luchtlijn. De volgende rijen staan lager volgens de rijafstand.</p><div id="farStatus" class="stat" aria-live="polite"></div></section></section></main><script>
+<section class="module background-part"><h3>2d — Verre regio</h3><label for="far-size">Boomgrootte · <output id="far-size-value">0</output></label><input id="far-size" type="range" min="-50" max="100" step="1" value="0"><label for="far-leaves">Hoeveelheid bladeren en naalden · <output id="far-leaves-value">0</output></label><input id="far-leaves" type="range" min="-100" max="100" step="1" value="0"><label for="far-depth">Plaatsingshoogte stamvoet · <output id="far-depth-value">0</output></label><input id="far-depth" type="range" min="-40" max="60" step="1" value="0"><label for="far-rows">Aantal rijen · <output id="far-rows-value">1</output></label><input id="far-rows" type="range" min="1" max="3" step="1" value="1"><label for="far-count">Aantal bomen in de regio · <output id="far-count-value">6</output></label><input id="far-count" type="range" min="3" max="40" step="1" value="6"><label for="far-gap">Afstand tussen rijen · <output id="far-gap-value">12</output></label><input id="far-gap" type="range" min="0" max="60" step="1" value="12"><p class="stat">Bij ijkpunt 0 staat de achterste rij 40 px onder de oorspronkelijke luchtlijn. De volgende rijen staan lager volgens de rijafstand.</p><h4>Blad- en naaldkleuren per boomsoort</h4><p class="stat">Per boom krijgt de helft van het loof de donkere tint en de helft de lichte tint. De kleuren gelden vanaf de volgende schilderbeurt.</p><fieldset style="margin:8px 0"><legend>Eik</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-oak-dark" type="color" value="#456b3b"></label><label style="display:inline-block;margin:0">Licht <input id="far-oak-light" type="color" value="#648e83"></label></fieldset><fieldset style="margin:8px 0"><legend>Berk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-birch-dark" type="color" value="#456b3b"></label><label style="display:inline-block;margin:0">Licht <input id="far-birch-light" type="color" value="#648e83"></label></fieldset><fieldset style="margin:8px 0"><legend>Beuk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-beech-dark" type="color" value="#69904c"></label><label style="display:inline-block;margin:0">Licht <input id="far-beech-light" type="color" value="#9ab56c"></label></fieldset><fieldset style="margin:8px 0"><legend>Grove den</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-pine-dark" type="color" value="#234637"></label><label style="display:inline-block;margin:0">Licht <input id="far-pine-light" type="color" value="#3d6651"></label></fieldset><div id="farStatus" class="stat" aria-live="polite"></div></section></section><div class="controls"><button id="start">▶ Start mieren</button><button id="pause" class="secondary">Pauze</button><button id="reset" class="secondary">Nieuw wit doek</button><button id="downloadArtwork" style="background:#31966f">⬇ Download PNG</button><span id="downloadMessage" class="stat" role="status" aria-live="polite"></span><div class="speedbox"><label for="speed">Schilderstappen per seconde: <b id="speedLabel">12000</b></label><input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></div></div><div class="statusline"><div id="status">Klaar. Het doek is volledig wit.</div><div id="heightLabel">Luchthoogte wordt bij Start willekeurig gekozen (50–70%).</div></div><div class="stage"><canvas id="painting" width="1000" height="1000"></canvas><canvas id="horizonPainting" width="1000" height="1000"></canvas><canvas id="farTrees" width="1000" height="1000"></canvas><canvas id="farRow" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div><div class="credit">By Teekay &amp; Omnia · 2026</div></main><script>
 (()=>{'use strict';
 const painting=document.getElementById('painting'),ctx=painting.getContext('2d');const overlay=document.getElementById('ants'),oc=overlay.getContext('2d');const start=document.getElementById('start'),pause=document.getElementById('pause'),reset=document.getElementById('reset'),speed=document.getElementById('speed'),speedLabel=document.getElementById('speedLabel'),status=document.getElementById('status'),heightLabel=document.getElementById('heightLabel'),colors=document.getElementById('colors'),paletteEditors=document.getElementById('paletteEditors');
 const landColorCount=document.getElementById('landColorCount');
@@ -2555,7 +2555,7 @@ for(const key of Object.keys(inputs)){
 const trees=el('farTrees').getContext('2d'),ants=el('ants').getContext('2d');
 const status=el('farStatus'),rowCanvas=el('farRow').getContext('2d');
 const species=['oak','birch','beech','pine'];
-let queue=[],plans=[],index=0,raf=0,last=0,carry=0,active=false;
+let palettes={},queue=[],plans=[],index=0,raf=0,last=0,carry=0,active=false;
 function reset(){
  active=false;cancelAnimationFrame(raf);plans=[];queue=[];index=0;carry=0;
  trees.clearRect(0,0,1000,1000);rowCanvas.clearRect(0,0,1000,1000);status.textContent='';
@@ -2570,6 +2570,12 @@ function nextRow(){
     crownScale:1.5,leafDensity:foliage/6,bark:1,stageCrown:true,curvedBranches:true
    }):buildDeciduousTree(type,h,1,foliage/8,x,base);
    strokes=window.bosmierenOrderTreePasses(tree.coverage,tree.details,true);
+  }
+  const colors=palettes[type];
+  let shade=0;
+  for(const stroke of strokes){
+   const foliage=stroke.foliage || ((type==='oak'||type==='beech') && stroke.kind==='mark');
+   if(foliage)stroke.color=colors[shade++%2];
   }
   window.bosmierenQueueTree(queue,strokes);
  }
@@ -2597,6 +2603,7 @@ function resume(){
 }
 document.addEventListener('bosmieren:far-start',event=>{
  reset();
+ palettes=Object.fromEntries(species.map(type=>[type,[el('far-'+type+'-dark').value,el('far-'+type+'-light').value]]));
  const rows=value('rows'),count=value('count'),offset=40+value('depth');
  const height=75*(1+value('size')/100),foliage=8*(1+value('leaves')/100);
  const shift=Math.floor(rnd(0,species.length));
