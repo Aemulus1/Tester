@@ -1790,7 +1790,7 @@ window.bosmierenBuildNearTreeStrokes=(type,x,base,top,scale,options)=>{
     }).join('');
    }
   }
-  return {coverage,details};
+  return {coverage,details,path};
  }finally{ops=savedOps;}
 };
 // De dichtste rij gebruikt taps uitlopende penseel- en messtreken.
@@ -1984,6 +1984,7 @@ function buildDeciduousTree(type,h,crownScale,leafDensity,x,foot){
  }
  const fork={x:base.x+rnd(-.055,.055)*h,y:base.y-h*(beech?.97:.44)};
  const trunk=branch(base,fork,h*(beech?.076:.112),0,h*rnd(-.045,.045));
+ const trunkCount=coverage.length,trunkDetailCount=details.length;
  // De hoofdtakken vertrekken op verschillende hoogtes en dragen samen de top.
  const limbs=beech
   ? [[-.28,.51,.32],[.31,.55,.38],[-.39,.64,.45],[.37,.69,.51],
@@ -1996,7 +1997,14 @@ function buildDeciduousTree(type,h,crownScale,leafDensity,x,foot){
   const width=beech?h*(.044-attach*.030):h*(attach>.9?.039:.050);
   branch(start,end,width,1,h*rnd(-.071,.071));
  }
- return {coverage,details};
+ const path=t=>{
+  const u=t/(beech?.97:.44);
+  if(u>1)return {x:fork.x,y:foot-h*t,width:0};
+  const width=h*(beech?.076*Math.pow(1-u,.78)*(.83+.17*Math.exp(-u*12)):
+   .112*(.28+.72*Math.pow(1-u,1.15))*(1+.30*Math.exp(-u*15)));
+  return {...trunk(u),width};
+ };
+ return {coverage,details,path,trunkCount,trunkDetailCount};
 }
 const paintOriginalBirch=(()=>{
  let ops=[];
@@ -2529,7 +2537,7 @@ const buildTreeStrokes=(type,x,base,top,scale,options)=>{
   for(const stroke of details){
    if(stroke.blackBark)stroke.clip=barkClip;
   }
-  return {coverage:buildNearTrunkCoverage(type,path,options?.brokenFoot),details};
+  return {coverage:buildNearTrunkCoverage(type,path,options?.brokenFoot),details,path};
  }finally{ops=savedOps;}
 };
 
@@ -2550,6 +2558,7 @@ const buildTreeStrokes=(type,x,base,top,scale,options)=>{
   }
   const band=stroke=>Math.floor((base-window.bosmierenTreeStrokePoint(stroke).y)/(height*.13));
   const layer=stroke=>stroke.buildingTrunk?0:stroke.blackBark?2:stroke.foliage?4:stroke.crown?3:1;
+  strokes.trunkPath=tree.path;
   return strokes.sort((a,b)=>band(a)-band(b)||layer(a)-layer(b));
  };
 })();
@@ -2588,6 +2597,68 @@ function reset(){
  trees.clearRect(0,0,1000,1000);rowCanvas.clearRect(0,0,1000,1000);currentRegion=null;
  for(const region of [...regions,front])region.status.textContent='';
 }
+// Schorsstreken volgen de bestaande stamas en breedte in ateliercoördinaten.
+function foregroundBark(type,path){
+ const strokes=[];
+ function line(t1,t2,u1,u2,width,color,alpha){
+  const a=path(clamp(t1,0,1)),b=path(clamp(t2,0,1));
+  if(Math.min(a.width,b.width)<2)return;
+  strokes.push({kind:'line',x1:a.x+u1*a.width,y1:a.y,x2:b.x+u2*b.width,y2:b.y,
+   w:Math.min(a.width,b.width)*width,color,alpha});
+ }
+ if(type==='beech'){
+  // Lange zachte banen modelleren het gladde grijs rond de stam.
+  const tones=['#676a65','#777b74','#898c83','#97998f','#8b8e85','#797d75','#696e68'];
+  tones.forEach((color,lane)=>{
+   const u=(lane-3)*.125;
+   for(let t=0;t<.96;t+=.085)
+    line(t,t+.16,u,u+rnd(-.016,.016),.25,color,.83);
+  });
+  for(let t=.035;t<.88;t+=rnd(.085,.18)){
+   const u=rnd(-.30,.25);
+   line(t,t+.005,u,u+rnd(.05,.15),.027,'#545954',.46);
+   line(t-.004,t+.001,u,u+.09,.018,'#b2b2a5',.40);
+  }
+ }else if(type==='oak'){
+  // Lengteribbels met donkere, vertakkende kieren en een lichtere ribbelrand.
+  for(let lane=-3;lane<=3;lane++){
+   let u=lane*.114;
+   for(let t=0;t<.42;){
+    const next=t+rnd(.025,.080),end=u+rnd(-.048,.048);
+    line(t,next,u,end,rnd(.045,.075),'#30271f',.88);
+    line(t,next,u+.037,end+.035,.038,'#a08365',.62);
+    if(Math.random()<.36)line(t,next,u,end+.072,.025,'#403024',.83);
+    u=clamp(end,lane*.114-.035,lane*.114+.035);
+    t=next;
+   }
+  }
+ }else if(type==='birch'){
+  // Papierwitte stroken met korte horizontale poriën en gescheurde zwarte randen.
+  for(let t=.012;t<.65;t+=rnd(.014,.034)){
+   const u=rnd(-.38,.27),length=rnd(.06,.16);
+   line(t,t+rnd(-.004,.004),u,u+length,.022,'#3d403a',.78);
+   if(Math.random()<.4){
+    line(t-.006,t-.003,u-.03,u+length,.039,'#faf8ed',.84);
+    line(t,t+.017,u,u+.04,.048,'#252823',.75);
+   }
+  }
+ }else{
+  // Donkere onderstam met verspringende platen, smalle naden en warme schilferranden.
+  for(let lane=-3;lane<=3;lane++){
+   const u=lane*.119;
+   for(let t=rnd(0,.025);t<.88;){
+    const length=rnd(.024,.069),shift=rnd(-.029,.029);
+    const upper=t>.42;
+    line(t,t+length,u,u+shift,.15,upper?'#70432d':'#352923',.87);
+    line(t+.004,t+length-.006,u+.013,u+shift+.016,.102,
+     pick(upper?['#a85e36','#b97445','#c88a56']:['#71503d','#835b45','#614436']),.90);
+    line(t+.007,t+length-.012,u+.045,u+shift+.044,.025,upper?'#db9b66':'#a47a5c',.63);
+    t+=length+rnd(.004,.012);
+   }
+  }
+ }
+ return strokes;
+}
 function nextRow(){
  rowCanvas.clearRect(0,0,1000,1000);queue=[];index=0;
  const plan=plans.shift();
@@ -2595,13 +2666,18 @@ function nextRow(){
  for(const {type,x,base,h:plannedHeight,foliage,haze} of plan.trees){
   const foreground=currentRegion===front;
   const h=(foreground||type==='birch'||type==='beech')?560:currentRegion.id==='far'?plannedHeight:175;
-  let strokes;
+  let strokes,trunkPath;
   if(type==='birch')strokes=paintOriginalBirch(h,1.5,foliage/6,x,base,currentRegion.id==='near');
   else{
    const tree=type==='pine'?window.bosmierenBuildNearTreeStrokes(type,x,base,base-h,h/720,{
     crownScale:1.5,leafDensity:foliage/6,bark:1,stageCrown:true,curvedBranches:true
    }):buildDeciduousTree(type,h,1,foliage/8,x,base);
-   strokes=window.bosmierenOrderTreePasses(tree.coverage,tree.details,!foreground);
+   trunkPath=tree.path;
+   const smoothBeech=foreground&&type==='beech';
+   strokes=window.bosmierenOrderTreePasses(
+    smoothBeech?tree.coverage.slice(tree.trunkCount):tree.coverage,
+    smoothBeech?tree.details.slice(tree.trunkDetailCount):tree.details,!foreground);
+
   }
   if(foreground){
    const scale=plannedHeight/h;
@@ -2611,7 +2687,9 @@ function nextRow(){
     const reach=(stroke.kind==='line'?Math.abs(stroke.y2-stroke.y1)/2+stroke.w:stroke.l/2+stroke.w)*scale;
     return y+reach>=0&&y-reach<=1000;
    };
-   window.bosmierenQueueTree(queue,strokes.filter(visible),x,base,scale);
+   const bark=foregroundBark(type,trunkPath??strokes.trunkPath).filter(visible);
+   const visibleTree=strokes.filter(visible);
+   window.bosmierenQueueTree(queue,type==='beech'?[...bark,...visibleTree]:[...visibleTree,...bark],x,base,scale);
    continue;
   }
   const colors=palettes[type];
