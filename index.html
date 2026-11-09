@@ -2578,7 +2578,7 @@ function nextRow(){
  const plan=plans.shift();
  currentRegion=plan.region;
  for(const {type,x,base,h:plannedHeight,foliage,haze} of plan.trees){
-  const h=type==='birch'?560:currentRegion.id==='mid'?currentRegion.height:plannedHeight;
+  const h=(type==='birch'||type==='beech')?560:currentRegion.id==='mid'?currentRegion.height:plannedHeight;
   let strokes;
   if(type==='birch')strokes=paintOriginalBirch(h,1.5,foliage/6,x,base);
   else{
