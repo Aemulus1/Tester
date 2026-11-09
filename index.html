@@ -1,51 +1,1091 @@
-<!doctype html>
-<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bosmieren · Bomenatelier</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#151b26;color:#f3f5fa;font:15px system-ui,sans-serif}
-main{max-width:1020px;margin:auto;padding:16px}.panel{background:#222c3c;border-radius:12px;padding:16px}
-h1{font-size:23px;margin:0 0 8px}p{margin:0 0 14px;color:#c4d4e8}.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
-label{display:block}select,input[type=range]{display:block;width:100%;margin-top:5px}select,button{font:inherit;color:inherit;background:#405570;border:0;border-radius:6px;padding:8px}
-button{cursor:pointer}.buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}#stage{position:relative;background:white;aspect-ratio:1;max-width:680px;margin:auto}
-canvas{position:absolute;width:100%;height:100%;inset:0}#status{margin:12px 0;min-height:1.4em}
-#oakInfo a{color:#a9d6ff}#oakInfo li{margin:5px 0}#oakInfo summary{cursor:pointer;font-weight:700}#oakInfo p{margin-top:10px}
-</style></head><body><main><section class="panel">
-<h1>🐜 Bosmieren · Bomenatelier</h1>
-<p>Proefdoek voor de berk. Zet Bladstreken op 0 om de stam en vertakkingen te bekijken.</p>
-<div class="settings">
-<label>Boomsoort<select id="species"><option value="oak">Eik</option><option value="birch" selected>Berk</option><option value="beech">Beuk</option><option value="pine">Grove den</option></select></label>
-<label>Boomhoogte <output id="heightValue">560 px</output><input id="height" type="range" min="270" max="720" step="10" value="560"></label>
-<label>Kruinbreedte <output id="crownValue">105%</output><input id="crown" type="range" min="20" max="140" step="5" value="105"></label>
-<label>Bladstreken <output id="foliageValue">8</output><input id="foliage" type="range" min="0" max="10" value="8"></label>
-<label>Groen <input id="leafA" type="color" value="#456b3b"></label>
-<label>Blauwgroen <input id="leafB" type="color" value="#648e83"></label>
-<label>Snelheid <input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></label>
-</div><div class="buttons"><button id="start">Schilder boom</button><button id="pause" disabled>Pauze</button></div>
-<details id="oakInfo" style="margin-top:14px">
-<summary>Info bij de eik · 10 winterfoto’s</summary>
-<p>Let op hoe de stam zich verdeelt in zware, gebogen gesteltakken. Die splitsen zich opnieuw in dunnere takken en twijgen. Samen vormen ze een brede, onregelmatige kruin die ook zonder loof herkenbaar is. Kijk vooral naar foto’s 1, 3 en 6.</p>
-<ol>
-<li><a href="https://www.habitataid.co.uk/cdn/shop/products/EnglishoakQuercusrobur.jpg" target="_blank" rel="noopener">Solitaire eik in de mist</a> · zware gesteltakken</li>
-<li><a href="https://www.geograph.org.uk/photo/7453138" target="_blank" rel="noopener">Oude eik in Coombe Abbey</a> · overgang van stam naar takken</li>
-<li><a href="https://www.nationwidetrees.com.au/static/uploads/images/quercus-robur-wfvvzmotwrry.jpg" target="_blank" rel="noopener">Zomereik in open veld</a> · silhouet van stamvoet tot twijgtop</li>
-<li><a href="https://www.wunderbare-erde.de/data/o/4/22731/image.jpg" target="_blank" rel="noopener">Eik aan de Nederrijn</a> · brede winterkruin</li>
-<li><a href="https://baum-des-tages.blogspot.com/2021/01/quercus-robur-grandiose-krone.html" target="_blank" rel="noopener">Dubbelstammige eik</a> · twee stammen in één kruin</li>
-<li><a href="https://baumfreunde.org/FinBa/quercus-robur" target="_blank" rel="noopener">Zomereik tegen blauwe lucht</a> · knikken en vertakkingen</li>
-<li><a href="https://www.rspb-images.com/ftpuploadforclient/RotatingImages/2026-02-24/5.jpg" target="_blank" rel="noopener">Eik bij zonsondergang</a> · omtrek van de kruin</li>
-<li><a href="https://commons.wikimedia.org/wiki/File:Quercus_robur_in_winter.JPG" target="_blank" rel="noopener">Wintereik langs de weg</a> · richtingswissels van de takken</li>
-<li><a href="https://webshop.newgarden.hu/kepek/nagy/quercus-robur-teli-sziluett.jpg?vsil=4" target="_blank" rel="noopener">Wintersilhouet</a> · fijne twijgen aan de buitenrand</li>
-<li><a href="https://www.ostdeutsches-baumarchiv.de/photo/eiche-1-uckro" target="_blank" rel="noopener">Oude eik bij Uckro</a> · asymmetrische kruin</li>
-</ol>
-<p>Zet <strong>Bladstreken</strong> op 0 en klik op <strong>Schilder boom</strong> om de vertakkingen op het proefdoek te vergelijken.</p>
-</details>
-<details style="margin-top:14px"><summary>Info bij de grove den · 10 fotoreferenties</summary><p>Een volwassen grove den heeft een brede, open kruin met ongelijke toppen. Dragende takken vertrekken op verschillende hoogtes. Naaldparen zitten in groepen op korte twijgen, met kale stukken hout ertussen. De schors is onderaan donkerder en hogerop warmer oranje.</p><ol><li><a style="color:#a9d6ff" href="https://www.gartentechnik.de/fotos/2015/11/waldkiefer-pinus-sylvestris-ccbysa-jim-champion.jpg" target="_blank" rel="noopener">Solitaire den op de heide</a></li><li><a style="color:#a9d6ff" href="https://jardin-secrets.com/img/jardin-secrets.com/articles/519/photo-pin-sylvestre_dominicus-johannes-bergsma.jpg" target="_blank" rel="noopener">Open kruin tussen de heide</a></li><li><a style="color:#a9d6ff" href="https://ancienttrees.woodlandtrust.org.uk/how-to-record/species-guides/scots-pine/" target="_blank" rel="noopener">Oude den met ongelijke toppen</a></li><li><a style="color:#a9d6ff" href="https://regionalpark-wedeler-au.de/files/rwa-filepool/projekte/baumpark-pinneberg/images/pinus-sylvestris-freistehend.jpg" target="_blank" rel="noopener">Vrijstaande den in Wedeler Au</a></li><li><a style="color:#a9d6ff" href="https://www.herbarium.be/cnt/pic/wiki739pinus-sylvestris-glenmuick.jpg" target="_blank" rel="noopener">Silhouet bij Glen Muick</a></li><li><a style="color:#a9d6ff" href="https://commons.wikimedia.org/wiki/File:Lone_Scots_Pine_(Pinus_sylvestris)_-_geograph.org.uk_-_204608.jpg" target="_blank" rel="noopener">Asymmetrische solitaire den</a></li><li><a style="color:#a9d6ff" href="https://forest.jrc.ec.europa.eu/media/atlas/Pinus_sylvestris.pdf" target="_blank" rel="noopener">Landschapsfoto Glen Affric</a></li><li><a style="color:#a9d6ff" href="https://forest.jrc.ec.europa.eu/media/atlas/Pinus_sylvestris.pdf" target="_blank" rel="noopener">Oranje bovenstammen in het bos, tweede foto in de atlas</a></li><li><a style="color:#a9d6ff" href="https://www.baumwelten.net/baeume/kiefer.wald/waldkiefer.borken.1200px.jpg" target="_blank" rel="noopener">Schors in verschillende tinten</a></li><li><a style="color:#a9d6ff" href="https://www.woodlandtrust.org.uk/trees-woods-and-wildlife/british-trees/a-z-of-british-trees/scots-pine/" target="_blank" rel="noopener">Detailfoto van de naaldparen</a></li></ol></details><details><summary>Info bij de berk · 10 winterfoto’s</summary><p>De hoofdtakken waaieren omhoog en opzij. De fijne twijgen buigen daarna omlaag. Op Bladstreken 0 kun je die vorm vergelijken met de foto’s.</p><ol><li><a style="color:#a9d6ff" href="https://commons.wikimedia.org/wiki/File:Betula_pendula_winter.jpg" target="_blank" rel="noopener">Winterberk in Zwitserland</a></li><li><a style="color:#a9d6ff" href="https://www.irishnews.com/lifestyle/2017/11/18/news/take-on-nature-silver-birch-deserves-coleridge-s-description-lady-of-the-woods-1186703/" target="_blank" rel="noopener">Kale berk op de heide</a></li><li><a style="color:#a9d6ff" href="https://tenhoven-production.s3.eu-central-1.amazonaws.com/media/minimized/6ea8bb671a-EPpu0Xbf7IOz.jpg" target="_blank" rel="noopener">Ruwe berk in winterlandschap</a></li><li><a style="color:#a9d6ff" href="https://images.ablebump.com/2025/10/Betula-pendula.webp" target="_blank" rel="noopener">Berken in open terrein</a></li><li><a style="color:#a9d6ff" href="https://drzewa.nk4.netmark.pl/zasoby/atlas/brzoza/brzoza_brodawkowata/brzoza_brodawkowata_012.jpg" target="_blank" rel="noopener">Berkenkruin met rijp</a></li><li><a style="color:#a9d6ff" href="https://blog.gardenbuildingsdirect.co.uk/wp-content/uploads/2022/01/uk-fastest-growing-trees-5-silver-birch-1024x768.jpg" target="_blank" rel="noopener">Winterberk met uitgespreide kruin</a></li><li><a style="color:#a9d6ff" href="https://i.pinimg.com/736x/cb/36/63/cb3663061a7546d39047cdc3949b5e3f.jpg" target="_blank" rel="noopener">Oude berk in de sneeuw</a></li><li><a style="color:#a9d6ff" href="https://gardencentrum.net/betula-pendula-c75-mesteacan" target="_blank" rel="noopener">Kale berk in parklandschap</a></li><li><a style="color:#a9d6ff" href="https://zooclub.ru/attach/63000/63559.jpg" target="_blank" rel="noopener">Berk in de schemering</a></li><li><a style="color:#a9d6ff" href="https://www.bowhayestrees.co.uk/product-page/betula-pendula-trists-weeping-silver-birch" target="_blank" rel="noopener">Hangende twijgen bij cultivar Tristis</a></li></ol></details><details><summary>Groeiregels van de berk</summary><ul>
-<li>Een slanke, licht gebogen stam met een iets bredere voet. De bovenstam versmalt tussen enkele opgaande takken.</li>
-<li>De voet krijgt donkere, overlappende schorsstreken. Daarboven komen onregelmatige scheuren tussen het zilverwit. Naar boven worden de donkere tekens kleiner en fijner.</li>
-<li>Gebogen zijtakken vertrekken op ongelijke hoogtes. De fijnste twijgen hangen af en dragen het loof.</li>
-<li>Bij elke schilderbeurt variëren stambocht, schorsplekken, taklengtes en bladgroepen binnen die regels.</li>
-</ul></details></section><p id="status" aria-live="polite">Kies een boom en druk op Schilder boom.</p>
-<div id="stage"><canvas id="tree" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div>
-</main><script>
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bosmieren · Achtergrond</title><style>
+*{box-sizing:border-box}body{margin:0;background:#151b26;color:#f3f5fa;font:15px system-ui,sans-serif}main{max-width:1050px;margin:auto;padding:18px}h1{font-size:23px;margin:0 0 6px}.sub{color:#b3c3d8;margin:0 0 16px}.panel{background:#222c3c;border-radius:12px;padding:14px;margin-bottom:12px}.panel h2{font-size:17px;margin:0 0 10px}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0}.controls button{border:0;border-radius:8px;background:#4d9ae6;color:white;font-weight:700;padding:11px 13px;cursor:pointer}.controls .secondary{background:#42526a}.speedbox{flex:1 1 220px}.speedbox label{display:block;margin:0 0 5px}.speedbox input{width:100%}label{display:block;margin:12px 0 5px}input[type=range]{width:100%}.stat{color:#c4d4e8;font-size:13px;line-height:1.45;margin-top:7px}.palette-editors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:8px 0 12px}.color-cell{text-align:center}.color-cell input[type=color]{display:block;width:100%;height:44px;padding:3px;border:2px solid #8da1ba;border-radius:8px;background:#35465f;cursor:pointer}.color-cell span{display:block;font-size:12px;color:#c4d4e8;margin-top:3px}.stage{position:relative;width:min(100%,760px);aspect-ratio:1;margin:12px auto;background:white;border:1px solid #647085}.stage canvas{position:absolute;inset:0;width:100%;height:100%}.statusline{max-width:760px;margin:8px auto;color:#c4d4e8;font-size:13px}.credit{text-align:center;color:#9caac1;font-size:12px;margin:14px 0}@media(max-width:560px){main{padding:10px}.panel{padding:11px}.controls button{padding:10px}}
+#painting{background:#fff}
+.background-part{border-top:1px solid #596b81;margin-top:14px;padding-top:12px}.background-part h3{font-size:15px;margin:0 0 8px}
+</style></head><body><main><h1>🐜 Bosmieren — Achtergrond</h1><p class="sub">De mieren schilderen eerst de lucht en daarna het land, tot aan dezelfde grens.</p><section class="panel"><h2>Module 1 — Achtergrond</h2><section class="module background-part"><h3>☁️ Module 1a — Lucht</h3><label for="colors">Aantal luchtkleuren</label><select id="colors" style="width:100%;padding:10px;background:#35465f;color:white;border:1px solid #6e849f;border-radius:8px"><option value="2">2 kleuren</option><option value="3">3 kleuren</option><option value="4" selected>4 kleuren</option></select><label>Kleurenpalet — klik op een kleurvakje</label><div id="paletteEditors" class="palette-editors"></div><label for="skyStyleMix">Stijlvariatie lucht: <b id="skyStyleMixLabel">0</b> / 10</label><input id="skyStyleMix" type="range" min="0" max="10" step="1" value="0"><div class="stat">0 = oorspronkelijke lucht. Hoger = zichtbare verschillen tussen brede paletmesafdrukken, grote losse vegen, droge krassen, kubistische vormen en fijne penseeltoetsen, door elkaar.</div>
+<label for="skyBlend">Mengwijze lucht: <b id="skyBlendLabel">0 · duidelijke vlakken</b></label><input id="skyBlend" type="range" min="0" max="10" step="1" value="0"><div class="stat">0 = grote zichtbare vlakken (zoals v11.5). 10 = fijn door elkaar gemengde kleuren, zonder grote vlakken of witte open plekken.</div>
+<label style="display:flex;align-items:center;gap:9px"><input id="skySun" type="checkbox" style="width:auto"> ☀️ Zon met lichtere omgeving</label><label for="sunSize">Grootte zon: <b id="sunSizeLabel">5</b> / 10</label><input id="sunSize" type="range" min="1" max="10" step="1" value="5"><div class="stat">1 = kleine zon · 10 = grote zon. De geschilderde lichtovergang schaalt mee.</div><div class="stat">De zon verschijnt op een wisselende plek in de lucht, met zachte gele, warme en lichte penseelstreken rondom.</div></section><section class="module background-part"><h3>🌿 Module 1b — Grond</h3>
+<label for="landColorCount">Aantal grondkleuren</label>
+<select id="landColorCount" style="width:100%;padding:10px;background:#35465f;color:white;border:1px solid #6e849f;border-radius:8px"><option value="2">2 kleuren</option><option value="3">3 kleuren</option><option value="4" selected>4 kleuren</option></select><div class="palette-editors"><label class="color-cell"><input type="color" id="landColor1" value="#1d5039"><span>Donkergroen</span></label><label class="color-cell"><input type="color" id="landColor2" value="#3b2419"><span>Donkerbruin</span></label><label class="color-cell"><input type="color" id="landColor3" value="#47754c"><span>Neutraal groen</span></label><label class="color-cell"><input type="color" id="landColor4" value="#a3bd53"><span>Groen</span></label></div><div class="stat">Het land begint aan de luchtgrens.</div>
+<label for="landStyleMix">Stijlvariatie grond: <b id="landStyleMixLabel">4</b> / 10</label>
+<input id="landStyleMix" type="range" min="0" max="10" step="1" value="4">
+<label for="landBlend">Mengwijze grond: <b id="landBlendLabel">4 · tussenvorm</b></label>
+<input id="landBlend" type="range" min="0" max="10" step="1" value="4"></section><section class="module background-part"><h3>🌅 Module 1c — Horizon</h3>
+<label for="horizonPurity">Kleurzuiverheid: <b id="horizonPurityLabel">5</b></label><input id="horizonPurity" type="range" min="0" max="10" value="5"><div class="stat">0 = meer bruinachtige menging · 10 = zuivere pigmentkleuren</div>
+<label for="horizonEdge">Randscherpte: <b id="horizonEdgeLabel">5</b></label><input id="horizonEdge" type="range" min="0" max="10" value="5"><div class="stat">0 = oorspronkelijke zachte menging · 5 = geschakeerde mesvlakken · 10 = iets grotere, scherpere handgeschilderde mesvlakken</div>
+<label for="horizonHeight">Menghoogte: <b id="horizonHeightLabel">42 px</b></label><input id="horizonHeight" type="range" min="0" max="240" step="2" value="42">
+<label for="horizonRough">Grilligheid: <b id="horizonRoughLabel">65%</b></label><input id="horizonRough" type="range" min="0" max="100" step="5" value="65">
+<label for="horizonThinBrush">Dun penseel: <b id="horizonThinBrushLabel">6</b></label><input id="horizonThinBrush" type="range" min="0" max="10" value="6">
+<label for="horizonThickBrush">Dik penseel: <b id="horizonThickBrushLabel">5</b></label><input id="horizonThickBrush" type="range" min="0" max="10" value="5">
+<label for="horizonThinKnife">Dun mes: <b id="horizonThinKnifeLabel">5</b></label><input id="horizonThinKnife" type="range" min="0" max="10" value="5">
+<label for="horizonWideKnife">Breed mes: <b id="horizonWideKnifeLabel">3</b></label><input id="horizonWideKnife" type="range" min="0" max="10" value="3">
+<div class="stat" id="horizonStatus">Na de grondlagen mengen de mieren uitsluitend bestaande kleuren langs de horizon.</div></section></section><section class="panel" aria-labelledby="module2-title">
+<h2 id="module2-title">Module 2 — Bomen</h2>
+<ul>
+<li>2a — Voorste regio</li>
+<li>2b — Tweede regio, van voren geteld</li>
+
+
+</ul>
+<p class="stat">Per regio komen aparte instellingen voor het aantal rijen, het aantal bomen en de boomgrootte.</p>
+<section class="module background-part"><h3>2c — Middelste regio</h3><label for="mid-size">Boomgrootte · <output id="mid-size-value">+208%</output></label><input id="mid-size" type="range" min="-50" max="700" step="1" value="208"><label for="mid-leaves">Hoeveelheid bladeren en naalden · <output id="mid-leaves-value">-40%</output></label><input id="mid-leaves" type="range" min="-100" max="100" step="1" value="-40"><label for="mid-depth">Plaatsingshoogte stamvoet · <output id="mid-depth-value">120 px · 0</output></label><input id="mid-depth" type="range" min="-20" max="80" step="1" value="0"><label for="mid-rows">Aantal rijen · <output id="mid-rows-value">3</output></label><input id="mid-rows" type="range" min="1" max="3" step="1" value="3"><label for="mid-count">Aantal bomen in de regio · <output id="mid-count-value">8</output></label><input id="mid-count" type="range" min="3" max="40" step="1" value="8"><label for="mid-gap">Afstand tussen rijen · <output id="mid-gap-value">20 px</output></label><input id="mid-gap" type="range" min="0" max="60" step="1" value="20"><p class="stat">Bij ijkpunt 0 staat de achterste rij 120 px onder de oorspronkelijke luchtlijn.</p><label for="mid-haze">Atmosferische blauwe waas · <output id="mid-haze-value">5%</output></label><input id="mid-haze" type="range" min="0" max="100" value="5"><div id="midStatus" class="stat" aria-live="polite"></div></section><section class="module background-part"><h3>2d — Verre regio</h3><label for="far-size">Boomgrootte · <output id="far-size-value">+59%</output></label><input id="far-size" type="range" min="-50" max="100" step="1" value="59"><label for="far-leaves">Hoeveelheid bladeren en naalden · <output id="far-leaves-value">-50%</output></label><input id="far-leaves" type="range" min="-100" max="100" step="1" value="-50"><label for="far-depth">Plaatsingshoogte stamvoet · <output id="far-depth-value">40 px · 0</output></label><input id="far-depth" type="range" min="-40" max="60" step="1" value="0"><label for="far-rows">Aantal rijen · <output id="far-rows-value">3</output></label><input id="far-rows" type="range" min="1" max="4" step="1" value="3"><label for="far-count">Aantal bomen in de regio · <output id="far-count-value">21</output></label><input id="far-count" type="range" min="3" max="40" step="1" value="21"><label for="far-gap">Afstand tussen rijen · <output id="far-gap-value">20 px</output></label><input id="far-gap" type="range" min="0" max="20" step="1" value="20"><p class="stat">Bij ijkpunt 0 staat de achterste rij 40 px onder de oorspronkelijke luchtlijn. De volgende rijen staan telkens maximaal 20 px lager, gerekend vanaf de gekozen plaatsingslijn.</p><label for="far-haze">Atmosferische blauwe waas · <output id="far-haze-value">10%</output></label><input id="far-haze" type="range" min="0" max="100" value="10"><div id="farStatus" class="stat" aria-live="polite"></div></section><h4>Blad- en naaldkleuren per boomsoort</h4><p class="stat">Per boom krijgt de helft van het loof de donkere tint en de helft de lichte tint. De kleuren gelden voor alle boomregio’s vanaf de volgende schilderbeurt.</p><fieldset style="margin:8px 0"><legend>Eik</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-oak-dark" type="color" value="#2c5b17"></label><label style="display:inline-block;margin:0">Licht <input id="far-oak-light" type="color" value="#42932a"></label></fieldset><fieldset style="margin:8px 0"><legend>Berk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-birch-dark" type="color" value="#4e6a41"></label><label style="display:inline-block;margin:0">Licht <input id="far-birch-light" type="color" value="#5ac539"></label></fieldset><fieldset style="margin:8px 0"><legend>Beuk</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-beech-dark" type="color" value="#5c671b"></label><label style="display:inline-block;margin:0">Licht <input id="far-beech-light" type="color" value="#97a533"></label></fieldset><fieldset style="margin:8px 0"><legend>Grove den</legend><label style="display:inline-block;margin:0 16px 0 0">Schaduw <input id="far-pine-dark" type="color" value="#2b4538"></label><label style="display:inline-block;margin:0">Licht <input id="far-pine-light" type="color" value="#387f53"></label></fieldset><div class="controls"><button type="button" id="testModule2" class="secondary">Test enkel Module 2</button></div></section><div class="controls"><button id="start">▶ Start mieren</button><button id="pause" class="secondary">Pauze</button><button id="reset" class="secondary">Nieuw wit doek</button><button id="downloadArtwork" style="background:#31966f">⬇ Download PNG</button><span id="downloadMessage" class="stat" role="status" aria-live="polite"></span><div class="speedbox"><label for="speed">Schilderstappen per seconde: <b id="speedLabel">12000</b></label><input id="speed" type="range" min="3000" max="50000" step="1000" value="12000"></div></div><div class="statusline"><div id="status">Klaar. Het doek is volledig wit.</div><div id="heightLabel">Luchthoogte wordt bij Start willekeurig gekozen (50–70%).</div></div><div class="stage"><canvas id="painting" width="1000" height="1000"></canvas><canvas id="horizonPainting" width="1000" height="1000"></canvas><canvas id="farTrees" width="1000" height="1000"></canvas><canvas id="farRow" width="1000" height="1000"></canvas><canvas id="ants" width="1000" height="1000"></canvas></div><div class="credit">By Teekay &amp; Omnia · 2026</div></main><script>
+(()=>{'use strict';
+const painting=document.getElementById('painting'),ctx=painting.getContext('2d');const overlay=document.getElementById('ants'),oc=overlay.getContext('2d');const start=document.getElementById('start'),pause=document.getElementById('pause'),reset=document.getElementById('reset'),speed=document.getElementById('speed'),speedLabel=document.getElementById('speedLabel'),status=document.getElementById('status'),heightLabel=document.getElementById('heightLabel'),colors=document.getElementById('colors'),paletteEditors=document.getElementById('paletteEditors');
+const landColorCount=document.getElementById('landColorCount');
+const landColors=Array.from({length:4},(_,i)=>document.getElementById('landColor'+(i+1)));
+let landTop=0,horizonStarted=false,horizonFinished=false,farFinished=false;
+const sunEnabled=()=>!landTop && document.getElementById('skySun').checked;
+const readPaint=(x,y,w,h)=>ctx.getImageData(x,y+landTop,w,h);
+let sunX=700,sunY=130,sunRadius=35,sunPainted=0,sunCoreLocked=false;let knifeMode=false,knifeMarks=0,fillMode=false,fillQueue=[],nextGapScan=0,coveredPixels=0,repairStrokes=0,brushMode=false,brushMarks=0,detailMode=false,detailMarks=0,detailZones=[],knifePlaces=[],accentZones=[];const knifeLimit=95,brushLimit=68,detailLimit=38;
+const ink=['#00bfd8','#e50091','#ffdf00','#15192a'];let ants=[],height=0,steps=0,running=false,started=false,raf=0,last=0,carry=0;
+const rand=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+// CMYK: elke mier draagt één pigment. Alleen blauw-witte luchtkleuren worden opgebouwd:
+// cyaan + een beetje magenta = blauw; minder pigment = lichtere, witte partijen.
+// Menging gebeurt op hetzelfde pixel via transparante verflagen, niet via CMYK-confetti.
+function resetPaintPhase(){
+ steps=0;carry=0;knifeMode=false;knifeMarks=0;fillMode=false;fillQueue=[];
+ nextGapScan=0;coveredPixels=0;repairStrokes=0;brushMode=false;brushMarks=0;
+ detailMode=false;detailMarks=0;detailZones=[];knifePlaces=[];accentZones=[];
+}
+function resetCanvas(){
+ testModule2.disabled=false;
+ sunCoreLocked=false;landTop=0;colors.disabled=false;
+ horizonStarted=false;horizonFinished=false;farFinished=false;
+ document.dispatchEvent(new Event('bosmieren:ground-reset'));
+ running=false;started=false;cancelAnimationFrame(raf);ants=[];height=0;
+ resetPaintPhase();
+ ctx.resetTransform();ctx.clearRect(0,0,1000,1000);oc.clearRect(0,0,1000,1000);
+ status.textContent='Klaar. Het doek is volledig wit.';
+ heightLabel.textContent='Luchthoogte wordt bij Start willekeurig gekozen (50–70%).';
+ start.textContent='▶ Start mieren';
+}
+function startLand(){
+ landTop=height;
+ height=1000-landTop;
+ ctx.setTransform(1,0,0,1,0,landTop);
+ resetPaintPhase();
+ sunCoreLocked=false;
+ choosePalette();newFields();
+}
+// Een heel licht onregelmatige rand; dezelfde contour voor de witte kern en de beschermclip.
+function sunCorePoint(i){
+ const t=2*Math.PI*i/128;
+ const ripple=1+.019*Math.sin(7*t+1.2)+.013*Math.sin(13*t+2.4)+.009*Math.cos(19*t-.7);
+ const r=sunRadius*.66*ripple;
+ return [sunX+Math.cos(t)*r,sunY+Math.sin(t)*r];
+}
+function traceSunCore(reverse=false){
+ for(let n=0;n<=128;n++){
+  const i=reverse?128-n:n;
+  const p=sunCorePoint(i);
+  if(n===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);
+ }
+ ctx.closePath();
+}
+function init(){sunCoreLocked=false;sunPainted=0;choosePalette();height=Math.round(rand(500,700));sunX=rand(220,780);sunY=rand(85,Math.max(110,height*.48));sunRadius=rand(24,39)*(1+((Number(document.getElementById("sunSize").value)-1)/9)*6.75);if(sunRadius>70){sunX=Math.max(sunRadius,Math.min(1000-sunRadius,sunX));sunY=Math.max(sunRadius,Math.min(height-sunRadius,sunY));}newFields();heightLabel.textContent='Luchtzone: '+(height/10).toFixed(1)+'% (onzichtbare grens)';ants=ink.map((color,i)=>({x:rand(0,1000),y:rand(0,height),color,i}));started=true;
+ // De kern wordt EENMALIG met de bestaande schildermotor opgebouwd.
+ // Daarna is deze verf definitief droog: geen enkele latere streek raakt haar.
+ if(sunEnabled()){
+   const coreR=sunRadius*.66;
+   ctx.save();ctx.beginPath();traceSunCore();ctx.clip();
+   // De kern is egaal zuiver wit. Geen extra verfstreken in dit beschermde gebied.
+   ctx.fillStyle='#ffffff';ctx.fillRect(sunX-coreR,sunY-coreR,coreR*2,coreR*2);
+   ctx.restore();sunCoreLocked=true;
+ }
+}
+// Kleurgebieden variëren in grootte; oorspronkelijke penseelstreken blijven ongewijzigd.
+// Organische kleurvelden: plaatselijke concentraties, geen gelijkmatig tapijt.
+let fields=[], coverage=new Uint16Array(40*28);
+// Module 1: onthoud grote schildermes-/kubistische vlakken zodat kleine toetsen ze niet uitwissen.
+const skyLargeMarks=new Uint8Array(100*100);
+function newFields(){
+ coverage.fill(0);
+ skyLargeMarks.fill(0);
+ fields=Array.from({length:60},()=>{
+  const r=Math.random();
+  return {x:rand(0,1000),y:rand(0,height),
+   rx:r<.25?rand(95,165):r<.8?rand(48,100):rand(22,48),
+   ry:r<.25?rand(65,130):r<.8?rand(34,85):rand(18,42),
+   tone:landTop ? (Math.random()<.24?6:Math.floor(rand(0,6)))
+    : whitePresent && Math.random()<.19?6:Math.floor(rand(0,whitePresent?5:7)),
+   angle:rand(-1.4,1.4),strength:rand(.45,1.5)};
+ });
+}
+// Eén willekeurig palet voor alle vier de luchtlagen. Wit is optioneel.
+const originalTones=['#133e9e','#245ac0','#087bb5','#08a5d4','#67c6e9','#c1e6f5','#f8fbff'];
+let tones=originalTones.slice(),whitePresent=true,activePalette=[];
+// Eigen kleurvakjes, geen vaste combinaties. Ook magenta kan gekozen worden.
+const userPalette=['#133e9e','#087bb5','#67c6e9','#f8fbff'];
+function rgb(color){
+ // Zonlicht levert ook rgb(r,g,b)-waarden op; de oude hex-only parser
+ // gaf dan NaN terug, waardoor sommige verfstreken zwart werden.
+ if(typeof color!=="string")return [0,0,0];
+ if(color.startsWith('#')){
+  const h=color.slice(1);
+  if(h.length===3)return [...h].map(v=>parseInt(v+v,16));
+  return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16));
+ }
+ const m=color.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i);
+ return m?[Number(m[1]),Number(m[2]),Number(m[3])]:[0,0,0];
+}
+function hex(rgb){return '#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('')}
+function blendColors(a,b,t){const aa=rgb(a),bb=rgb(b);return hex(aa.map((v,i)=>v*(1-t)+bb[i]*t))}
+function choosePalette(){
+ activePalette=landTop?landColors.slice(0,Number(landColorCount.value)).map(picker=>picker.value):userPalette.slice(0,Number(colors.value));
+ const n=activePalette.length;
+ // Bestaande motor blijft zeven tussenkleuren gebruiken.
+ tones=Array.from({length:7},(_,i)=>{const pos=i/6*(n-1),lo=Math.min(n-2,Math.floor(pos));return blendColors(activePalette[lo],activePalette[lo+1],pos-lo)});
+ whitePresent=activePalette.some(c=>{const [r,g,b]=rgb(c);return r>225&&g>225&&b>225});
+}
+landColorCount.addEventListener('change',()=>{
+ landColors.forEach((picker,index)=>{
+  picker.parentElement.style.display=index<Number(landColorCount.value)?'':'none';
+ });
+ if(landTop)choosePalette();
+});
+for(const picker of landColors){
+ picker.addEventListener('input',()=>{
+  if(landTop)choosePalette();
+ });
+}
+function renderPaletteEditors(){
+ const n=Number(colors.value);
+ paletteEditors.innerHTML='';
+ for(let i=0;i<n;i++){
+  const cell=document.createElement('div');cell.className='color-cell';
+  const picker=document.createElement('input');picker.type='color';picker.value=userPalette[i];picker.setAttribute('aria-label','Kleur '+(i+1));picker.title='Kies kleur '+(i+1);
+  const label=document.createElement('span');label.textContent='Kleur '+(i+1);
+  picker.addEventListener('input',()=>{userPalette[i]=picker.value;choosePalette();resetCanvas();status.textContent='Kleur '+(i+1)+' aangepast. Druk op Start.'});
+  cell.append(picker,label);paletteEditors.appendChild(cell);
+ }
+ choosePalette();
+}
+colors.onchange=()=>{resetCanvas();renderPaletteEditors();status.textContent='Aantal kleuren ingesteld op '+colors.value+'. Druk op Start.'};
+// Extra accentlaag: vijf schildersmesvormen. Geen enkele ingreep in de luchtmotor.
+// Beperkt aantal streken, daarna automatisch klaar.
+function knifeStroke(a){
+ if(knifeMarks>=knifeLimit)return;
+ const x=a.x,y=a.y;
+ // Laatste meslaag mag de geschilderde witte zon niet doorsnijden.
+ if(sunEnabled() && Math.hypot(x-sunX,y-sunY)<sunRadius*2.9)return;
+ let best=fields[0],score=-1;
+ for(const f of fields){const dx=(x-f.x)/f.rx,dy=(y-f.y)/f.ry;const v=Math.exp(-2.2*(dx*dx+dy*dy))*f.strength;if(v>score){score=v;best=f}}
+ if(Math.random()>.06+Math.min(.16,score*.09))return;
+ // Geen beurtrol van vijf identieke gebaren: mesvorm, richting en pigment onafhankelijk.
+ const type=Math.floor(rand(0,5));
+ const angle=rand(-Math.PI,Math.PI);
+ const palette=[tones[0],tones[1],tones[3],tones[4],tones[6]];
+ const colorRoll=Math.random();
+ const ci=colorRoll<.22?0:colorRoll<.42?1:colorRoll<.64?2:colorRoll<.83?3:4;
+ const band=Math.random(),scale=band<.38?rand(.28,.55):band<.82?rand(.65,1.05):rand(1.25,1.85);
+ const base=[100,90,30,85,145][type],length=Math.min(270,Math.max(10,base*scale));
+ const w=type===0?rand(15,29):type===1?rand(3,9):type===2?rand(13,26):type===3?rand(13,23):rand(28,56);
+ // In het land bepalen deze punten alleen waar fijne penseelaccenten komen.
+ if(landTop){
+  knifePlaces.push({x,y,angle,length,w});
+  knifeMarks++;
+  return;
+ }
+ const L=length/2,W=w/2,thickness=rand(.12,1.0);
+ // Neem de werkelijke onderliggende verf op vóór de nieuwe streek wordt gelegd.
+ const samples=[];
+ for(let i=0;i<9;i++){
+  const u=(i/8-.5)*length,xx=Math.round(clamp(x+Math.cos(angle)*u,0,999)),yy=Math.round(clamp(y+Math.sin(angle)*u,0,Math.max(0,height-1)));
+  const px=visiblePixel(xx,yy);samples.push([px[0],px[1],px[2]]);
+ }
+ const pigment=palette[ci],pr=parseInt(pigment.slice(1,3),16),pg=parseInt(pigment.slice(3,5),16),pb=parseInt(pigment.slice(5,7),16);
+ const mix=(rgb,t)=>`rgb(${Math.round(rgb[0]*(1-t)+pr*t)},${Math.round(rgb[1]*(1-t)+pg*t)},${Math.round(rgb[2]*(1-t)+pb*t)})`;
+ function shape(){
+  ctx.beginPath();
+  if(type===0){ctx.moveTo(-L,-W*.7);ctx.lineTo(L*.72,-W);ctx.lineTo(L,-W*.15);ctx.lineTo(L*.58,W*.74);ctx.lineTo(-L*.9,W);ctx.closePath()}
+  else if(type===1){ctx.moveTo(-L,-W*.6);ctx.lineTo(L,-W*.22);ctx.lineTo(L*.83,W*.5);ctx.lineTo(-L*.85,W);ctx.closePath()}
+  else if(type===2){ctx.moveTo(-L,-W*.6);ctx.quadraticCurveTo(0,-W*1.35,L,-W*.35);ctx.lineTo(L*.8,W*.8);ctx.quadraticCurveTo(-L*.2,W*1.2,-L,W*.15);ctx.closePath()}
+  else if(type===3){for(let k=0;k<5;k++){const yy=(k-2)*w/5;ctx.moveTo(-L+L*.08,yy);ctx.lineTo(L*.8,yy-1);ctx.lineTo(L*.7,yy+2);ctx.lineTo(-L+L*.2,yy+2);ctx.closePath()}}
+  else{ctx.moveTo(-L,-W*.82);ctx.lineTo(-L*.55,-W);ctx.lineTo(L*.62,-W*.92);ctx.lineTo(L,-W*.45);ctx.lineTo(L*.9,W*.45);ctx.lineTo(L*.53,W*.9);ctx.lineTo(-L*.68,W);ctx.lineTo(-L*.96,W*.42);ctx.closePath()}
+ }
+ ctx.save();ctx.beginPath();ctx.rect(0,0,1000,height);ctx.clip();protectFinishedSunCore();ctx.translate(x,y);ctx.rotate(angle);
+ // Schaduw valt op de reeds aanwezige verf, en verschuift met de verfdikte.
+ ctx.save();ctx.translate(2+thickness*4,2+thickness*5);ctx.globalAlpha=.16+thickness*.24;ctx.fillStyle=(landTop?tones[0]:'#09244c');shape();ctx.fill();ctx.restore();
+ // De nieuwe verf bevat letterlijk een kleurmonster van de laag eronder.
+ const gradient=ctx.createLinearGradient(-L,0,L,0);
+ const pigmentStrength=rand(.08,.93);
+ samples.forEach((rgb,i)=>gradient.addColorStop(i/8,mix(rgb,clamp(pigmentStrength+rand(-.12,.12),.02,.98))));
+ ctx.globalAlpha=.94;ctx.fillStyle=gradient;shape();ctx.fill();
+ // Meegesleepte pigmentdraden en ongelijke verfrichels: allemaal binnen de mesvorm.
+ ctx.save();shape();ctx.clip();
+ for(let k=0;k<Math.max(3,Math.round(w/3));k++){
+  const yy=rand(-W,W),idx=Math.floor(rand(0,samples.length)),t=rand(.22,.75);
+  ctx.beginPath();ctx.moveTo(-L*rand(.7,1),yy+rand(-2,2));ctx.bezierCurveTo(-L*.2,yy-rand(0,3),L*.25,yy+rand(-3,3),L*rand(.45,1),yy+rand(-3,3));
+  ctx.lineWidth=rand(.6,2.8)*(.5+thickness);ctx.globalAlpha=rand(.28,.75);ctx.strokeStyle=mix(samples[idx],t);ctx.stroke();
+ }
+ ctx.restore();
+ // Licht aan de opstaande rand, donkerte aan de tegenoverliggende rand.
+ ctx.globalAlpha=.18+thickness*.30;ctx.strokeStyle=(landTop?tones[0]:'#081e4b');ctx.lineWidth=1+thickness*3;
+ ctx.beginPath();ctx.moveTo(-L*.82,W*.66);ctx.lineTo(L*.58,W*.43);ctx.stroke();
+ ctx.globalAlpha=.25+thickness*.45;ctx.strokeStyle=blendColors(palette[ci],'#ffffff',.42);ctx.lineWidth=.8+thickness*2.5;
+ ctx.beginPath();ctx.moveTo(-L*.84,-W*.62);ctx.lineTo(L*.6,-W*.64);ctx.stroke();
+ ctx.restore();knifePlaces.push({x,y,angle,length,w});knifeMarks++;
+}
+
+// Laag 3: stug vierkant penseel. Het werkt alleen rond eerder gemaakte
+// messtreken, draait tijdens de beweging en neemt de bestaande verf mee.
+function squareBrushAccent(){
+ if(!knifePlaces.length || brushMarks>=brushLimit)return;
+ // Soms meerdere penseelaccenten rond één mesplek; andere blijven onaangeroerd.
+ const zone=accentZones[Math.floor(rand(0,accentZones.length))];
+ const candidates=knifePlaces.filter(p=>Math.hypot(p.x-zone.x,p.y-zone.y)<zone.radius);
+ if(!candidates.length)return;
+ const spot=candidates[Math.floor(rand(0,candidates.length))];
+ const angle=rand(-Math.PI,Math.PI);
+ const along=rand(-.38,.38)*spot.length;
+ const x=clamp(spot.x+Math.cos(spot.angle)*along+rand(-12,12),12,988);
+ const y=clamp(spot.y+Math.sin(spot.angle)*along+rand(-10,10),12,height-12);
+ if(sunEnabled() && Math.hypot(x-sunX,y-sunY)<sunRadius*2.3){brushMarks++;return;}
+ const width=rand(5,29),distance=Math.random()<.28?rand(3,12):Math.random()<.8?rand(12,38):rand(38,82),twist=rand(-3.8,3.8);
+ // Kleur wordt uit de werkelijk aanwezige verf gehaald; geen nieuwe kleurvelden.
+ const px=visiblePixel(Math.round(x),Math.round(y));
+ const tint=tones[Math.floor(rand(0,tones.length))];
+ const tr=parseInt(tint.slice(1,3),16),tg=parseInt(tint.slice(3,5),16),tb=parseInt(tint.slice(5,7),16);
+ const mix=rand(.08,.95),lit=sunTint(`#${[0,1,2].map(i=>Math.round(px[i]*(1-mix)+[tr,tg,tb][i]*mix).toString(16).padStart(2,"0")).join("")}`,x,y,1.25),[r,g,b]=rgb(lit);
+ ctx.save();ctx.beginPath();ctx.rect(0,0,1000,height);ctx.clip();protectFinishedSunCore();
+ // De opeenvolgende vierkante afdrukken vormen één draaiende veeg.
+ const count=Math.ceil(distance/3.5);
+ for(let i=0;i<count;i++){
+  const t=i/Math.max(1,count-1),turn=angle+twist*t;
+  const xx=x+Math.cos(angle)*distance*(t-.5)+Math.sin(angle)*Math.sin(t*Math.PI)*width*.24;
+  const yy=y+Math.sin(angle)*distance*(t-.5)-Math.cos(angle)*Math.sin(t*Math.PI)*width*.24;
+  const pressure=Math.sin(Math.PI*(.12+.76*t));
+  const side=width*(.65+.35*pressure);
+  ctx.save();ctx.translate(xx,yy);ctx.rotate(turn);
+  // Een dunne donkere verfwal naast de dikkere verf.
+  ctx.globalAlpha=.11*pressure;ctx.fillStyle=(landTop?tones[0]:'#061b40');ctx.fillRect(-side*.48+1.5,-side*.42+2,side,side*.83);
+  ctx.globalAlpha=rand(.24,.85)*pressure;
+  ctx.fillStyle=`rgb(${r},${g},${b})`;
+  ctx.fillRect(-side*.5,-side*.5,side,side);
+  // Het harde penseel laat kleine onderbrekingen en borstelsporen na.
+  if(i%3===0){ctx.globalAlpha=.18*pressure;ctx.fillStyle='rgba(225,244,255,.8)';ctx.fillRect(-side*.45,-side*.45,side*.13,side*.72)}
+  ctx.restore();
+ }
+ ctx.restore();brushMarks++;
+}
+
+// Laag 4: heel plaatselijke impasto-details op reeds geschilderde verf.
+// Geen nieuwe compositie, geen vlakverdeling: willekeurige clusters en stiltes.
+function detailAccent(){
+ if(detailMarks>=detailLimit)return;
+ const zone=detailZones[Math.floor(rand(0,detailZones.length))];
+ const x=clamp(zone.x+rand(-zone.r,zone.r),8,992);
+ const y=clamp(zone.y+rand(-zone.r*.65,zone.r*.65),8,height-8);
+ const light=Math.random()<.46, angle=rand(-Math.PI,Math.PI), len=rand(7,32), thick=rand(2.5,9);
+ // Laatste impastolaag: nooit een donkere veeg door lichte lucht of zonnegloed.
+ // Controleer de volledige lengte, niet alleen het middelpunt van de streek.
+ const samples=[-.65,-.35,0,.35,.65];
+ const touchesLight=samples.some(t=>{
+  const sx=clamp(Math.round(x+Math.cos(angle)*len*t),0,999);
+  const sy=clamp(Math.round(y+Math.sin(angle)*len*t),0,height-1);
+  const p=visiblePixel(sx,sy);
+  const luminance=.2126*p[0]+.7152*p[1]+.0722*p[2];
+  return luminance>=192 || (sunEnabled() && sunLightStrength(sx,sy)>.055);
+ });
+ if(touchesLight){detailMarks++;return;}
+ const pixel=visiblePixel(Math.floor(x),Math.floor(y));
+ const base=[pixel[0],pixel[1],pixel[2]];
+ const target=rgb(light?tones[6]:`rgb(${base.join(',')})`);
+ const blend=rand(.22,.73);
+ const c=rgb(sunTint(`rgb(${base.map((v,i)=>Math.round(v*(1-blend)+target[i]*blend)).join(",")})`,x,y,1.3));
+ // Reliëfschaduw: een iets donkerdere versie van het EIGEN pigment,
+ // niet een vaste zwarte of donkerblauwe kleur. Bij lichte verf subtieler.
+ const shadowStrength=.045+Math.max(0,1-(.2126*c[0]+.7152*c[1]+.0722*c[2])/255)*.045;
+ const shadowColor=`rgb(${c.map(v=>Math.round(v*(1-shadowStrength))).join(',')})`;
+ ctx.save();ctx.beginPath();ctx.rect(0,0,1000,height);ctx.clip();
+ protectFinishedSunCore();
+ ctx.translate(x,y);ctx.rotate(angle);ctx.lineCap='butt';
+ const mode=Math.random();
+ if(mode<.40){ // kort dik verfrestje met voelbare slagschaduw
+  ctx.globalAlpha=rand(.12,.23);ctx.fillStyle=shadowColor;ctx.fillRect(-len*.45+2,thick*.25+2,len,thick);
+  ctx.globalAlpha=rand(.78,.98);ctx.fillStyle=`rgb(${c.join(',')})`;
+  ctx.beginPath();ctx.moveTo(-len*.5,-thick*.4);ctx.lineTo(len*.35,-thick*.55);ctx.lineTo(len*.5,thick*.15);ctx.lineTo(-len*.35,thick*.5);ctx.closePath();ctx.fill();
+  ctx.globalAlpha=.55;ctx.strokeStyle=tones[6];ctx.lineWidth=rand(.5,1.6);ctx.beginPath();ctx.moveTo(-len*.42,-thick*.37);ctx.lineTo(len*.26,-thick*.5);ctx.stroke();
+ }else if(mode<.73){ // bijna droge schraapstreek, onderbroken
+  for(let j=0;j<Math.floor(rand(3,8));j++){
+   const yy=(j-3)*thick*.23;const start=rand(-len*.5,0),end=rand(len*.12,len*.65);
+   ctx.globalAlpha=rand(.32,.73);ctx.strokeStyle=`rgb(${c.join(',')})`;
+   ctx.lineWidth=rand(.5,1.3);ctx.beginPath();ctx.moveTo(start,yy);ctx.lineTo(end,yy+rand(-1.2,1.2));ctx.stroke();
+  }
+ }else{ // scherp licht op bestaande verfwal
+  ctx.globalAlpha=rand(.48,.82);ctx.strokeStyle=light?tones[6]:`rgb(${c.join(',')})`;
+  ctx.lineWidth=rand(.7,2.1);ctx.beginPath();ctx.moveTo(-len*.5,0);ctx.quadraticCurveTo(0,-thick,len*.5,rand(-2,2));ctx.stroke();
+  ctx.globalAlpha=.12;ctx.strokeStyle=shadowColor;ctx.lineWidth=rand(1.3,3);ctx.beginPath();ctx.moveTo(-len*.4,thick*.4);ctx.lineTo(len*.3,thick*.4);ctx.stroke();
+ }
+ ctx.restore();detailMarks++;
+}
+
+// Licht is een eigenschap van ALLE luchtverf, niet een losse witte cirkel.
+function sunLightStrength(x,y){
+ if(!sunEnabled())return 0;
+ const d=Math.hypot(x-sunX,y-sunY)/sunRadius;
+ return Math.pow(Math.max(0,1-d/9.5),2.35);
+}
+function sunTint(color,x,y,amount=1){
+ const strength=sunLightStrength(x,y)*amount;
+ if(strength<=0)return color;
+ const c=rgb(color);
+ const target=[250,253,255];
+ const k=Math.min(.86,strength*.72);
+ return `rgb(${c.map((v,i)=>Math.round(v*(1-k)+target[i]*k)).join(',')})`;
+}
+// Sluit de al geschilderde witte kern UIT van alle volgende afdrukken,
+// inclusief delen van lange of schuine mesvegen. Geen pigment, ook geen wit.
+function protectFinishedSunCore(){
+ if(!sunCoreLocked || !sunEnabled())return;
+ ctx.beginPath();ctx.rect(0,0,1000,height);
+ traceSunCore(true);
+ ctx.clip('evenodd');
+}
+// Lees de zichtbare kleur zoals die op het witte doek verschijnt.
+function visiblePixel(x,y){
+ const [r,g,b,a]=readPaint(x,y,1,1).data;
+ const alpha=a/255;
+ return [r,g,b].map(channel=>Math.round(channel*alpha+255*(1-alpha)));
+}
+function deposit(a,force=false,paintIndex=null,gapStroke=false){
+ const x=a.x,y=a.y;
+ // De mieren blijven overal schilderen, ook in de zon: geen aparte verfwijze.
+ // De kern krijgt wit pigment in plaats van uitgespaard te worden.
+ let chosen=null,score=0;
+ for(const f of fields){
+  const dx=(x-f.x)/f.rx,dy=(y-f.y)/f.ry;
+  const influence=Math.exp(-2.2*(dx*dx+dy*dy))*f.strength;
+  if(influence>score){score=influence;chosen=f}
+ }
+ // Niet overal evenveel verf: ongeschilderde partijen en diepe kleurvelden.
+ // Rustige zones blijven ook bij langdurig schilderen rustiger.
+ const cx=Math.min(39,Math.floor(x/25));
+ const cy=Math.min(27,Math.floor(y/Math.max(1,height)*28));
+ const ci=cy*40+cx;
+ const density=coverage[ci];
+ const chance=Math.min(.48,.003+Math.pow(score,1.5)*(whitePresent && chosen && chosen.tone===6?.46:.28)) / (1+density*.025);
+ if(!force && Math.random()>Math.min(.96,chance+Number(document.getElementById(landTop?'landBlend':'skyBlend').value)*.045))return;
+ coverage[ci]=Math.min(65535,density+1);
+ const field=chosen||fields[0];
+ // Wit vormt eigen verspreide kleurgebieden en groeit tegelijk met de blauwe verf.
+ const skyBlendStrength=(Number(document.getElementById(landTop?'landBlend':'skyBlend').value)||0)/10;
+ // Bij volledig mengen mag de kleurkeuze niet meer door één groot kleurveld
+ // worden gedomineerd. Elke mier wisselt lokaal tussen het HELE palet.
+ const tone=skyBlendStrength>0 && Math.random()<skyBlendStrength
+   ? Math.floor(Math.random()*7) : field.tone;
+ // De vijf penseelvormen en hun afmetingen blijven identiek aan v2.2.
+ // Kleinere streken met uiteenlopende verhouding en vorm.
+ const r=Math.random();
+ let len=r<.08?rand(38,72):r<.65?rand(14,40):rand(4,20);
+ let width=r<.08?rand(9,19):r<.65?rand(4,15):rand(2,8);
+ let angle=field.angle+rand(-1.65,1.65);
+ // Eén stijlkeuze PER AFDRUK, dus nooit afzonderlijke stijlpasses.
+ // Stand 0 behoudt exact de oorspronkelijke penseelgeometrie.
+ const skyVariation=Number(document.getElementById(landTop?'landStyleMix':'skyStyleMix').value)||0;
+ const skyBlend=Number(document.getElementById(landTop?'landBlend':'skyBlend').value)||0;
+ // Zeldzame, onregelmatige stijlaccenten: bij stand 10 ongeveer 1 op 100
+ // afdrukken een opvallend grote mesveeg, lange kwast of droge kras.
+ // Geen vaste intervallen, geen afzonderlijke passes, geen gelijkmatig patroon.
+ const v=skyVariation/10;
+ const roll=Math.random();
+ let mixedTechnique=0;
+ if(v>0 && roll<.01*v){
+   const kind=Math.random();
+   mixedTechnique=kind<.26?1:kind<.57?2:kind<.78?3:5;
+ }
+ if(mixedTechnique===1){len=rand(90,215)*(.5+.5*v);width=rand(4,12);angle+=rand(-.8,.8)} // zeldzame lange kwast
+ else if(mixedTechnique===2){len=rand(100,255)*(.5+.5*v);width=rand(20,72)*(.5+.5*v);angle+=rand(-.8,.8)} // zeldzaam breed mes
+ else if(mixedTechnique===3){len=rand(60,145)*(.5+.5*v);width=rand(20,65)*(.5+.5*v);angle=Math.round(angle/(Math.PI/4))*(Math.PI/4)} // zeldzaam hoekig vlak
+ else if(mixedTechnique===5){len=rand(65,160)*(.5+.5*v);width=rand(6,16);angle+=rand(-.5,.5)} // zeldzame droge krassen
+ // Bewaar grote, zeldzame mesafdrukken: de gewone mieren pigmenteren
+ // hier minder vaak EN transparanter. Niet volledig blokkeren: nat-in-nat blijft.
+ const largeStroke=skyVariation>0 && mixedTechnique!==0;
+ const gx=Math.max(0,Math.min(99,Math.floor(x/10)));
+ const gy=Math.max(0,Math.min(99,Math.floor(y/10)));
+ const protectedPigment=!largeStroke && skyVariation>0 ? skyLargeMarks[gy*100+gx]/255 : 0;
+ if(!force && protectedPigment && Math.random()<protectedPigment*.68)return;
+ if(largeStroke){
+   // Markeer de echte gedraaide veeg, niet een horizontale rechthoek.
+   const halfL=len*.47,halfW=width*.55;
+   const ca=Math.cos(angle),sa=Math.sin(angle);
+   const extentX=Math.abs(ca*halfL)+Math.abs(sa*halfW);
+   const extentY=Math.abs(sa*halfL)+Math.abs(ca*halfW);
+   for(let yy=Math.max(0,Math.floor((y-extentY)/10));yy<=Math.min(99,Math.ceil((y+extentY)/10));yy++){
+     for(let xx=Math.max(0,Math.floor((x-extentX)/10));xx<=Math.min(99,Math.ceil((x+extentX)/10));xx++){
+       const dx=(xx+.5)*10-x,dy=(yy+.5)*10-y;
+       const along=(dx*ca+dy*sa)/halfL,across=(-dx*sa+dy*ca)/halfW;
+       const d=along*along+across*across;
+       if(d<1){
+         const intensity=d<.50?255:Math.round(255*(1-d)/.5);
+         const i=yy*100+xx;
+         skyLargeMarks[i]=Math.max(skyLargeMarks[i],intensity);
+       }
+     }
+   }
+ }
+ // Bij sterk mengen worden grote vormen vermeden en kleuren dichter bij elkaar getrokken.
+ if(skyBlend>0){
+   const k=skyBlend/10;
+   if(!largeStroke){len*=1-.50*k; width*=1-.35*k;}
+   angle+=rand(-1.2,1.2)*k;
+ }
+ // Vier CMYK-mieren blijven zichtbaar. Hun pigmentbijdrage verschuift de
+ // geselecteerde blauw-witte streek subtiel; geen roze/gele confetti.
+ let index=Math.max(0,Math.min(6,tone+(a.i===0?0:a.i===1?-1:a.i===2?1:Math.random()<.5?-1:0)));
+ // Buiten de witte gebieden blijft de oorspronkelijke blauwe kleurverdeling behouden.
+ // Kleurkeuze verandert, geen verandering aan mieren of kwastvormen.
+ if(whitePresent && index===6 && tone!==6 && Math.random()<.88*(1-skyBlendStrength)) index=4;
+ if(whitePresent && index===5 && tone!==6 && Math.random()<.65*(1-skyBlendStrength)) index=3;
+ if(force && index>=5 && paintIndex===null)index=3;
+ if(paintIndex!==null)index=paintIndex;
+ if(skyBlendStrength>=.8 && paintIndex===null && !force && Math.random()<skyBlendStrength*.85) index=Math.floor(Math.random()*7);
+ // Zonlicht: de mieren gebruiken nabij de zon lichter en warmer pigment.
+ const sunOn=sunEnabled();
+ const sunDist=Math.hypot(x-sunX,y-sunY);
+ const sunCore=sunOn && sunDist<sunRadius*1.35;
+ // Zon en lucht gebruiken exact dezelfde penseel- en mesgeometrie.
+ // Alleen pigmentkleur en lichtsterkte hangen af van de afstand tot de zon.
+ if(sunOn && sunDist<sunRadius*5.8 && Math.random()<.80*(1-sunDist/(sunRadius*5.8))){
+   index=Math.random()<.62?5:6;
+ }
+ // Witte verf wordt vanaf de EERSTE luchtfase in eigen kleurvelden aangebracht.
+ // Kleine kans per werkelijke kwastafdruk: wit is een accent, geen witte deken.
+ if(whitePresent && !force && paintIndex===null && tone!==6 && Math.random()<.055*(1-skyBlendStrength)) index=Math.random()<.72?6:5;
+ // In witte kleurgebieden bouwt de witte mier de verf vanaf het begin op.
+ // Nabij de randen mengt ze met lichtblauw; andere mieren schilderen eroverheen.
+ if(whitePresent && !force && paintIndex===null && tone===6 && skyBlendStrength<.95){
+   const edge=Math.min(1,score/.42);
+   const roll=Math.random();
+   index=roll<(.30+.42*edge)?6:roll<(.73+.20*edge)?5:4;
+ }
+ let color=tones[index];
+ if(sunCore){
+   // Exact dezelfde kwastafdruk, maar een onmiskenbaar witte pigmentkern.
+   const t=Math.min(1,sunDist/(sunRadius*1.35));
+   const original=rgb(color);
+   const strength=t<.66?1:Math.pow(Math.max(0,(1-t)/.34),1.15);
+   const target=[255,255,253];
+   color=`rgb(${original.map((v,i)=>Math.round(v*(1-strength)+target[i]*strength)).join(',')})`;
+ }
+ // Lichtpigment wordt tijdens het schilderen zelf gemengd, niet achteraf toegevoegd.
+ if(sunOn && sunDist<sunRadius*8.0 && !sunCore){
+   const warmth=Math.pow(Math.max(0,1-sunDist/(sunRadius*8.0)),2.0);
+   if(Math.random()<warmth*.85){
+     const base=rgb(color),gold=[Math.round(237+18*Math.random()),Math.round(245+10*Math.random()),255];
+     const blend=warmth*rand(.12,.42);
+     color=`rgb(${base.map((v,i)=>Math.round(v*(1-blend)+gold[i]*blend)).join(',')})`;
+   }
+ }
+ color=sunTint(color,x,y,sunCore?.85:1.05);
+ // Nat-in-nat: de mengknop laat pigment van de al geschilderde verf
+ // meeschuiven IN de volgende kwaststreek. Geen egale kleurvelden:
+ // de ondergrond wordt op meerdere plekken langs de veeg bemonsterd.
+ const wetMix=skyBlend/10;
+ let wetGradientColors=null;
+ if(wetMix>0 && !largeStroke && !(sunOn && sunDist<sunRadius*.95)){
+   const ca=Math.cos(angle),sa=Math.sin(angle);
+   const sampleAt=t=>{
+     const xx=Math.max(0,Math.min(999,Math.round(x+ca*len*t)));
+     const yy=Math.max(0,Math.min(999,Math.round(y+sa*len*t)));
+     const px=visiblePixel(xx,yy);
+     return [px[0],px[1],px[2]];
+   };
+   wetGradientColors=[sampleAt(-.32),sampleAt(0),sampleAt(.32)];
+ }
+ ctx.save();ctx.beginPath();ctx.rect(0,0,1000,height);ctx.clip();
+ if(gapStroke){
+  // Leg de reparatiestreek onder de bestaande verf, inclusief de witte zon.
+  ctx.globalCompositeOperation='destination-over';
+  ctx.translate(x,y);ctx.rotate(angle);
+  ctx.fillStyle=color;ctx.beginPath();
+  ctx.ellipse(0,0,Math.max(4,len/2),Math.max(2,width/2),0,0,Math.PI*2);
+  ctx.fill();ctx.restore();return;
+ }
+ protectFinishedSunCore();
+ ctx.translate(x,y);ctx.rotate(angle);
+ const L=len/2,W=width/2;
+ const style=Math.floor(rand(0,5));
+ const shape=()=>{
+  ctx.beginPath();
+   if(mixedTechnique===5){ // droge borstel: dunne, onregelmatige krassen
+   ctx.moveTo(-L,-W*.12);ctx.lineTo(-L*.55,-W*.42);ctx.lineTo(L*.38,-W*.08);ctx.lineTo(L,W*.10);ctx.lineTo(L*.3,W*.28);ctx.lineTo(-L*.8,W*.22);
+  }else if(mixedTechnique===3){ // kubistisch: scherp, hoekig vlak
+   ctx.moveTo(-L,-W*.8);ctx.lineTo(L*.55,-W);ctx.lineTo(L,W*.25);
+   ctx.lineTo(L*.2,W);ctx.lineTo(-L*.85,W*.65);
+  }else if(mixedTechnique===2){ // breed paletmes met rafelige uiteinden
+   ctx.moveTo(-L,-W*.65);ctx.lineTo(L*.72,-W*.95);ctx.lineTo(L,W*.2);
+   ctx.lineTo(L*.58,W*.7);ctx.lineTo(-L*.78,W);ctx.lineTo(-L*.95,W*.25);
+  }else if(mixedTechnique===1){ // langgerekte expressieve kwast
+   ctx.moveTo(-L,-W*.2);ctx.quadraticCurveTo(-L*.2,-W*1.3,L,-W*.45);
+   ctx.lineTo(L*.85,W*.4);ctx.quadraticCurveTo(0,W*1.2,-L,W*.45);
+  }else if(style===0){ // rafelige kwast
+   ctx.moveTo(-L,-W*.3);ctx.lineTo(-L*.7,-W);ctx.lineTo(L*.1,-W*rand(.45,1));
+   ctx.lineTo(L,-W*.1);ctx.lineTo(L*.7,W*.65);ctx.lineTo(-L*.2,W);
+   ctx.lineTo(-L*.9,W*.3);
+  }else if(style===1){ // afgeronde, pasteuze veeg
+   ctx.moveTo(-L,0);ctx.bezierCurveTo(-L,-W*1.5,L*.5,-W*1.1,L,-W*.25);
+   ctx.bezierCurveTo(L*1.1,W*.8,-L*.45,W*1.35,-L,0);
+  }else if(style===2){ // grillige spatelvlek
+   for(let j=0;j<9;j++){const t=j/9*Math.PI*2;
+    const radius=rand(.64,1.18);const xx=Math.cos(t)*L*radius,yy=Math.sin(t)*W*radius;
+    if(j===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);
+   }
+  }else if(style===3){ // schuine, afgebroken streek
+   ctx.moveTo(-L,-W*.8);ctx.lineTo(L*.75,-W*.45);ctx.lineTo(L,W*.15);
+   ctx.lineTo(L*.3,W*.4);ctx.lineTo(-L*.2,W);ctx.lineTo(-L*.85,W*.25);
+  }else{ // korte dikke verfklodder
+   ctx.ellipse(0,0,L,W,rand(-.45,.45),0,Math.PI*2);
+  }
+  ctx.closePath();
+ };
+ // Witte verf op een wit doek moet als echte VERF zichtbaar zijn:
+ // een koele, smalle ondertoon en een slagschaduw onder de opstaande rand.
+ // Ook tijdens de eerste luchtfase: wit heeft een subtiel voelbare verfrand.
+ if(whitePresent && index>=5 && protectedPigment<.35){
+   ctx.save();ctx.translate(1.8,2.3);ctx.globalAlpha=.30;
+   ctx.fillStyle=(landTop?tones[2]:'#5797c3');shape();ctx.fill();ctx.restore();
+   ctx.save();ctx.translate(-.7,-.9);ctx.globalAlpha=.24;
+   ctx.fillStyle=(landTop?tones[5]:'#c3e5f4');shape();ctx.fill();ctx.restore();
+ }
+ // Eén bescheiden schaduw aan de onderrand, niet rondom omlijnd.
+ if(protectedPigment<.35 && Math.random()<.32){ctx.save();ctx.translate(1.5,2.5);ctx.globalAlpha=.13;ctx.fillStyle=(landTop?tones[0]:'#122747');shape();ctx.fill();ctx.restore()}
+ // Subtiele nat-in-nat menging, zonder een grotere kleurvlek te maken.
+ // De menglaag blijft BINNEN exact dezelfde kwastvorm.
+ // Wit krijgt geen extra lichtblauwe onderlaag of uitlopende rand.
+ if(protectedPigment<.35 && index<5 && Math.random()<.24){
+   ctx.globalAlpha=rand(.08,.16);
+   ctx.fillStyle=index<3?(landTop?tones[2]:'#3392cb'):(landTop?tones[5]:'#82c7e5');
+   shape();ctx.fill();
+ }
+ // Hoofdstreek: dezelfde vorm, omvang, kleurkans en dekking als v2.3.
+ ctx.globalAlpha=(whitePresent && index>=5?rand(.78,.96):rand(.58,.92)) * (1-protectedPigment*.86);
+ if(wetGradientColors){
+   // Wisselende lokale menging langs dezelfde afdruk, als natte verf.
+   // Op stand 10 blijft zowel nieuw als oud pigment herkenbaar.
+   const pigment=color.startsWith('#')?rgb(color):color.match(/\d+/g).slice(0,3).map(Number);
+   const grad=ctx.createLinearGradient(-L,0,L,0);
+   wetGradientColors.forEach((under,i)=>{
+     const carry=wetMix*(.30+(i===1?.18:0)+Math.random()*.17);
+     const c=pigment.map((v,k)=>Math.round(v*(1-carry)+under[k]*carry));
+     grad.addColorStop(i/2,`rgb(${c.join(',')})`);
+   });
+   ctx.fillStyle=grad;
+   // Transparantie laat de vorige penseelstreken zichtbaar doormengen.
+   ctx.globalAlpha*=1-.25*wetMix;
+ }else ctx.fillStyle=color;
+ shape();ctx.fill();
+ // Materiaalsporen zijn onderdeel van de verfafdruk, geen latere stijlpass.
+ if(mixedTechnique===2){
+   ctx.save();ctx.globalAlpha=rand(.23,.43);ctx.strokeStyle=index>=4?(landTop?tones[6]:'#eef7f5'):(landTop?tones[4]:'#b8dcf0');
+   ctx.lineWidth=rand(1.5,4);ctx.lineCap='butt';
+   for(let j=0;j<5;j++){const yy=rand(-W*.7,W*.7);ctx.beginPath();ctx.moveTo(-L*rand(.45,.9),yy);ctx.lineTo(L*rand(.2,.95),yy+rand(-3,3));ctx.stroke();}
+   ctx.restore();
+ }else if(mixedTechnique===5){
+   ctx.save();ctx.lineCap='butt';ctx.strokeStyle=color;
+   for(let j=0;j<rand(5,11);j++){ctx.globalAlpha=rand(.25,.75);ctx.lineWidth=rand(.5,2.8);const yy=rand(-W*1.8,W*1.8);ctx.beginPath();ctx.moveTo(-L*rand(.4,1),yy);ctx.lineTo(L*rand(.25,1),yy+rand(-6,6));ctx.stroke();}
+   ctx.restore();
+ }
+ if(whitePresent && index>=5 && protectedPigment<.35){
+   // Subtiele penseelrichels maken wit-op-wit herkenbaar als pasteuze verf.
+   ctx.globalAlpha=.42;ctx.strokeStyle=(landTop?tones[4]:'#91c9e7');ctx.lineWidth=rand(.7,1.6);
+   ctx.beginPath();ctx.moveTo(-L*.75,W*.40);ctx.quadraticCurveTo(0,W*.65,L*.65,W*.27);ctx.stroke();
+   ctx.globalAlpha=.8;ctx.strokeStyle='#ffffff';ctx.lineWidth=rand(1,2.4);
+   ctx.beginPath();ctx.moveTo(-L*.8,-W*.45);ctx.quadraticCurveTo(0,-W*.7,L*.55,-W*.40);ctx.stroke();
+ }
+ // De verf wordt binnen de streek uitgesmeerd, geen witte draadcontour.
+ if(protectedPigment<.35 && Math.random()<.24){
+   ctx.globalAlpha=rand(.12,.28);
+   ctx.strokeStyle=index>=4?(landTop?tones[6]:'#a9d6eb'):(landTop?tones[4]:'#75b5dc');
+   ctx.lineWidth=rand(2,Math.max(3,width*.13));ctx.lineCap='round';
+   const yy=-width*.12;
+   ctx.beginPath();ctx.moveTo(-L*.78,yy);ctx.bezierCurveTo(-L*.25,yy-width*.14,L*.25,yy+width*.10,L*.65,yy-width*.09);ctx.stroke();
+ }
+ if(Math.random()<.17){
+   ctx.globalAlpha=rand(.10,.22);ctx.strokeStyle=(landTop?tones[1]:'#0b326d');ctx.lineWidth=rand(1,3);
+   ctx.beginPath();ctx.moveTo(-L*.65,width*.22);ctx.lineTo(L*.5,width*.16);ctx.stroke();
+ }
+ // Zonlicht zit IN dezelfde penseel- of mesafdruk, niet in een aparte
+ // schilderlaag. Een afdruk die de zon kruist krijgt plaatselijk wit pigment,
+ // ook wanneer de mier buiten de kern begon. De vorm blijft exact dezelfde.
+ if(sunOn && sunDist < sunRadius*2.2 + len*.65){
+   ctx.save();
+   shape();ctx.clip();
+   // Terug naar doekcoordinaten: de pigmentovergang blijft op de zon gericht,
+   // onafhankelijk van de richting en het beginpunt van de verfstreek.
+   ctx.setTransform(1,0,0,1,0,0);
+   const inner=sunRadius*.58,outer=sunRadius*1.62;
+   const glow=ctx.createRadialGradient(sunX,sunY,inner,sunX,sunY,outer);
+   glow.addColorStop(0,'rgba(255,255,253,.99)');
+   glow.addColorStop(.35,'rgba(255,255,253,.97)');
+   glow.addColorStop(.67,'rgba(249,253,255,.70)');
+   glow.addColorStop(1,'rgba(247,252,255,0)');
+   ctx.globalAlpha=1;
+   ctx.fillStyle=glow;
+   ctx.fillRect(Math.max(0,sunX-outer),Math.max(0,sunY-outer),outer*2,outer*2);
+   ctx.restore();
+ }
+ ctx.restore();
+}
+
+// De alfawaarde meet de verfdekking, ook als het pigment zelf wit is.
+const finishedCoverage=255;
+function scanPaintGaps(minimum=finishedCoverage){
+ const data=readPaint(0,0,1000,height).data;
+ const gaps=[];
+ coveredPixels=0;
+ const tileSize=8;
+ for(let top=0;top<height;top+=tileSize){
+  for(let left=0;left<1000;left+=tileSize){
+   let target=null,lowest=minimum;
+   for(let y=top;y<Math.min(height,top+tileSize);y++){
+    for(let x=left;x<Math.min(1000,left+tileSize);x++){
+     const alpha=data[(y*1000+x)*4+3];
+     if(alpha===finishedCoverage)coveredPixels++;
+     if(alpha<lowest){lowest=alpha;target=[x+.5,y+.5]}
+    }
+   }
+   if(target)gaps.push(target);
+  }
+ }
+ for(let i=gaps.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [gaps[i],gaps[j]]=[gaps[j],gaps[i]];
+ }
+ return gaps;
+}
+function finishSky(){
+ fillQueue=scanPaintGaps();
+ fillMode=fillQueue.length>0;
+ knifeMode=!fillMode;
+}
+function fillPaintGaps(minimum=finishedCoverage,budget=40){
+ for(let i=0;i<budget && fillQueue.length;i++){
+  const [x,y]=fillQueue.pop();
+  const a=ants[i%4];
+  a.x=x;a.y=y;
+  // Een naburige streek kan deze plek inmiddels al gedekt hebben.
+  if(readPaint(Math.floor(x),Math.floor(y),1,1).data[3]>=minimum)continue;
+  deposit(a,true,Math.floor(rand(2,5)),true);
+  repairStrokes++;
+ }
+ if(fillMode && !fillQueue.length)finishSky();
+}
+// De zon wordt door dezelfde mieren geleidelijk opgebouwd TIJDENS de luchtfase.
+// Geen finale gele cirkel, geen halo die op het einde plots verschijnt.
+function paintSunStep(){
+ if(!sunEnabled() || sunPainted>=4200)return;
+ sunPainted++;
+ // Geen aparte zon-penseel, cirkels, stippen of radiale streken.
+ // Dezelfde deposit()-motor als de lucht zet lichte pigmenten neer.
+ if(Math.random()<.48)return;
+ const theta=rand(0,Math.PI*2);
+ const core=false;
+ const radius=core?sunRadius*Math.sqrt(Math.random())*.78:
+   sunRadius*(.8+Math.pow(Math.random(),.8)*4.8);
+ const x=sunX+Math.cos(theta)*radius,y=sunY+Math.sin(theta)*radius;
+ if(x<0||x>=1000||y<0||y>=height)return;
+ const index=core?(Math.random()<.82?6:5):(Math.random()<.54?5:6);
+ deposit({x,y,i:Math.floor(rand(0,4))},true,index);
+}
+function showAnts(){oc.clearRect(0,0,1000,1000);for(const a of ants){oc.fillStyle=ink[a.i];oc.strokeStyle='#17202e';oc.lineWidth=2;oc.beginPath();oc.arc(a.x,a.y+landTop,8,0,Math.PI*2);oc.fill();oc.stroke()}}
+function frame(now){if(!running)return;const elapsed=Math.min((now-last)/1000,.05);last=now;carry+=Number(speed.value)*elapsed;const n=Math.min(Math.floor(carry),2600);carry-=n;
+// Vier springende mieren: geen doorlopende lijn of wandelspoor.
+// Verplaatsing op elk beeld zichtbaar; pigmentafzetting op vele losse plekken.
+for(const a of ants){a.x=rand(0,1000);a.y=rand(0,height)}
+if(!knifeMode && !fillMode && !brushMode && !detailMode){
+ if(n>0){
+  for(let i=0;i<n;i++){
+   const a=ants[i%4];
+   a.x=rand(0,1000);a.y=rand(0,height);deposit(a);
+  }
+  steps+=n;
+  if(!fillQueue.length && steps>=nextGapScan){
+   fillQueue=scanPaintGaps();
+   nextGapScan=steps+1200;
+   if(!fillQueue.length)knifeMode=true;
+   else if(coveredPixels>=1000*height*.99)fillMode=true;
+  }
+  if(!knifeMode && !fillMode){
+   if(sunEnabled()){
+    const desired=Math.floor(4200*coveredPixels/(1000*height));
+    for(let j=0;j<Math.min(22,Math.max(0,desired-sunPainted));j++)paintSunStep();
+   }
+   fillPaintGaps(finishedCoverage,Math.min(40,Math.ceil(n/8)));
+  }
+ }
+}else if(fillMode){
+ fillPaintGaps();
+}else if(detailMode){
+ if(detailMarks<detailLimit)detailAccent();
+}else if(brushMode){
+ for(let i=0;i<2 && brushMarks<brushLimit;i++)squareBrushAccent();
+}else{
+ // Maximaal twee messtreken per animatiebeeld; geen tweede bedekking van de lucht.
+ for(let i=0;i<2 && knifeMarks<knifeLimit;i++){
+  const a=ants[(knifeMarks+i)%4];
+  for(let trial=0;trial<30 && knifeMarks<knifeLimit;trial++){
+   a.x=rand(0,1000);a.y=rand(0,height);knifeStroke(a);
+   if(trial>0 && knifeMarks>0 && Math.random()<.18)break;
+  }
+ }
+}
+showAnts();
+if(knifeMode&&knifeMarks>=knifeLimit){
+ knifeMode=false;brushMode=true;
+ // Willekeurige, ongelijke concentraties, zonder raster of compositiecorrectie.
+ accentZones=Array.from({length:Math.floor(rand(2,5))},()=>{
+  const anchor=knifePlaces[Math.floor(rand(0,knifePlaces.length))];
+  return {x:anchor.x,y:anchor.y,radius:rand(55,130)};
+ });
+ status.textContent='Laag 3 · draaiende vierkante penselen'
+}
+if(brushMode&&brushMarks>=brushLimit){
+ brushMode=false;detailMode=true;
+ detailZones=Array.from({length:Math.floor(rand(2,5))},()=>({x:rand(0,1000),y:rand(0,height),r:rand(45,135)}));
+ status.textContent='Laag 4 · laatste impasto-details';
+}
+if(detailMode&&detailMarks>=detailLimit){
+ if(!landTop){
+  startLand();
+  status.textContent='Lucht klaar · de mieren beginnen aan het land';
+  raf=requestAnimationFrame(frame);
+ }else{
+  running=false;
+  horizonStarted=true;
+  status.textContent='Land voltooid · 100% gedekt bij '+steps.toLocaleString('nl-BE')+' schilderpogingen en '+repairStrokes.toLocaleString('nl-BE')+' herstelstreken';
+  document.dispatchEvent(new Event('bosmieren:ground-finished'));
+ }
+ return;
+}
+const coveragePercent=coveredPixels===1000*height?'100':(Math.floor(coveredPixels/(1000*height)*1000)/10).toLocaleString('nl-BE');
+const counter=coveragePercent+'% '+(landTop?'land':'lucht')+' gedekt · '+steps.toLocaleString('nl-BE')+' schilderpogingen · '+repairStrokes.toLocaleString('nl-BE')+' herstelstreken';
+status.textContent=counter+(fillMode?' · laatste open plekken':detailMode?' · details':brushMode?' · penseelaccenten':knifeMode?(landTop?' · bereidt penseelaccenten voor':' · mesaccenten'):'');
+
+raf=requestAnimationFrame(frame)}
+const testModule2=document.getElementById('testModule2');
+testModule2.onclick=()=>{
+ if(started && !horizonFinished)return;
+ horizonStarted=true;
+ horizonFinished=true;
+ farFinished=false;
+ start.textContent='▶ Bezig';
+ status.textContent=landTop?'Test Module 2 op de bestaande achtergrond.':'Test Module 2 op wit doek · luchtlijn op 600 px.';
+ document.dispatchEvent(new CustomEvent('bosmieren:far-start',{detail:landTop||600}));
+};
+document.addEventListener('bosmieren:horizon-finished',()=>{
+ horizonFinished=true;
+ testModule2.disabled=false;
+ document.dispatchEvent(new CustomEvent('bosmieren:far-start',{detail:landTop}));
+});
+document.addEventListener('bosmieren:far-finished',()=>{
+ farFinished=true;
+ oc.clearRect(0,0,1000,1000);
+ start.textContent='✓ Klaar';
+});
+start.onclick=()=>{
+ if(!started && farFinished)resetCanvas();
+ if(horizonStarted){
+  if(!farFinished){
+   document.dispatchEvent(new Event(horizonFinished?'bosmieren:far-resume':'bosmieren:horizon-resume'));
+   start.textContent='▶ Bezig';
+  }
+  return;
+ }
+if(!started)init();testModule2.disabled=true;if(!running){running=true;last=performance.now();start.textContent='▶ Bezig';raf=requestAnimationFrame(frame)}};
+pause.onclick=()=>{
+ if(horizonStarted){
+  if(!farFinished){
+   document.dispatchEvent(new Event(horizonFinished?'bosmieren:far-pause':'bosmieren:horizon-pause'));
+   start.textContent='▶ Verder';
+  }
+  return;
+ }
+ running=false;cancelAnimationFrame(raf);start.textContent='▶ Verder';status.textContent='Gepauzeerd · '+steps.toLocaleString('nl-BE')+' stappen'};
+reset.onclick=()=>{resetCanvas();testModule2.disabled=false;};speed.oninput=()=>speedLabel.textContent=Number(speed.value).toLocaleString('nl-BE');resetCanvas();renderPaletteEditors();
+})();</script>
+<script>(()=>{const btn=document.getElementById('downloadArtwork'),message=document.getElementById('downloadMessage');btn.addEventListener('click',()=>{try{const out=document.createElement('canvas');out.width=out.height=1000;const outCtx=out.getContext('2d');outCtx.fillStyle='#fff';outCtx.fillRect(0,0,1000,1000);outCtx.drawImage(document.getElementById('painting'),0,0);outCtx.drawImage(document.getElementById('horizonPainting'),0,0);outCtx.drawImage(document.getElementById('farTrees'),0,0);outCtx.drawImage(document.getElementById('farRow'),0,0);const save=url=>{const a=document.createElement('a');a.href=url;a.download='Bosmieren_Lucht_en_Land.png';a.click();message.textContent='PNG-download gestart (1000 × 1000).'};if(out.toBlob)out.toBlob(blob=>{if(!blob){message.textContent='PNG kon niet worden aangemaakt.';return}const url=URL.createObjectURL(blob);save(url);setTimeout(()=>URL.revokeObjectURL(url),60000)},'image/png');else save(out.toDataURL('image/png'))}catch(e){message.textContent='Download mislukt: '+e.message}})})();</script><script>document.getElementById('skyStyleMix').addEventListener('input',e=>document.getElementById('skyStyleMixLabel').textContent=e.target.value);document.getElementById('skyBlend').addEventListener('input',e=>document.getElementById('skyBlendLabel').textContent=e.target.value+(+e.target.value===0?' · duidelijke vlakken':+e.target.value===10?' · volledig gemengd':' · tussenvorm'));document.getElementById('sunSize').addEventListener('input',e=>document.getElementById('sunSizeLabel').textContent=e.target.value);</script><script>
+document.getElementById('landStyleMix').addEventListener('input',e=>document.getElementById('landStyleMixLabel').textContent=e.target.value);
+document.getElementById('landBlend').addEventListener('input',e=>document.getElementById('landBlendLabel').textContent=e.target.value+(+e.target.value===0?' · duidelijke vlakken':+e.target.value===10?' · volledig gemengd':' · tussenvorm'));
+</script><script>
+/* Afzonderlijke horizonmodule: chaotische kruisarcering met bestaande pigmentkleuren. */
+(()=>{'use strict';
+const canvas=document.getElementById('horizonPainting'),h=canvas.getContext('2d');
+const paintedBase=document.getElementById('painting');
+const ants=document.getElementById('ants'),dots=ants.getContext('2d');
+const status=document.getElementById('horizonStatus');
+const keys=['horizonHeight','horizonRough','horizonThinBrush','horizonThickBrush','horizonThinKnife','horizonWideKnife','horizonPurity','horizonEdge'];
+const controls=Object.fromEntries(keys.map(k=>[k,document.getElementById(k)]));
+keys.forEach(k=>controls[k].addEventListener('input',()=>{document.getElementById(k+'Label').textContent=controls[k].value+(k==='horizonHeight'?' px':k==='horizonRough'?'%':'');}));
+const snapshot=document.createElement('canvas');snapshot.width=snapshot.height=1000;const source=snapshot.getContext('2d',{willReadFrequently:true});
+let active=false,frame=0,done=0,total=0,queue=[],last=0,carry=0,points=[];
+const rnd=(a,b)=>a+Math.random()*(b-a),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function hexRgb(hex){return [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));}
+function reset(){active=false;cancelAnimationFrame(frame);h.clearRect(0,0,1000,1000);done=0;queue=[];status.textContent='Wacht op de geschilderde grondlagen.';}
+function horizonY(){const text=document.getElementById('heightLabel').textContent;const m=text.match(/Luchtzone:\s*([\d.,]+)%/);return m?Number(m[1].replace(',','.'))*10:600;}
+function makeQueue(){queue=[];const amounts=[+controls.horizonThinBrush.value,+controls.horizonThickBrush.value,+controls.horizonThinKnife.value,+controls.horizonWideKnife.value];
+ // Iedere stap op de schuiver staat voor 20 afzonderlijke, zichtbare schilderbewegingen.
+ amounts.forEach((n,type)=>{for(let i=0;i<n*20;i++)queue.push(type);});
+ for(let i=queue.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[queue[i],queue[j]]=[queue[j],queue[i]];}
+ total=queue.length;
+}
+// Chaotische, lokale kruisstreken met dezelfde gebroken verfstructuur als de grondmessen.
+// De kleur komt uitsluitend uit het al geschilderde doek; nooit uit een nieuw palet.
+const pigment=(x,y)=>{
+ const xx=Math.round(clamp(x,1,998)),yy=Math.round(clamp(y,1,998));
+ const ctx=(h.getImageData(xx,yy,1,1).data[3]>80)?h:source;
+ const d=ctx.getImageData(xx,yy,1,1).data;
+ return [d[0],d[1],d[2]];
+};
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(v*(1-t)+b[i]*t));
+const css=a=>`rgb(${a.join(',')})`;
+let clusters=[];
+function makeClusters(height){
+ clusters=[];
+ for(let i=0,n=Math.floor(rnd(5,11));i<n;i++)clusters.push({x:rnd(20,980),y:rnd(-height*.5,height*.5),rx:rnd(45,230),ry:rnd(height*.15,height*.85),weight:rnd(.4,2.3)});
+}
+function paintOne(type,seamFocus=false){
+ const height=+controls.horizonHeight.value,rough=+controls.horizonRough.value/100;
+ if(!height)return;
+ const horizon=horizonY();
+ let x=rnd(8,992),y=horizon+rnd(-height,height);
+ // Plaatselijke drukte en open plekken: geen gelijkmatige arcering.
+ if(clusters.length&&Math.random()<.84){
+  const sum=clusters.reduce((v,z)=>v+z.weight,0);let r=rnd(0,sum),z=clusters[0];
+  for(const item of clusters){r-=item.weight;if(r<=0){z=item;break;}}
+  x=z.x+(Math.random()+Math.random()+Math.random()-1.5)*z.rx;
+  y=horizon+z.y+(Math.random()+Math.random()+Math.random()-1.5)*z.ry;
+ }
+ // Laatste gerichte mengaccenten breken plaatselijk de oorspronkelijke rechte scheiding.
+ // Niet over de volledige breedte: willekeurige plekken en onderbroken zones.
+ if(seamFocus){x=rnd(8,992);y=horizon+rnd(-Math.min(16,height*.3),Math.min(16,height*.3));}
+ x=clamp(x,5,995);y=clamp(y,horizon-height*1.35,horizon+height*1.35);
+ y=clamp(y,5,995);
+ // Scherpe mesvlakken vooral aan de BOVENKANT van de horizonovergang.
+ // Onderaan worden het kleine, gebroken verfsporen die in de grond verdwijnen.
+ const edgeSetting=Math.min(1,(+controls.horizonEdge.value)/5);
+ const sharpPlacement=Math.max(0,(edgeSetting-.55)/.45);
+ const upperBias=clamp((y-(horizon-height*.95))/(height*1.9),0,1);
+ if(sharpPlacement>.05 && type>=2 && !seamFocus){
+  if(Math.random()<sharpPlacement*(.88+Math.max(0,(+controls.horizonEdge.value-5)/5)*.115)){
+   y=clamp(horizon-rnd(height*.12,height*1.05),5,995);
+  }
+ }
+ const width=[rnd(2,7),rnd(9,22),rnd(2,9),rnd(13,35)][type];
+ const length=[rnd(11,38),rnd(22,65),rnd(18,65),rnd(32,115)][type];
+ // Hoeken over het hele kompas; schuine richtingen kruisen elkaar zonder raster.
+ const angle=seamFocus?(Math.random()<.5?Math.PI/2:-Math.PI/2)+rnd(-1.0,1.0):rnd(-Math.PI,Math.PI),dx=Math.cos(angle),dy=Math.sin(angle);
+ const side=Math.random()<.5?-1:1;
+ // Haal pigment van weerskanten, maar meng ook met het reeds bewerkte gebied.
+ const distance=rnd(Math.max(4,height*.12),Math.max(7,height*.85));
+ const above=pigment(x+dx*length*.3,horizon-distance);
+ const below=pigment(x-dx*length*.3,horizon+distance);
+ const local=pigment(x,y);
+ // Evenwichtige tweerichtingsmenging: de helft van de bewegingen draagt
+ // grondpigment omhoog, de andere helft luchtpigment omlaag.
+ // De richting is onafhankelijk van de chaotische strekrichting.
+ const groundUp=Math.random()<.5;
+ const carrier=groundUp?below:above;
+ const counterpart=groundUp?above:below;
+ const cross=rnd(.16,.40);
+ // Kleurzuiverheid: 5 behoudt de originele mengmotor, 0 mengt sterker,
+ // 10 houdt het bestaande bronpigment duidelijker herkenbaar.
+ const purity=+controls.horizonPurity.value/10;
+ const effectiveCross=clamp(cross+(0.5-purity)*.58,.025,.70);
+ const blendedBase=mix(mix(carrier,counterpart,effectiveCross),local,rnd(.08,.30));
+ const blended=mix(blendedBase,carrier,Math.max(0,purity-.5)*1.55);
+ const edge=Math.min(1,(+controls.horizonEdge.value)/5);
+ const extraSharp=Math.max(0,((+controls.horizonEdge.value)-5)/5);
+ // Randscherpte 10: de zijkant van het paletmes drukt echte, rechte,
+ // ondoorzichtige kleurvlakken af. Geen afgeronde contour, vervaging,
+ // kleurverloop of ribbels. Bij lagere standen vloeit dit geleidelijk
+ // terug in de oorspronkelijke schilderachtige mengmotor.
+ const knifeStrength=clamp((edge-.55)/.45,0,1);
+ const lowerZone=clamp((y-horizon+height*.08)/(height*.9),0,1);
+ // Grote vlakken boven, onderaan uitsluitend kleine fragmenten.
+ // Grote mesvlakken alleen in het bovenste deel; beneden uitsluitend
+ // kleine gebroken streken die de grond niet als egale muren afdekken.
+ const upperOnly=clamp((horizon-y)/(Math.max(1,height)*.72),0,1);
+ const knifeCoverage=clamp(upperOnly+extraSharp*.38,0,1);
+ const useStraightKnife=type===3 && Math.random()<knifeStrength*Math.pow(knifeCoverage,1.5)*(.94+extraSharp*.06);
+ if(useStraightKnife){
+  const taper=1-lowerZone*(.78-extraSharp*.24);
+  // Meer brede, liggende mesafdrukken naast de opgaande vormen.
+  // De bestaande pigmentstructuur en onregelmatige randen blijven intact.
+  const knifeDirection=Math.random();
+  const horizontalKnife=knifeDirection<.40;
+  const diagonalKnife=knifeDirection>=.70;
+  const knifeLength=length*(.68+edge*.30)*taper*(1+extraSharp*.30)*(horizontalKnife?rnd(1.05,1.40):rnd(.80,1.03));
+  const knifeWidth=width*(.76+edge*.40)*(1-lowerZone*(.64-extraSharp*.18))*(1+extraSharp*.23)*(horizontalKnife?rnd(.72,.98):rnd(.92,1.12));
+  // Handmatig geschoven schildermes: scherpe maar niet machinaal rechte kanten.
+  const halfL=knifeLength/2,halfW=knifeWidth/2;
+  const steps=Math.random()<.42;
+  const cut=knifeLength*rnd(.12,.33);
+  const wobble=knifeWidth*rnd(.035,.11);
+  // Geen zwevende blokken: elk groot mesvlak raakt de horizon/grondzone.
+  // Bereken de verticale reikwijdte van de gedraaide afdruk en veranker
+  // haar onderrand aan de overgang, in plaats van willekeurig in de lucht.
+  const axis=diagonalKnife?(Math.random()<.5?Math.PI/4:-Math.PI/4):(horizontalKnife?0:Math.PI/2);
+  const rotation=axis+rnd(-.24,.24);
+  const verticalReach=Math.abs(Math.sin(rotation))*halfL+Math.abs(Math.cos(rotation))*halfW+wobble*1.5;
+  y=clamp(horizon-verticalReach*rnd(.45,.85),5,995);
+  h.save();h.translate(x,y);
+  h.rotate(rotation);
+  h.globalAlpha=rnd(.76,.92);
+  h.shadowBlur=0;h.shadowColor='transparent';
+  const mainPigment=purity>.7?carrier:blended;
+  h.fillStyle=css(mainPigment);
+  // De lange kanten zijn licht onregelmatig, de hoeken net niet haaks.
+  // Een paar knikjes suggereren de druk van een echte mesrand.
+  const leftTop=-halfL+rnd(-wobble,wobble), rightTop=halfL+rnd(-wobble,wobble);
+  const leftBottom=-halfL+rnd(-wobble,wobble),rightBottom=halfL+rnd(-wobble,wobble);
+  h.beginPath();h.moveTo(leftTop,-halfW+rnd(-wobble,wobble));
+  h.lineTo(-halfL*.27,-halfW+rnd(-wobble,wobble));
+  h.lineTo(steps?rightTop-cut:rightTop,-halfW+rnd(-wobble,wobble));
+  if(steps){h.lineTo(rightTop-cut+rnd(-wobble,wobble),-halfW*.37);h.lineTo(rightTop,-halfW*.37+rnd(-wobble,wobble));}
+  h.lineTo(rightBottom,halfW+rnd(-wobble,wobble));
+  h.lineTo(halfL*.17,halfW+rnd(-wobble,wobble));
+  h.lineTo(leftBottom,halfW+rnd(-wobble,wobble));h.closePath();
+  // Een mesvlak blijft recht en hoekig, maar heeft echte verfstructuur.
+  // Bewaar eerst de vorm als knipgebied: alle sporen blijven binnen het vlak.
+  h.save();h.clip();h.fill();
+  // Duidelijke, gebroken schakering over de HELE mesafdruk: brede
+  // pigmentbanen uit lucht en grond, geen vlakke grijs-beige basis.
+  const palette=[above,below,local,carrier,counterpart,blended];
+  for(let band=0, bands=7+Math.floor(Math.random()*6)-Math.round(extraSharp*2);band<bands;band++){
+   const by=-halfW+band*(knifeWidth/bands)+rnd(-knifeWidth*.10,knifeWidth*.10);
+   const bh=knifeWidth/bands*rnd(.55,1.55);
+   const tint=palette[(band+Math.floor(Math.random()*palette.length))%palette.length];
+   h.globalAlpha=rnd(.35,.77)*(1-extraSharp*.10);
+   h.fillStyle=css(mix(mainPigment,tint,rnd(.40,.88)));
+   h.beginPath();
+   h.moveTo(-halfL-rnd(0,knifeLength*.12),by);
+   h.lineTo(halfL*rnd(.25,1.12),by+rnd(-bh*.32,bh*.32));
+   h.lineTo(halfL*rnd(.3,1.12),by+bh+rnd(-bh*.3,bh*.3));
+   h.lineTo(-halfL-rnd(0,knifeLength*.1),by+bh);
+   h.closePath();h.fill();
+  }
+  // De hele mesafdruk krijgt een doorlopende pigment-schakering, niet één
+  // egaal grijs of beige vlak. De streekrichting blijft die van het mes.
+  const shade=h.createLinearGradient(-halfL,-halfW,halfL,halfW);
+  shade.addColorStop(0,css(mix(mainPigment,counterpart,rnd(.20,.43))));
+  shade.addColorStop(.34,css(mix(mainPigment,local,rnd(.12,.33))));
+  shade.addColorStop(.70,css(mix(mainPigment,carrier,rnd(.10,.28))));
+  shade.addColorStop(1,css(mix(mainPigment,counterpart,rnd(.24,.52))));
+  h.globalAlpha=rnd(.12,.26);h.fillStyle=shade;
+  h.fillRect(-halfL-2,-halfW-2,knifeLength+4,knifeWidth+4);
+  // Gebroken messtrepen met duidelijk zichtbare andere pigmenttinten.
+  for(let k=0,n=9+Math.floor(Math.random()*9);k<n;k++){
+   const sy=rnd(-halfW*.95,halfW*.95),sx=rnd(-halfL,halfL*.55);
+   const drag=knifeLength*rnd(.10,.78),thick=Math.max(.7,knifeWidth*rnd(.014,.095));
+   h.globalAlpha=rnd(.24,.70);
+   h.fillStyle=css(k%3===0?counterpart:k%3===1?local:mix(mainPigment,counterpart,rnd(.25,.65)));
+   h.beginPath();h.moveTo(sx,sy);h.lineTo(sx+drag,sy+rnd(-thick,thick));
+   h.lineTo(sx+drag*rnd(.70,1),sy+thick*rnd(.25,1));h.lineTo(sx,sy+thick);h.closePath();h.fill();
+  }
+  // Een paar smalle openingen laten het pigment dat al op het doek ligt
+  // zichtbaar. We nemen dat pigment van het doek vóór de nieuwe mesafdruk.
+  const streakCount=5+Math.floor(Math.random()*7)-Math.round(extraSharp);
+  for(let k=0;k<streakCount;k++){
+   const sy=rnd(-halfW*.87,halfW*.87);
+   const sx=rnd(-halfL*.88,halfL*.38);
+   const sl=knifeLength*rnd(.13,.57);
+   const sw=Math.max(.65,knifeWidth*rnd(.012,.048));
+   // Doorzichtige pigmentstrepen van de aangrenzende kleur, zonder vervaging
+   // van de buitenste, rechte mesranden.
+   h.globalAlpha=rnd(.16,.53);
+   h.fillStyle=css(k%3===0?counterpart:k%3===1?blended:local);
+   h.beginPath();h.moveTo(sx,sy);h.lineTo(sx+sl,sy+rnd(-sw*1.4,sw*1.4));
+   h.lineTo(sx+sl*rnd(.83,1),sy+sw*rnd(.1,.8));h.lineTo(sx,sy+sw);h.closePath();h.fill();
+  }
+  // Af en toe een klein onderbroken verfspoor, met een lichtere/donkere
+  // pigmentkleur; nooit een egaal tweede kleurvlak.
+  for(let k=0,n=1+Math.floor(Math.random()*3);k<n;k++){
+   const yy=rnd(-halfW*.75,halfW*.75), xx=rnd(-halfL*.75,halfL*.5);
+   h.globalAlpha=rnd(.35,.7);
+   h.fillStyle=css(mix(carrier,k%2?counterpart:local,rnd(.32,.7)));
+   const drag=knifeLength*rnd(.035,.16), thick=Math.max(.7,knifeWidth*rnd(.015,.055));
+   h.beginPath();h.moveTo(xx,yy);h.lineTo(xx+drag,yy+rnd(-thick,thick));
+   h.lineTo(xx+drag*.72,yy+thick*.65);h.lineTo(xx,yy+thick);h.closePath();h.fill();
+  }
+  h.restore();
+  h.restore();
+ }else{
+  const segments=edge>.75?Math.floor(rnd(2,5)):Math.floor(rnd(5,12));
+  const upper=[],lower=[];
+  for(let i=0;i<=segments;i++){
+   const xx=-length/2+i*length/segments;
+   const fade=edge>.75?(i===0||i===segments?rnd(.75,1):rnd(.88,1.08)):(i===0||i===segments)?rnd(.2,.75):rnd(.6,1.2);
+   upper.push([xx,-width*.5*fade+rnd(-width*.18,width*.18)]);
+   lower.push([xx,width*.5*fade+rnd(-width*.18,width*.18)]);
+  }
+  h.save();h.translate(x,y);h.rotate(angle);
+  if(edge<.5){h.shadowColor=css(blended);h.shadowBlur=(.5-edge)*width*1.25;}
+  const grad=h.createLinearGradient(-length*.5,-width*.5,length*.5,width*.5);
+  grad.addColorStop(0,css(mix(carrier,local,rnd(.10,.35)*(1-purity*.8))));
+  grad.addColorStop(.42,css(blended));
+  grad.addColorStop(1,css(mix(carrier,counterpart,rnd(.28,.55)*(1-purity*.8))));
+  h.globalAlpha=rnd(.76,.98)*(edge<.5?.75+edge*.5:1);
+  h.fillStyle=edge>.8&&Math.random()<(edge-.8)*4?css(blended):grad;
+  h.beginPath();upper.forEach((p,i)=>i?h.lineTo(...p):h.moveTo(...p));
+  lower.slice().reverse().forEach(p=>h.lineTo(...p));h.closePath();h.fill();
+  for(let k=0,n=Math.floor(rnd(2,9));k<n;k++){
+   const yy=rnd(-width*.38,width*.38),a=rnd(-.48,.08)*length,b=Math.min(length*.49,a+length*rnd(.1,.7));
+   h.beginPath();h.moveTo(a,yy);h.quadraticCurveTo((a+b)/2,yy+rnd(-width*.18,width*.18),b,yy+rnd(-width*.2,width*.2));
+   h.strokeStyle=css(k%2?mix(blended,carrier,rnd(.3,.8)):mix(blended,counterpart,rnd(.3,.8)));
+   h.globalAlpha=rnd(.3,.82);h.lineWidth=rnd(.6,type===3?3.8:2.4);h.stroke();
+  }
+  // Klein mes: de oorspronkelijke, fijnere penseelachtige afdruk blijft,
+  // met enkele smalle, gebroken pigmentdetails. Geen grote mesvlakken.
+  if(type===2 && edge>.5){
+   const detailStrength=(edge-.5)*2;
+   const count=2+Math.floor(Math.random()*4*detailStrength);
+   for(let k=0;k<count;k++){
+    const start=-length*.48+Math.random()*length*.85;
+    const end=Math.min(length*.48,start+length*rnd(.07,.32));
+    const yy=rnd(-width*.38,width*.38);
+    h.beginPath();h.moveTo(start,yy);
+    h.lineTo(end,yy+rnd(-width*.14,width*.14));
+    h.strokeStyle=css(k%2?mix(carrier,local,rnd(.24,.65)):mix(counterpart,blended,rnd(.3,.7)));
+    h.globalAlpha=rnd(.35,.72);
+    h.lineWidth=rnd(.45,1.45);
+    h.stroke();
+   }
+  }
+  h.restore();
+ }
+ points.push({x,y});
+}
+function showDots(){dots.clearRect(0,0,1000,1000);const inks=['#00bfd8','#e50091','#ffdf00','#15192a'];points.slice(-4).forEach((p,i)=>{dots.beginPath();dots.arc(p.x,p.y,8,0,Math.PI*2);dots.fillStyle=inks[i];dots.fill();dots.lineWidth=2;dots.strokeStyle='#17202e';dots.stroke();});}
+let seamPass=0;
+function tick(now){if(!active)return;const dt=Math.min(.05,(now-last)/1000);last=now;carry+=dt*Math.max(12,Number(document.getElementById('speed').value)/800);
+ const n=Math.min(8,Math.floor(carry));carry-=n;
+ for(let i=0;i<n&&queue.length;i++){paintOne(queue.pop());done++;}
+ showDots();status.textContent='Horizon mengen: '+done+' / '+total+' bewegingen · zonder nieuwe verf';
+ if(!queue.length){
+  // Slechts een beperkte, chaotische nabehandeling op de exacte grens.
+  // De reeds goedgekeurde mengmotor blijft verder ongewijzigd.
+  if(seamPass<72){for(let j=0;j<Math.min(4,72-seamPass);j++){paintOne(Math.floor(rnd(0,4)),true);seamPass++;}status.textContent='Horizon: laatste grillige mengaccenten · '+seamPass+' / 72';}
+  else {active=false;status.textContent='Horizon voltooid · '+done+' mengbewegingen + '+seamPass+' grensaccenten';document.dispatchEvent(new Event('bosmieren:horizon-finished'));return;}
+ }
+ frame=requestAnimationFrame(tick);
+}
+function start(){reset();const H=+controls.horizonHeight.value;makeQueue();if(!H||!total){status.textContent='Horizonmodule overgeslagen (hoogte of aantallen op 0).';document.dispatchEvent(new Event('bosmieren:horizon-finished'));return;}
+ source.clearRect(0,0,1000,1000);source.drawImage(paintedBase,0,0);
+ makeClusters(H);seamPass=0;active=true;points=[];carry=0;last=performance.now();frame=requestAnimationFrame(tick);
+}
+document.addEventListener('bosmieren:ground-finished',start);
+document.addEventListener('bosmieren:ground-reset',reset);
+document.addEventListener('bosmieren:horizon-pause',()=>{
+ active=false;cancelAnimationFrame(frame);
+ status.textContent='Horizon gepauzeerd.';
+});
+document.addEventListener('bosmieren:horizon-resume',()=>{
+ if(active)return;
+ active=true;last=performance.now();frame=requestAnimationFrame(tick);
+});
+})();
+</script><script>
 (()=>{'use strict';
 const rnd=(a,b)=>a+Math.random()*(b-a),pick=a=>a[Math.floor(Math.random()*a.length)],clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 let ops=[];
@@ -54,7 +1094,7 @@ function mark(x,y,l,w,a,color,alpha=1){ops.push({kind:'mark',x,y,l,w,a,color,alp
 function makeFrontLeafPalette(){
  const parse=hex=>[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
  const toHex=rgb=>'#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
- const a=parse(document.getElementById('leafA').value),b=parse(document.getElementById('leafB').value);
+ const a=parse('#456b3b'),b=parse('#648e83');
  return [0,.33,.67,1].map(t=>toHex(a.map((v,i)=>v*(1-t)+b[i]*t)));
 }
 let frontLeafColors=makeFrontLeafPalette();
@@ -773,9 +1813,9 @@ window.bosmierenTreeStrokePoint=o=>{
 };
 // De mieren wisselen kriskras van boom. Verf wordt op diepte samengevoegd.
 const treeJobs=new WeakMap();
-window.bosmierenQueueTree=(queue,strokes)=>{
+window.bosmierenQueueTree=(queue,strokes,x=0,base=0,scale=1)=>{
  if(!treeJobs.has(queue))treeJobs.set(queue,{trees:[]});
- treeJobs.get(queue).trees.push({strokes,index:0});
+ treeJobs.get(queue).trees.push({strokes,index:0,x,base,scale});
  queue.push(...strokes);
 };
 function treePaintBuffer(){
@@ -793,7 +1833,10 @@ window.bosmierenPaintWithAnts=(target,overlay,queue,start,budget)=>{
  if(!job||budget<1)return 0;
  if(!job.workers){
   job.workers=job.trees;
-  for(const tree of job.workers)tree.buffer=treePaintBuffer();
+  for(const tree of job.workers){
+   tree.buffer=treePaintBuffer();
+   tree.buffer.setTransform(tree.scale,0,0,tree.scale,tree.x*(1-tree.scale),tree.base*(1-tree.scale));
+  }
  }
  const inks=['#00bfd8','#e50091','#ffdf00','#15192a'];
  const sites=[];
@@ -810,6 +1853,8 @@ window.bosmierenPaintWithAnts=(target,overlay,queue,start,budget)=>{
   for(let n=0;n<allowance&&tree.index<tree.strokes.length;n++){
    const stroke=tree.strokes[tree.index];
    const p=window.bosmierenTreeStrokePoint(stroke);
+   p.x=tree.x+(p.x-tree.x)*tree.scale;
+   p.y=tree.base+(p.y-tree.base)*tree.scale;
    const visible=p.x>=-7&&p.x<=1007&&p.y>=-7&&p.y<=1007;
    if(n>=burst&&visible&&site&&Math.hypot(site.x-p.x,site.y-p.y)>24)break;
    if(visible)site=p;
@@ -876,10 +1921,10 @@ window.bosmierenDrawTreeStroke=(target,o)=>{
 };
 
 // De zomereik wordt opgebouwd vanuit één doorlopend stelsel van hout.
-function buildDeciduousTree(type,h,crownScale,leafDensity){
+function buildDeciduousTree(type,h,crownScale,leafDensity,x,foot){
  const beech=type==='beech';
  const coverage=[],details=[];
- const base={x:500,y:850};
+ const base={x,y:foot};
  const wood=beech?['#60645e','#777b74','#92958b','#acada2']:['#493727','#604932','#73583d','#8b7051'];
  function branch(start,end,width,depth,bend,parentPath){
   const dx=end.x-start.x,dy=end.y-start.y;
@@ -952,7 +1997,7 @@ function buildDeciduousTree(type,h,crownScale,leafDensity){
   : [[-.40,.69,.60], [.39,.75,.73], [-.25,.89,.82], [.22,.94,.92], [-.045,.98,.99]];
  for(const [spread,rise,attach] of limbs){
   const start=trunk(attach);
-  const end={x:500+spread*h*crownScale*rnd(.78,1.04),y:850-rise*h*rnd(.94,1.02)};
+  const end={x:base.x+spread*h*crownScale*rnd(.78,1.04),y:base.y-rise*h*rnd(.94,1.02)};
   const width=beech?h*(.044-attach*.030):h*(attach>.9?.039:.050);
   branch(start,end,width,1,h*rnd(-.071,.071));
  }
@@ -965,7 +2010,7 @@ function mark(x,y,l,w,a,color,alpha=1){ops.push({kind:'mark',x,y,l,w,a,color,alp
 function makeFrontLeafPalette(){
  const parse=hex=>[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
  const toHex=rgb=>'#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
- const a=parse(document.getElementById('leafA').value),b=parse(document.getElementById('leafB').value);
+ const a=parse('#456b3b'),b=parse('#648e83');
  return [0,.33,.67,1].map(t=>toHex(a.map((v,i)=>v*(1-t)+b[i]*t)));
 }
 let frontLeafColors=makeFrontLeafPalette();
@@ -1436,18 +2481,6 @@ function buildNearTrunkCoverage(type,path){
  }
  return coverage;
 }
-const orderTreePasses=(coverage,details,stageCrown=false)=>{
- const passes=stageCrown
-  ? [coverage,details.filter(o=>!o.crown),details.filter(o=>o.crown&&!o.foliage),details.filter(o=>o.crown&&o.foliage)]
-  : [coverage,details];
- for(const pass of passes){
-  for(let i=pass.length-1;i>0;i--){
-   const j=Math.floor(rnd(0,i+1));
-   [pass[i],pass[j]]=[pass[j],pass[i]];
-  }
- }
- return passes.flat();
-};
 const buildTreeStrokes=(type,x,base,top,scale,options)=>{
  const savedOps=ops;
  ops=[];
@@ -1499,63 +2532,119 @@ const buildTreeStrokes=(type,x,base,top,scale,options)=>{
  }finally{ops=savedOps;}
 };
 
- return (height,crownScale,leafDensity)=>{
+ return (height,crownScale,leafDensity,x,base)=>{
   frontLeafColors=makeFrontLeafPalette();
-  const base=850;
-  const tree=buildTreeStrokes('birch',500,base,base-height,height/720,{
+  const tree=buildTreeStrokes('birch',x,base,base-height,height/720,{
    crownScale,leafDensity,bark:1,
    stageCrown:true,middleBirch:true,curvedBranches:true,heightLift:0
   });
-  // Schors en takken eerst, daarna de oorspronkelijke losse bladstreken.
-  const bark=tree.details.filter(o=>o.blackBark);
-  const rest=tree.details.filter(o=>!o.blackBark);
-  return [...orderTreePasses(tree.coverage,rest.filter(o=>!o.crown)),...bark,
-   ...orderTreePasses([],rest.filter(o=>o.crown),true)];
+  // Schilder één boom van onder naar boven. Schors, takken en loof
+  // volgen lokaal op de houtstreken, terwijl de verfstreken blijven overlappen.
+  const strokes=[...tree.coverage,...tree.details];
+  const band=stroke=>Math.floor((base-window.bosmierenTreeStrokePoint(stroke).y)/(height*.13));
+  const layer=stroke=>stroke.buildingTrunk?0:stroke.blackBark?2:stroke.foliage?4:stroke.crown?3:1;
+  return strokes.sort((a,b)=>band(a)-band(b)||layer(a)-layer(b));
  };
 })();
+
 const el=id=>document.getElementById(id);
-const target=el('tree').getContext('2d'),ants=el('ants').getContext('2d');
-const status=el('status'),pause=el('pause');
-let queue=[],index=0,raf=0,running=false,last=0,carry=0;
-for(const [id,unit] of [['height',' px'],['crown','%'],['foliage','']]){
- el(id).addEventListener('input',()=>el(id+'Value').textContent=el(id).value+unit);
+const regions=[
+ {id:'far',title:'2d · Verre regio',depth:40,height:75},
+ {id:'mid',title:'2c · Middelste regio',depth:120,height:175}
+];
+for(const region of regions){
+ region.inputs=Object.fromEntries(['size','leaves','depth','rows','count','gap','haze'].map(key=>[key,el(region.id+'-'+key)]));
+ region.status=el(region.id+'Status');
+ for(const [key,input] of Object.entries(region.inputs)){
+  const label=()=>{
+   const n=Number(input.value),signed=n>0?'+'+n:String(n);
+   el(region.id+'-'+key+'-value').textContent=key==='depth'?region.depth+n+' px · '+signed:
+    key==='size'||key==='leaves'?signed+'%':n+(key==='gap'?' px':key==='haze'?'%':'');
+  };
+  label();input.addEventListener('input',label);
+ }
+}
+const trees=el('farTrees').getContext('2d'),ants=el('ants').getContext('2d');
+const rowCanvas=el('farRow').getContext('2d');
+const species=['oak','birch','beech','pine'];
+let palettes={},queue=[],plans=[],index=0,raf=0,last=0,carry=0,active=false,currentRegion=null;
+function reset(){
+ active=false;cancelAnimationFrame(raf);plans=[];queue=[];index=0;carry=0;
+ trees.clearRect(0,0,1000,1000);rowCanvas.clearRect(0,0,1000,1000);currentRegion=null;
+ for(const region of regions)region.status.textContent='';
+}
+function nextRow(){
+ rowCanvas.clearRect(0,0,1000,1000);queue=[];index=0;
+ const plan=plans.shift();
+ currentRegion=plan.region;
+ for(const {type,x,base,h:plannedHeight,foliage,haze} of plan.trees){
+  const h=type==='birch'?560:currentRegion.id==='mid'?currentRegion.height:plannedHeight;
+  let strokes;
+  if(type==='birch')strokes=paintOriginalBirch(h,1.5,foliage/6,x,base);
+  else{
+   const tree=type==='pine'?window.bosmierenBuildNearTreeStrokes(type,x,base,base-h,h/720,{
+    crownScale:1.5,leafDensity:foliage/6,bark:1,stageCrown:true,curvedBranches:true
+   }):buildDeciduousTree(type,h,1,foliage/8,x,base);
+   strokes=window.bosmierenOrderTreePasses(tree.coverage,tree.details,true);
+  }
+  const colors=palettes[type];
+  let shade=0;
+  for(const stroke of strokes){
+   const foliage=stroke.foliage || ((type==='oak'||type==='beech') && stroke.kind==='mark');
+   if(foliage)stroke.color=colors[shade++%2];
+   if(haze && /^#[0-9a-f]{6}$/i.test(stroke.color)){
+    stroke.color='#'+[139,165,190].map((blue,k)=>{
+     const original=parseInt(stroke.color.slice(1+k*2,3+k*2),16);
+     return Math.round(original+(blue-original)*haze).toString(16).padStart(2,'0');
+    }).join('');
+   }
+  }
+  window.bosmierenQueueTree(queue,strokes,x,base,plannedHeight/h);
+ }
 }
 function tick(now){
- if(!running)return;
- carry+=Math.min(.05,(now-last)/1000)*Number(el('speed').value)/7;
+ if(!active)return;
+ carry+=Math.min(.05,(now-last)/1000)*Number(el('speed').value)/2;
  last=now;
- const budget=Math.min(280,Math.floor(carry));
- carry-=budget;
- index+=window.bosmierenPaintWithAnts(target,ants,queue,index,budget);
+ const budget=Math.min(560,Math.floor(carry));carry-=budget;
+ index+=window.bosmierenPaintWithAnts(rowCanvas,ants,queue,index,budget);
  if(index>=queue.length){
-  running=false;pause.disabled=true;ants.clearRect(0,0,1000,1000);
-  status.textContent='Boom voltooid · '+index+' verfstreken';
-  return;
+  trees.drawImage(rowCanvas.canvas,0,0);
+  if(plans[0]?.region!==currentRegion)currentRegion.status.textContent=currentRegion.title+' klaar';
+  if(plans.length)nextRow();
+  else{
+   active=false;rowCanvas.clearRect(0,0,1000,1000);
+   document.dispatchEvent(new Event('bosmieren:far-finished'));return;
+  }
  }
- status.textContent='Boom schilderen · '+index+' / '+queue.length+' verfstreken';
+ currentRegion.status.textContent=currentRegion.title+' schilderen';
  raf=requestAnimationFrame(tick);
 }
 function resume(){
- running=true;last=performance.now();pause.textContent='Pauze';raf=requestAnimationFrame(tick);
+ if(active)return;
+ active=true;last=performance.now();raf=requestAnimationFrame(tick);
 }
-el('start').onclick=()=>{
- cancelAnimationFrame(raf);
- target.clearRect(0,0,1000,1000);ants.clearRect(0,0,1000,1000);
- frontLeafColors=makeFrontLeafPalette();
- const type=el('species').value,h=Number(el('height').value);
- // De takken, stam en loof krijgen dezelfde coördinaten en schaal.
- const tree=type==='birch'?null:(type==='oak'||type==='beech')?buildDeciduousTree(type,h,Number(el('crown').value)/105,Number(el('foliage').value)/8):window.bosmierenBuildNearTreeStrokes(type,500,850,850-h,h/720,{
-  crownScale:Number(el('crown').value)/70,
-  leafDensity:Number(el('foliage').value)/6,
-  bark:1,stageCrown:true,middleBirch:type==='birch',curvedBranches:true
- });
- queue=[];
- window.bosmierenQueueTree(queue,type==='birch'?paintOriginalBirch(h,Number(el('crown').value)/70,Number(el('foliage').value)/6):window.bosmierenOrderTreePasses(tree.coverage,tree.details));
- index=0;carry=0;pause.disabled=false;resume();
-};
-pause.onclick=()=>{
- if(running){running=false;cancelAnimationFrame(raf);pause.textContent='Verder';}
- else resume();
-};
+document.addEventListener('bosmieren:far-start',event=>{
+ reset();
+ palettes=Object.fromEntries(species.map(type=>[type,[el('far-'+type+'-dark').value,el('far-'+type+'-light').value]]));
+ for(const region of regions){
+  const value=key=>Number(region.inputs[key].value);
+  const rows=value('rows'),count=value('count'),offset=region.depth+value('depth');
+  const height=region.height*(1+value('size')/100),foliage=8*(1+value('leaves')/100);
+  const shift=Math.floor(rnd(0,species.length));
+  for(let row=0;row<rows;row++){
+   const n=Math.floor(count/rows)+(row<count%rows?1:0);
+   const base=event.detail+offset+row*value('gap');
+   plans.push({region,trees:Array.from({length:n},(_,i)=>({
+    type:species[(i+row+shift)%species.length],base,foliage,haze:value('haze')/200,
+    h:height*rnd(.83,1.17),x:(i+rnd(.22,.78))*1000/n
+   }))});
+  }
+ }
+ nextRow();resume();
+});
+document.addEventListener('bosmieren:far-pause',()=>{active=false;cancelAnimationFrame(raf);if(currentRegion)currentRegion.status.textContent=currentRegion.title+' gepauzeerd';});
+document.addEventListener('bosmieren:far-resume',resume);
+document.addEventListener('bosmieren:ground-reset',reset);
 })();
 </script></body></html>
