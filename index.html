@@ -974,14 +974,14 @@ let frontLeafColors=makeFrontLeafPalette();
 // Alleen voor type birch; alle andere soorten behouden hun oorspronkelijke motor.
 function buildReferenceBirch(x,base,top,scale){
  const h=base-top;
- const thick=rnd(48,70)*scale;
- const flare=rnd(.10,.26),taperStart=rnd(.57,.68);
+ const thick=rnd(35,49)*scale;
+ const flare=rnd(.10,.26),taperStart=rnd(.46,.54);
  const drift=rnd(-.085,.085)*h;
  const phase=rnd(0,6.283);
  const bend=rnd(-11,11)*scale;
  const cx=t=>x+drift*t+bend*Math.sin(t*Math.PI)+Math.sin(t*9+phase)*3.4*scale;
  const cy=t=>base-h*t;
- const width=t=>thick*(1-.30*t)*(1+flare*Math.exp(-t*18)+.045*Math.sin(7*t+phase))*Math.pow(Math.max(.001,Math.min(1,(1-t)/(1-taperStart))),1.85);
+ const width=t=>thick*(1-.30*t)*(1+flare*Math.exp(-t*18)+.045*Math.sin(7*t+phase))*Math.pow(clamp((.91-t)/(.91-taperStart),0,1),1.55);
  // Doorlopende stam, zonder ronde stomp: doorsnede loopt in de wortelaanzet over.
  const N=190;
  for(let j=0;j<N;j++){
@@ -1063,23 +1063,6 @@ function buildReferenceBirch(x,base,top,scale){
    stroke(xa,ya,xb,yb,Math.max(.8,w0*(1-t0)*.68),'#8d9790',.79);
   }
  }
- const branchStart=ops.length;
- // Schaarse dunne zijtakken, geen volle ronde illustratieve kruin.
- for(let i=0;i<17;i++){
-  const t=rnd(.43,.98),side=Math.random()<.5?-1:1;
-  const px=cx(t),py=cy(t),reach=rnd(26,112)*scale;
-  const rise=rnd(-13,48)*scale;
-  const tipX=px+side*reach,tipY=py-rise;
-  stroke(px,py,px+side*reach*.46,py-rise*.32,rnd(1.8,4.5)*scale,'#6f7168',.86);
-  stroke(px+side*reach*.46,py-rise*.32,tipX,tipY,rnd(.5,1.7)*scale,'#6f7168',.8);
-  for(let k=0;k<24;k++){
-   const a=rnd(.45,1.05);
-   mark(px+side*reach*a+rnd(-16,16)*scale,py-rise*a+rnd(-17,17)*scale,
-    rnd(4,12)*scale,rnd(1.5,4)*scale,rnd(-3,3),
-    pick(frontLeafColors),rnd(.36,.72));
-  }
- }
- for(let i=branchStart;i<ops.length;i++)ops[i].outsideTrunk=true;
  return t=>({x:cx(t),y:cy(t),width:width(t)});
 }
 function buildTree(type,x,base,top,scale){
@@ -1384,10 +1367,10 @@ function buildCrown(type,x,base,top,scale,trunkPath,{crownScale=1,leafDensity=1}
  const lean=Math.random()<.5?-1:1;
  for(let i=0;i<19;i++){
   const leader=i>=16;
-  const t=leader?[.71,.79,.87][i-16]:rnd(.43+i*.029,.46+i*.031);
+  const t=leader?[.64,.73,.81][i-16]:rnd(.37+i*.031,.42+i*.031);
   const start=trunkPath(t),side=leader?[lean,-lean,lean][i-16]:Math.random()<.5?-1:1;
   const envelope=Math.sin(Math.PI*clamp((t-.34)/.70,0,1));
-  const reach=span*(leader?rnd(.19,.42):envelope*rnd(.62,1.09))*(side===lean?1.09:.88);
+  const reach=span*(leader?rnd(.25,.58):envelope*rnd(.65,1.17))*(side===lean?1.09:.88);
   const rise=leader?start.y-top+height*[.025,-.055,-.012][i-16]:height*rnd(.075,.173)*(1.15-t*.32);
   const tip={x:start.x+side*reach,y:Math.max(top-height*rnd(.02,.065),start.y-rise)};
   const limb=curved(start,{x:start.x+side*reach*(leader?.15:.32),y:start.y-rise*(leader?.55:1.28)},tip,
@@ -1494,12 +1477,24 @@ const buildTreeStrokes=(type,x,base,top,scale,options)=>{
   outside.closePath();
   for(const stroke of details){
   if(stroke.outsideTrunk){
-   if(options?.middleBirch)stroke.alpha=1;
    if(options?.liftBranchOrigins)delete stroke.crownReach;
    if(!stroke.crownReach&&!options?.liftBranchOrigins&&!(options?.middleBirch&&stroke.foliage))stroke.clip=outside;
    if(options?.crown)stroke.crownTransform={settings:options.crown,x:path(.85).x,heightLift:options.heightLift??0};
   }
  }
+  const barkClip=new Path2D();
+  for(const side of [-1,1]){
+   for(let i=0;i<=100;i++){
+    const p=path((side<0?i:100-i)/100);
+    const edge=p.x+side*p.width*.48;
+    if(side<0 && i===0)barkClip.moveTo(edge,p.y);
+    else barkClip.lineTo(edge,p.y);
+   }
+  }
+  barkClip.closePath();
+  for(const stroke of details){
+   if(stroke.blackBark)stroke.clip=barkClip;
+  }
   return {coverage:buildNearTrunkCoverage(type,path),details};
  }finally{ops=savedOps;}
 };
@@ -1514,7 +1509,8 @@ const buildTreeStrokes=(type,x,base,top,scale,options)=>{
   // Schors en takken eerst, daarna de oorspronkelijke losse bladstreken.
   const bark=tree.details.filter(o=>o.blackBark);
   const rest=tree.details.filter(o=>!o.blackBark);
-  return [...orderTreePasses(tree.coverage,rest,true),...bark];
+  return [...orderTreePasses(tree.coverage,rest.filter(o=>!o.crown)),...bark,
+   ...orderTreePasses([],rest.filter(o=>o.crown),true)];
  };
 })();
 const el=id=>document.getElementById(id);
