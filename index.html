@@ -773,7 +773,26 @@ document.addEventListener('bosmieren:horizon-finished',()=>{
  testModule2.disabled=false;
  document.dispatchEvent(new CustomEvent('bosmieren:far-start',{detail:landTop}));
 });
+function signArtwork(){
+ const ctx=document.getElementById('farTrees').getContext('2d');
+ const signature='Kris Truyers',right=971,bottom=969;
+ ctx.save();
+ ctx.font='italic 36px "Snell Roundhand", "Segoe Script", "Apple Chancery", "Palatino Linotype", cursive';
+ ctx.textAlign='right';
+ ctx.textBaseline='alphabetic';
+ const palette=userPalette.slice(0,Number(colors.value));
+ const ink=ctx.createLinearGradient(right-ctx.measureText(signature).width,bottom-25,right,bottom);
+ palette.forEach((color,i)=>ink.addColorStop(i/Math.max(1,palette.length-1),color));
+ ctx.strokeStyle='rgba(18, 26, 38, .62)';
+ ctx.lineWidth=1.6;
+ ctx.lineJoin='round';
+ ctx.strokeText(signature,right,bottom);
+ ctx.fillStyle=ink;
+ ctx.fillText(signature,right,bottom);
+ ctx.restore();
+}
 document.addEventListener('bosmieren:far-finished',()=>{
+ if(landTop)signArtwork();
  farFinished=true;
  oc.clearRect(0,0,1000,1000);
  start.textContent='✓ Klaar';
